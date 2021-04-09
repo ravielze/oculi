@@ -14,16 +14,16 @@ import (
 func main() {
 	godotenv.Load()
 
-	IsDevelopmentMode(os.Getenv("MODE"))
+	serverMode := GetServerMode(os.Getenv("MODE"))
 
 	var db *gorm.DB
-	conn.ConnectDatabase(os.Getenv("DBMS"), db)
+	conn.ConnectDatabase(os.Getenv("DBMS"), db, serverMode)
 	engine := gin.Default()
 
 	engine.Run()
 }
 
-func IsDevelopmentMode(mode string) bool {
+func GetServerMode(mode string) bool {
 	result := true
 	switch {
 	case strings.EqualFold(mode, "production"):
