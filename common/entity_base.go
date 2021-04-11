@@ -15,6 +15,11 @@ type UUIDBase struct {
 	ID string `gorm:"primaryKey;type:VARCHAR(36)" json:"id"`
 }
 
+func (e *UUIDBase) BeforeCreate(scope *gorm.DB) error {
+	e.ID = uuid.NewV4().String()
+	return nil
+}
+
 type InfoBase struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -22,9 +27,4 @@ type InfoBase struct {
 
 type SoftDeleteBase struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
-}
-
-func (e *UUIDBase) BeforeCreate(scope *gorm.DB) error {
-	e.ID = uuid.NewV4().String()
-	return nil
 }
