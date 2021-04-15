@@ -26,11 +26,24 @@ type IUserController interface {
 	Login(ctx *gin.Context)    // Send jwt token with response
 	Check(ctx *gin.Context)    //Buat midldeware cek token.
 }
+type LoginSerializer struct {
+	Email    string `json:"email" binding:"email"`
+	Password string `json:"password"`
+}
+
+type RegisterSerializer struct {
+	Email    string `json:"email" binding:"email"`
+	Password string `json:"password"`
+}
 
 type IUserUsecase interface {
+	Login(item LoginSerializer) (User, string, error)
+	Register(item RegisterSerializer) (User, error)
 }
 
 type IUserRepo interface {
+	Login(email, password string) (User, error)
+	Register(email, password string) (User, error)
 }
 
 // func (u *User) Prepare() {
