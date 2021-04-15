@@ -19,7 +19,6 @@ func main() {
 	var db *gorm.DB
 	conn.ConnectDatabase(os.Getenv("DB_DRIVER"), db, serverMode)
 	engine := gin.Default()
-
 	engine.Run()
 }
 

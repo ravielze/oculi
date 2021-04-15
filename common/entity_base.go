@@ -8,11 +8,11 @@ import (
 )
 
 type IDBase struct {
-	ID uint `gorm:"primaryKey;autoIncrement" json:"id"`
+	ID uint `gorm:"primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree" json:"id"`
 }
 
 type UUIDBase struct {
-	ID string `gorm:"primaryKey;type:VARCHAR(36)" json:"id"`
+	ID string `gorm:"primaryKey;type:VARCHAR(36);uniqueIndex:,sort:asc,type:btree" json:"id"`
 }
 
 func (e *UUIDBase) BeforeCreate(scope *gorm.DB) error {
@@ -26,5 +26,5 @@ type InfoBase struct {
 }
 
 type SoftDeleteBase struct {
-	DeletedAt gorm.DeletedAt `json:"deleted_at"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 }
