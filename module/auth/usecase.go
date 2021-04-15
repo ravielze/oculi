@@ -12,7 +12,7 @@ func NewUserUsecase(repo IUserRepo) IUserUsecase {
 	}
 }
 
-func (uc UserUsecase) GetID(userId uint64) (User, error){
+func (uc UserUsecase) GetID(userId uint64) (User, error) {
 	user, err := uc.userrepo.GetOneByID(userId)
 	if err != nil {
 		return User{}, err

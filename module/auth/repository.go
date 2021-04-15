@@ -27,7 +27,6 @@ func (repo UserRepository) GetOneByEmail(email string) (User, error) {
 	return user, nil
 }
 
-
 func (repo UserRepository) GetOneByID(userId uint64) (User, error) {
 	var user User
 	if err := repo.db.Where("user_id = ?", userId).First(&user).Error; err != nil {

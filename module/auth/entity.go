@@ -7,10 +7,15 @@ import (
 )
 
 type User struct {
-	common.IDBase   `gorm:"embedded;embeddedPrefix:user_"`
-	common.InfoBase `gorm:"embedded"`
-	Email           string `gorm:"type:VARCHAR(320);uniqueIndex:,sort:asc,type:btree" json:"email"`
-	Password        string `gorm:"type:VARCHAR(256)" json:"-"`
+	common.IDBase         `gorm:"embedded;embeddedPrefix:user_"`
+	common.InfoBase       `gorm:"embedded"`
+	common.SoftDeleteBase `gorm:"embedded"`
+	Email                 string `gorm:"type:VARCHAR(320);uniqueIndex:,sort:asc,type:btree" json:"email"`
+	Password              string `gorm:"type:VARCHAR(256)" json:"-"`
+}
+
+func (User) TableName() string {
+	return "user"
 }
 
 func (u *User) BeforeSave(db *gorm.DB) error {

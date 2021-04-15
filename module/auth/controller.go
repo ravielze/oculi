@@ -60,7 +60,7 @@ func (u UserController) Login(ctx *gin.Context) {
 		return
 	}
 	utils.OKAndResponseData(ctx, struct {
-		User User `json:"user_data"`
+		User  User   `json:"user_data"`
 		Token string `json:"token"`
 	}{
 		User:  user,
