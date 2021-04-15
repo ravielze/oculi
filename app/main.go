@@ -9,7 +9,6 @@ import (
 	"github.com/joho/godotenv"
 	conn "github.com/ravielze/fuzzy-broccoli/connection"
 	"github.com/ravielze/fuzzy-broccoli/module/auth"
-	"gorm.io/gorm"
 )
 
 func main() {
@@ -17,8 +16,7 @@ func main() {
 
 	serverMode := GetServerMode(os.Getenv("MODE"))
 
-	var db *gorm.DB
-	conn.ConnectDatabase(os.Getenv("DB_DRIVER"), db, serverMode)
+	db := conn.ConnectDatabase(os.Getenv("DB_DRIVER"), serverMode)
 	engine := gin.Default()
 	auth.NewAuthModule(db, engine)
 	engine.Run()

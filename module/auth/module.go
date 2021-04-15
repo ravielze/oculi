@@ -1,8 +1,6 @@
 package auth
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -18,11 +16,7 @@ func NewAuthModule(db *gorm.DB, g *gin.Engine) AuthModule {
 	userusecase := NewUserUsecase(userrepo)
 	usercontroller := NewUserController(g, userusecase)
 
-	if db != nil {
-		fmt.Println("Ada db")
-	}
-	err := db.AutoMigrate(&User{})
-	fmt.Println(err.Error())
+	db.AutoMigrate(&User{})
 
 	return AuthModule{
 		controller: usercontroller,

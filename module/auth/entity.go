@@ -3,6 +3,7 @@ package auth
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/ravielze/fuzzy-broccoli/common"
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -12,7 +13,7 @@ type User struct {
 	Password        string `gorm:"type:VARCHAR(1024)" json:"password"`
 }
 
-func (u *User) BeforeSave() error {
+func (u *User) BeforeSave(db *gorm.DB) error {
 	hashedPassword, err := Hash(u.Password)
 	if err != nil {
 		return err
