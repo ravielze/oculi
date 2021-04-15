@@ -11,11 +11,13 @@ import (
 )
 
 type UserController struct {
-	//uc IUserUsecase
+	usecase IUserUsecase
 }
 
-func NewUserController(router *gin.Engine) IUserController {
-	cont := UserController{}
+func NewUserController(router *gin.Engine, usecase IUserUsecase) IUserController {
+	cont := UserController{
+		usecase: usecase,
+	}
 	userGroup := router.Group("/auth")
 	{
 		userGroup.POST("/login", cont.Login)
@@ -29,21 +31,42 @@ func NewUserController(router *gin.Engine) IUserController {
 			ctx.Request.Header.Set("userId", strconv.FormatUint(userId, 10))
 		}, cont.Check)
 	}
-	return nil
+	return cont
 }
 
 func (u UserController) Register(ctx *gin.Context) {
-
+	var j RegisterSerializer
+	if err := ctx.ShouldBindJSON(&j); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, serializer.NewResponse(http.StatusBadRequest, code.UNCOMPATIBLE_JSON))
+		return
+	}
+	user, err := u.usecase.Register(j)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, serializer.NewResponse(http.StatusBadRequest, err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, serializer.NewResponseData(http.StatusOK, code.OK, user))
 }
 
 func (u UserController) Login(ctx *gin.Context) {
-	userId := 12
-	token, err := CreateToken(uint64(userId))
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusUnauthorized, serializer.NewResponse(http.StatusUnauthorized, code.UNAUTHORIZED))
+
+	var j LoginSerializer
+	if err := ctx.ShouldBindJSON(&j); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, serializer.NewResponse(http.StatusBadRequest, code.UNCOMPATIBLE_JSON))
 		return
 	}
-	ctx.JSON(http.StatusOK, serializer.NewResponseData(http.StatusOK, code.OK, token))
+	user, token, err := u.usecase.Login(j)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, serializer.NewResponse(http.StatusBadRequest, err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, serializer.NewResponseData(http.StatusOK, code.OK, struct {
+		user  User
+		token string
+	}{
+		user:  user,
+		token: token,
+	}))
 }
 
 func (u UserController) Check(ctx *gin.Context) {

@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	conn "github.com/ravielze/fuzzy-broccoli/connection"
+	"github.com/ravielze/fuzzy-broccoli/module/auth"
 	"gorm.io/gorm"
 )
 
@@ -19,6 +20,7 @@ func main() {
 	var db *gorm.DB
 	conn.ConnectDatabase(os.Getenv("DB_DRIVER"), db, serverMode)
 	engine := gin.Default()
+	auth.NewAuthModule(db, engine)
 	engine.Run()
 }
 
