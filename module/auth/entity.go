@@ -27,15 +27,6 @@ type IUserController interface {
 	Login(ctx *gin.Context)    // Send jwt token with response
 	Check(ctx *gin.Context)    //Buat midldeware cek token.
 }
-type LoginSerializer struct {
-	Email    string `json:"email" binding:"email"`
-	Password string `json:"password"`
-}
-
-type RegisterSerializer struct {
-	Email    string `json:"email" binding:"email"`
-	Password string `json:"password"`
-}
 
 type IUserUsecase interface {
 	Login(item LoginSerializer) (User, string, error)
