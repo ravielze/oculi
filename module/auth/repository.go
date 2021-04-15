@@ -16,7 +16,7 @@ func NewUserRepository(db *gorm.DB) IUserRepo {
 	}
 }
 
-func (repo UserRepository) Login(email, password string) (User, error) {
+func (repo UserRepository) GetOneByEmail(email string) (User, error) {
 	var user User
 	if err := repo.db.Where("email = ?", email).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -24,21 +24,26 @@ func (repo UserRepository) Login(email, password string) (User, error) {
 		}
 		return User{}, err
 	}
+	return user, nil
+}
 
-	if err := VerifyPassword(user.Password, password); err != nil {
-		return User{}, errors.New("Password not match")
+
+func (repo UserRepository) GetOneByID(userId uint64) (User, error) {
+	var user User
+	if err := repo.db.Where("user_id = ?", userId).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return User{}, errors.New("No user with that id")
+		}
+		return User{}, err
 	}
 	return user, nil
 }
-func (repo UserRepository) Register(email, password string) (User, error) {
+
+func (repo UserRepository) CreateOne(email, password string) (User, error) {
 	var user User
 	var dummyUser User
 	user.Email = email
-	hashedPassword, err := Hash(password)
-	if err != nil {
-		return User{}, err
-	}
-	user.Password = string(hashedPassword)
+	user.Password = password
 	repo.db.Where("email = ?", email).First(&dummyUser)
 	if (User{} != dummyUser) {
 		return User{}, errors.New("User with that email already exist")

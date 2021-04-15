@@ -10,7 +10,7 @@ type User struct {
 	common.IDBase   `gorm:"embedded;embeddedPrefix:user_"`
 	common.InfoBase `gorm:"embedded"`
 	Email           string `gorm:"type:VARCHAR(320);uniqueIndex:,sort:asc,type:btree" json:"email"`
-	Password        string `gorm:"type:VARCHAR(1024)" json:"password"`
+	Password        string `gorm:"type:VARCHAR(256)" json:"-"`
 }
 
 func (u *User) BeforeSave(db *gorm.DB) error {
@@ -18,7 +18,7 @@ func (u *User) BeforeSave(db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	u.Password = string(hashedPassword)
+	u.Password = hashedPassword
 	return nil
 }
 
@@ -31,11 +31,13 @@ type IUserController interface {
 type IUserUsecase interface {
 	Login(item LoginSerializer) (User, string, error)
 	Register(item RegisterSerializer) (User, error)
+	GetID(userId uint64) (User, error)
 }
 
 type IUserRepo interface {
-	Login(email, password string) (User, error)
-	Register(email, password string) (User, error)
+	GetOneByEmail(email string) (User, error)
+	GetOneByID(userId uint64) (User, error)
+	CreateOne(email, password string) (User, error)
 }
 
 // func (u *User) Prepare() {

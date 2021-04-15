@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -70,6 +69,6 @@ func (u UserController) Login(ctx *gin.Context) {
 }
 
 func (u UserController) Check(ctx *gin.Context) {
-	userId := GetUserID(ctx)
-	fmt.Println(userId)
+	user := GetUserID(ctx, &u.usecase)
+	utils.OKAndResponseData(ctx, user)
 }
