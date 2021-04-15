@@ -15,7 +15,7 @@ type User struct {
 }
 
 func (User) TableName() string {
-	return "user"
+	return "auth_user"
 }
 
 func (u *User) BeforeSave(db *gorm.DB) error {

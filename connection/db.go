@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func ConnectDatabase(dbdriver string, development bool) (*gorm.DB) {
+func ConnectDatabase(dbdriver string, development bool) *gorm.DB {
 	config := &gorm.Config{
 		// Enable this if there is any nullable foreign key
 		// Don't forget to set up relation manually

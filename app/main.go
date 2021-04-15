@@ -42,9 +42,9 @@ func GetServerMode(mode string) bool {
 	}
 	if result {
 		fmt.Println("Starting development server...")
-		gin.SetMode(gin.ReleaseMode)
 	} else {
 		fmt.Println("Starting production server...")
+		gin.SetMode(gin.ReleaseMode)
 	}
 	return result
 }
