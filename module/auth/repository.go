@@ -40,13 +40,12 @@ func (repo UserRepository) GetOneByID(userId uint64) (User, error) {
 
 func (repo UserRepository) CreateOne(email, password string) (User, error) {
 	var user User
-	var dummyUser User
 	user.Email = email
 	user.Password = password
-	repo.db.Where("email = ?", email).First(&dummyUser)
-	if (User{} != dummyUser) {
-		return User{}, errors.New("User with that email already exist")
-	}
+	// repo.db.Where("email = ?", email).First(&dummyUser)
+	// if (User{} != dummyUser) {
+	// 	return User{}, errors.New("User with that email already exist")
+	// }
 	if err := repo.db.Create(&user).Error; err != nil {
 		return User{}, err
 	}

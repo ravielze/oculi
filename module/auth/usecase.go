@@ -13,11 +13,7 @@ func NewUserUsecase(repo IUserRepo) IUserUsecase {
 }
 
 func (uc UserUsecase) GetID(userId uint64) (User, error) {
-	user, err := uc.userrepo.GetOneByID(userId)
-	if err != nil {
-		return User{}, err
-	}
-	return user, nil
+	return uc.userrepo.GetOneByID(userId)
 }
 
 func (uc UserUsecase) Login(item LoginSerializer) (User, string, error) {
@@ -37,9 +33,5 @@ func (uc UserUsecase) Login(item LoginSerializer) (User, string, error) {
 }
 
 func (uc UserUsecase) Register(item RegisterSerializer) (User, error) {
-	user, err := uc.userrepo.CreateOne(item.Email, item.Password)
-	if err != nil {
-		return User{}, err
-	}
-	return user, nil
+	return uc.userrepo.CreateOne(item.Email, item.Password)
 }

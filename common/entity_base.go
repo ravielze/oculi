@@ -12,7 +12,7 @@ type IDBase struct {
 }
 
 type UUIDBase struct {
-	ID string `gorm:"primaryKey;type:VARCHAR(36);uniqueIndex:,sort:asc,type:btree" json:"id"`
+	ID string `gorm:"primaryKey;type:VARCHAR(36);uniqueIndex:,sort:asc,type:btree" json:"id" binding:"uuid4"`
 }
 
 func (e *UUIDBase) BeforeCreate(scope *gorm.DB) error {
