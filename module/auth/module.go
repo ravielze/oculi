@@ -7,7 +7,7 @@ import (
 
 type AuthModule struct {
 	controller IUserController
-	usecase    IUserUsecase
+	Usecase    IUserUsecase
 	repo       IUserRepo
 }
 
@@ -20,7 +20,7 @@ func NewAuthModule(db *gorm.DB, g *gin.Engine) AuthModule {
 
 	return AuthModule{
 		controller: usercontroller,
-		usecase:    userusecase,
+		Usecase:    userusecase,
 		repo:       userrepo,
 	}
 }

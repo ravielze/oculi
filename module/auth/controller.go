@@ -2,7 +2,6 @@ package auth
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/ravielze/fuzzy-broccoli/common/code"
@@ -27,7 +26,13 @@ func NewUserController(router *gin.Engine, usecase IUserUsecase) IUserController
 				utils.AbortAndResponse(ctx, http.StatusUnauthorized, code.UNAUTHORIZED)
 				return
 			}
-			ctx.Request.Header.Set("userId", strconv.FormatUint(userId, 10))
+			user, err2 := usecase.GetID(userId)
+			if err2 != nil {
+				utils.AbortAndResponseData(ctx, http.StatusUnauthorized, code.UNAUTHORIZED, err2.Error())
+				return
+			}
+			ctx.Keys = map[string]interface{}{}
+			ctx.Keys["user"] = user
 		}, cont.Check)
 	}
 	return cont
@@ -69,6 +74,9 @@ func (u UserController) Login(ctx *gin.Context) {
 }
 
 func (u UserController) Check(ctx *gin.Context) {
-	user := GetUserID(ctx, &u.usecase)
-	utils.OKAndResponseData(ctx, user)
+	if user, ok := ctx.Keys["user"].(User); ok {
+		utils.OKAndResponseData(ctx, user)
+		return
+	}
+	utils.OKAndResponseData(ctx, User{})
 }
