@@ -5,10 +5,11 @@ import (
 	"os"
 	"strings"
 
+	"github.com/ravielze/fuzzy-broccoli/module"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	conn "github.com/ravielze/fuzzy-broccoli/connection"
-	"github.com/ravielze/fuzzy-broccoli/module/auth"
 )
 
 func main() {
@@ -18,7 +19,11 @@ func main() {
 
 	db := conn.ConnectDatabase(os.Getenv("DB_DRIVER"), serverMode)
 	engine := gin.Default()
-	auth.NewAuthModule(db, engine)
+	modules := module.NewModule(db, engine)
+	fmt.Println("\033[33mModule Installed:\033[0m")
+	for i, x := range modules {
+		fmt.Printf("\033[34m[%d] \033[0m: \033[32m%s\033[0m\n", i, x.Name())
+	}
 	engine.Run()
 }
 

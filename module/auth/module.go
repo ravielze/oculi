@@ -11,6 +11,10 @@ type AuthModule struct {
 	repo       IUserRepo
 }
 
+func (AuthModule) Name() string {
+	return "Authentication Module"
+}
+
 func NewAuthModule(db *gorm.DB, g *gin.Engine) AuthModule {
 	userrepo := NewUserRepository(db)
 	userusecase := NewUserUsecase(userrepo)
