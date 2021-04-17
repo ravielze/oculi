@@ -1,8 +1,14 @@
 package filestorage
 
-type FileSerializer struct {
-	RealFilename string `json:"file_name" binding:"required,lte=512"`
-	Link         string `json:"link" binding:"required,lte=512"`
-	FileType     string `json:"type" binding:"required,lte=128"`
-	Size         uint64 `json:"size" binding:"required,gte=0"`
+import "mime/multipart"
+
+type LinkFileSerializer struct {
+	Link      string `json:"link" binding:"required,lte=512"`
+	FileType  string `json:"file_type" binding:"required,lte=128"`
+	FileGroup string `json:"file_group" binding:"required,lte=128"`
+}
+
+type LocalStorageFileSerializer struct {
+	Attachment *multipart.FileHeader `json:"-" form:"attachment" binding:"required"`
+	FileGroup  string                `json:"-" form:"file_group" binding:"required,lte=128"`
 }

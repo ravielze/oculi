@@ -2,6 +2,7 @@ package filestorage
 
 import (
 	"github.com/gin-gonic/gin"
+	storage "github.com/ramadani/go-filestorage"
 	"gorm.io/gorm"
 )
 
@@ -16,11 +17,16 @@ func (FileModule) Name() string {
 }
 
 func NewFileModule(db *gorm.DB, g *gin.Engine) FileModule {
-	r := NewFileRepository(db)
+	localStorage := storage.NewStorage(&storage.Config{
+		Root: "storage",
+	})
+	r := NewFileRepository(db, localStorage)
 	u := NewFileUsecase(r)
 	c := NewFileController(g, u)
 
-	db.AutoMigrate(&File{})
+	db.AutoMigrate(&FileBase{})
+	db.AutoMigrate(&LinkFile{})
+	db.AutoMigrate(&LocalStorageFile{})
 
 	return FileModule{
 		controller: c,
