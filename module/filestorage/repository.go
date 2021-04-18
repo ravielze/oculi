@@ -37,7 +37,7 @@ func (repo FileRepository) AddOneLink(userId uint, link, fileType, fileGroup str
 			FileGroup:  fileGroup,
 			FileType:   fileType,
 			FileExt:    sql.NullString{Valid: false},
-			FileMethod: "LINK",
+			FileMethod: LINK_STORAGE,
 		},
 		Link: link,
 	}
@@ -86,7 +86,7 @@ func (repo FileRepository) AddOneLocalStorage(userId uint, attachment *multipart
 				String: fileExt,
 				Valid:  true,
 			},
-			FileMethod: "LOCAL",
+			FileMethod: LOCAL_STORAGE,
 		},
 		RealFilename: attachment.Filename,
 		Path:         fileGroup + "/" + fileName,
@@ -101,14 +101,22 @@ func (repo FileRepository) AddOneLocalStorage(userId uint, attachment *multipart
 func (repo FileRepository) GetUserFiles(userId uint) ([]interface{}, error) {
 	fileBases := repo.db.Model(&FileBase{}).Select("file_base_id").Where("user_id = ?", userId)
 	var files1 []LocalStorageFile
-	if err := repo.db.Model(&LocalStorageFile{}).Where("file_base_id IN (?)", fileBases).Find(&files1).Error; err != nil {
+	if err := repo.db.Model(&LocalStorageFile{}).Preload("FileBase").Where("file_base_id IN (?)", fileBases).Find(&files1).Error; err != nil {
 		return nil, err
 	}
 	var files2 []LinkFile
-	if err := repo.db.Model(&LinkFile{}).Where("file_base_id IN (?)", fileBases).Find(&files2).Error; err != nil {
+	if err := repo.db.Model(&LinkFile{}).Preload("FileBase").Where("file_base_id IN (?)", fileBases).Find(&files2).Error; err != nil {
 		return nil, err
 	}
 	var result []interface{}
 	result = append(result, files1, files2)
+	return result, nil
+}
+
+func (repo FileRepository) GetFileBase(idFile string) (FileBase, error) {
+	var result FileBase
+	if err := repo.db.Model(&FileBase{}).Where("file_base_id = ?", idFile).First(&result).Error; err != nil {
+		return FileBase{}, err
+	}
 	return result, nil
 }

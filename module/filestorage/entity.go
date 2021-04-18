@@ -12,7 +12,7 @@ import (
 )
 
 type FileBase struct {
-	common.UUIDBase `gorm:"embedded;embeddedPrefix:filebase_"`
+	common.UUIDBase `gorm:"embedded;embeddedPrefix:file_base_"`
 	common.InfoBase `gorm:"embedded"`
 	UserID          uint           `json:"user_id"`
 	User            auth.User      `json:"-"`
@@ -77,4 +77,5 @@ type IFileRepo interface {
 	GetOneLocalStorageByID(idFile string) (LocalStorageFile, error)
 	AddOneLocalStorage(userId uint, attachment *multipart.FileHeader, fileGroup string) (LocalStorageFile, error)
 	GetUserFiles(userId uint) ([]interface{}, error)
+	GetFileBase(idFile string) (FileBase, error)
 }

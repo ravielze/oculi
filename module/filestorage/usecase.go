@@ -31,15 +31,24 @@ func (uc FileUsecase) GetUserFiles(user auth.User) ([]interface{}, error) {
 }
 
 func (uc FileUsecase) GetFile(idFile string) (interface{}, error) {
-	link, err := uc.repo.GetOneLinkByID(idFile)
-	local, err2 := uc.repo.GetOneLocalStorageByID(idFile)
-	if err != nil && err2 != nil {
+	base, err := uc.repo.GetFileBase(idFile)
+	if err != nil {
 		return nil, err
-	} else {
-		if err == nil {
-			return link, nil
-		} else {
-			return local, nil
+	}
+	switch base.FileMethod {
+	case LOCAL_STORAGE:
+		local, err := uc.repo.GetOneLocalStorageByID(idFile)
+		if err != nil {
+			return nil, err
 		}
+		return local, nil
+	case LINK_STORAGE:
+		link, err := uc.repo.GetOneLinkByID(idFile)
+		if err != nil {
+			return nil, err
+		}
+		return link, nil
+	default:
+		return nil, nil
 	}
 }

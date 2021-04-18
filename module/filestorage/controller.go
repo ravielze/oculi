@@ -100,5 +100,10 @@ func (cont FileController) AddFile(ctx *gin.Context) {
 }
 
 func (cont FileController) GetUserFiles(ctx *gin.Context) {
-	panic("not implemented")
+	result, err := cont.usecase.GetUserFiles(middleware.GetUser(ctx))
+	if err != nil {
+		utils.AbortAndResponseData(ctx, http.StatusBadRequest, code.LOGIC_ERROR, err.Error())
+		return
+	}
+	utils.OKAndResponseData(ctx, result)
 }
