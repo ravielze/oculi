@@ -9,7 +9,7 @@ import (
 	"github.com/ravielze/fuzzy-broccoli/module/auth"
 )
 
-var AuthModule auth.AuthModule
+var AuthModule *auth.AuthModule
 
 func GetAuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -18,7 +18,7 @@ func GetAuthMiddleware() gin.HandlerFunc {
 			utils.AbortAndResponse(ctx, http.StatusUnauthorized, code.UNAUTHORIZED)
 			return
 		}
-		user, err2 := AuthModule.Usecase.GetID(userId)
+		user, err2 := (*AuthModule).Usecase.GetID(userId)
 		if err2 != nil {
 			utils.AbortAndResponseData(ctx, http.StatusUnauthorized, code.UNAUTHORIZED, err2.Error())
 			return

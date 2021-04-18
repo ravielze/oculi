@@ -20,6 +20,8 @@ type Module interface {
 var moduleList map[uint32]Module
 
 func NewModule(db *gorm.DB, g *gin.Engine) map[uint32]Module {
+	middleware.InstallCors(g)
+	middleware.InstallGZipCompressor(g)
 	moduleList = map[uint32]Module{}
 	moduleList[0] = dvlp.NewDevModule(db, g)
 
