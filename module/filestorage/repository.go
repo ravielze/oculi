@@ -120,3 +120,11 @@ func (repo FileRepository) GetFileBase(idFile string) (FileBase, error) {
 	}
 	return result, nil
 }
+
+func (repo FileRepository) GetFileIDByGroup(fileGroup string) ([]string, error) {
+	var result []string
+	if err := repo.db.Model(&FileBase{}).Select("file_base_id").Where("file_group = ?", fileGroup).Find(&result).Error; err != nil {
+		return nil, err
+	}
+	return result, nil
+}

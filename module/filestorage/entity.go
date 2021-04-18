@@ -60,6 +60,7 @@ type IFileController interface {
 	GetFile(ctx *gin.Context)
 	AddFile(ctx *gin.Context)
 	GetUserFiles(ctx *gin.Context)
+	GetFileByGroup(ctx *gin.Context)
 }
 
 type IFileUsecase interface {
@@ -69,6 +70,7 @@ type IFileUsecase interface {
 	GetLocalStorage(idFile string) (LocalStorageFile, error)
 	AddLocalStorage(user auth.User, item LocalStorageFileSerializer) (LocalStorageFile, error)
 	GetUserFiles(user auth.User) ([]interface{}, error)
+	GetFileIDByGroup(fileGroup string) ([]string, error)
 }
 
 type IFileRepo interface {
@@ -78,4 +80,5 @@ type IFileRepo interface {
 	AddOneLocalStorage(userId uint, attachment *multipart.FileHeader, fileGroup string) (LocalStorageFile, error)
 	GetUserFiles(userId uint) ([]interface{}, error)
 	GetFileBase(idFile string) (FileBase, error)
+	GetFileIDByGroup(fileGroup string) ([]string, error)
 }

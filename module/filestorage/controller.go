@@ -20,11 +20,26 @@ func NewFileController(router *gin.Engine, usecase IFileUsecase) IFileController
 	}
 	fileGroup := router.Group("/file")
 	{
-		fileGroup.GET("/:id", cont.GetFile)
+		fileGroup.GET("/id/:id", cont.GetFile)
+		fileGroup.GET("/group/:id", cont.GetFileByGroup)
 		fileGroup.POST("/", middleware.GetAuthMiddleware(), cont.AddFile)
 		fileGroup.GET("/", middleware.GetAuthMiddleware(), cont.GetUserFiles)
 	}
 	return cont
+}
+
+func (cont FileController) GetFileByGroup(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		utils.AbortAndResponseData(ctx, http.StatusUnprocessableEntity, code.UNCOMPATIBLE_JSON, "Parameter Group is missing")
+		return
+	}
+	result, err := cont.usecase.GetFileIDByGroup(id)
+	if err != nil {
+		utils.AbortAndResponseData(ctx, http.StatusBadRequest, code.LOGIC_ERROR, err.Error())
+		return
+	}
+	utils.OKAndResponseData(ctx, result)
 }
 
 func (cont FileController) GetFile(ctx *gin.Context) {

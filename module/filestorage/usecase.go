@@ -1,6 +1,8 @@
 package filestorage
 
-import "github.com/ravielze/fuzzy-broccoli/module/auth"
+import (
+	"github.com/ravielze/fuzzy-broccoli/module/auth"
+)
 
 type FileUsecase struct {
 	repo IFileRepo
@@ -51,4 +53,8 @@ func (uc FileUsecase) GetFile(idFile string) (interface{}, error) {
 	default:
 		return nil, nil
 	}
+}
+
+func (uc FileUsecase) GetFileIDByGroup(fileGroup string) ([]string, error) {
+	return uc.repo.GetFileIDByGroup(fileGroup)
 }
