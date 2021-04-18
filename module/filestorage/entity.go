@@ -47,7 +47,7 @@ func (LinkFile) TableName() string {
 type LocalStorageFile struct {
 	FileBaseID   string   `gorm:"primaryKey;uniqueIndex:,sort:asc,type:btree"`
 	FileBase     FileBase `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	RealFilename string   `gorm:"type:VARCHAR(512);uniqueIndex:,sort:asc,type:btree" json:"-"`
+	RealFilename string   `gorm:"type:VARCHAR(512);index:,sort:asc,type:btree" json:"-"`
 	Path         string   `gorm:"type:VARCHAR(1024)" json:"path"`
 	Size         uint64   `json:"size"`
 }

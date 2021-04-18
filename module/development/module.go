@@ -29,6 +29,8 @@ type A struct {
 	Attachment *multipart.FileHeader `json:"attachment,omitempty" form:"attachment" binding:"required"`
 }
 
+func (DevModule) Reset(db *gorm.DB){}
+
 func NewDevModule(db *gorm.DB, g *gin.Engine) DevModule {
 	config := &storage.Config{
 		Root: "storage",

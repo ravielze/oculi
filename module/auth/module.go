@@ -15,6 +15,10 @@ func (AuthModule) Name() string {
 	return "Authentication Module"
 }
 
+func (AuthModule) Reset(db *gorm.DB){
+	db.Migrator().DropTable(&User{})
+}
+
 func NewAuthModule(db *gorm.DB, g *gin.Engine) AuthModule {
 	userrepo := NewUserRepository(db)
 	userusecase := NewUserUsecase(userrepo)

@@ -16,6 +16,12 @@ func (FileModule) Name() string {
 	return "File Storage Module"
 }
 
+func (FileModule) Reset(db *gorm.DB){
+	db.Migrator().DropTable(&FileBase{})
+	db.Migrator().DropTable(&LinkFile{})
+	db.Migrator().DropTable(&LocalStorageFile{})
+}
+
 func NewFileModule(db *gorm.DB, g *gin.Engine) FileModule {
 	localStorage := storage.NewStorage(&storage.Config{
 		Root: "storage",
