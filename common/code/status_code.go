@@ -7,4 +7,5 @@ const (
 	UNCOMPATIBLE_JSON    = "uncompatible_json"
 	LOGIC_ERROR          = "logic_error"
 	UNKNOWN_CONTENT_TYPE = "unknown_content_type"
+	TOO_MANY_REQUESTS    = "too_many_requests"
 )
