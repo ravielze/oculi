@@ -25,7 +25,7 @@ func InstallDefaultLimiter(g *gin.Engine) {
 	g.Use(limit.NewRateLimiter(func(c *gin.Context) string {
 		return c.ClientIP() // limit rate by client ip
 	}, func(c *gin.Context) (*rate.Limiter, time.Duration) {
-		return rate.NewLimiter(rate.Every(500*time.Millisecond), 4), time.Hour
+		return rate.NewLimiter(rate.Every(250*time.Millisecond), 5), time.Minute * 15
 	}, func(c *gin.Context) {
 		utils.AbortAndResponse(c, http.StatusTooManyRequests, code.TOO_MANY_REQUESTS)
 	}))
