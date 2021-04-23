@@ -9,21 +9,15 @@ import (
 	"github.com/ravielze/fuzzy-broccoli/common/serializer"
 )
 
-var token string
-
-func staticToken(ctx *gin.Context) {
-	if values := ctx.Request.Header.Get("Authorization"); len(values) > 0 {
-		if values == token {
-			ctx.Next()
-			return
-		}
-
-	}
-
-	ctx.AbortWithStatusJSON(http.StatusForbidden, serializer.NewResponse(http.StatusForbidden, code.UNAUTHORIZED))
-}
-
 func GetStaticTokenMiddleware() gin.HandlerFunc {
-	token = os.Getenv("AUTH_TOKEN")
-	return staticToken
+	token := os.Getenv("AUTH_TOKEN")
+	return func(ctx *gin.Context) {
+		if values := ctx.Request.Header.Get("Authorization"); len(values) > 0 {
+			if values == token {
+				ctx.Next()
+				return
+			}
+		}
+		ctx.AbortWithStatusJSON(http.StatusForbidden, serializer.NewResponse(http.StatusForbidden, code.UNAUTHORIZED))
+	}
 }
