@@ -4,17 +4,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ravielze/fuzzy-broccoli/common/random"
+	"github.com/ravielze/fuzzy-broccoli/common/radix36"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
 
 type IntIDBase struct {
-	ID uint `gorm:"primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
+	ID uint `gorm:"type:BIGINT;primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
 }
 
 type BigIntIDBase struct {
-	ID uint64 `gorm:"primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
+	ID uint64 `gorm:"type:BIGINT;primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
 }
 
 type StringIDBase struct {
@@ -38,7 +38,7 @@ func (e *StringIDBase) BeforeCreate(scope *gorm.DB) error {
 	if strings.EqualFold(e.ID, "default") {
 		return nil
 	}
-	id, err := random.NewUUID4ToRadix36()
+	id, err := radix36.EncodeUUID4()
 	if err != nil {
 		return err
 	}
