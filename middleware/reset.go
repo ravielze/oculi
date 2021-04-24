@@ -20,9 +20,7 @@ func GetResetTokenMiddleware() gin.HandlerFunc {
 				ctx.Next()
 				return
 			}
-
 		}
-
 		ctx.AbortWithStatusJSON(http.StatusForbidden, serializer.NewResponse(http.StatusForbidden, code.UNAUTHORIZED))
 	}
 }
