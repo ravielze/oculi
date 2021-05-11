@@ -1,6 +1,7 @@
 package contutils
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -12,47 +13,61 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+type Parameters map[string]string
+type Queries map[string]string
+
 type ControlChain struct {
 	ctx      *gin.Context
-	errors   []error
-	params   map[string]string
-	code     []string
-	httpCode []int
-	query    map[string]string
+	err      error
+	params   Parameters
+	code     string
+	httpCode int
+	query    Queries
+	isError  bool
 }
 
 func NewControlChain(context *gin.Context) *ControlChain {
 	return &ControlChain{
 		ctx:      context,
-		errors:   []error{},
-		code:     []string{},
-		httpCode: []int{},
+		err:      errors.New("not error"),
+		code:     "",
+		httpCode: -1,
 		params:   map[string]string{},
 		query:    map[string]string{},
+		isError:  false,
 	}
 }
 
 func (cu *ControlChain) Bind(obj interface{}) *ControlChain {
+	if cu.isError {
+		return cu
+	}
 	if err := cu.ctx.ShouldBind(obj); err != nil {
-		cu.errors = append(cu.errors, err)
-		cu.httpCode = append(cu.httpCode, http.StatusUnprocessableEntity)
-		cu.code = append(cu.code, code.UNCOMPATIBLE_ENTITY)
+		cu.err = err
+		cu.httpCode = http.StatusUnprocessableEntity
+		cu.code = code.UNCOMPATIBLE_ENTITY
+		cu.isError = true
 	}
 	return cu
 }
 
 func (cu *ControlChain) ParamID(parameter string) *ControlChain {
+	if cu.isError {
+		return cu
+	}
 	p := cu.ctx.Param(parameter)
 	if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
-		cu.errors = append(cu.errors, fmt.Errorf("parameter '%s' is missing", parameter))
-		cu.httpCode = append(cu.httpCode, http.StatusUnprocessableEntity)
-		cu.code = append(cu.code, code.PARAMETER_ERROR)
+		cu.err = fmt.Errorf("parameter '%s' is missing", parameter)
+		cu.httpCode = http.StatusUnprocessableEntity
+		cu.code = code.PARAMETER_ERROR
+		cu.isError = true
 	} else {
 		result := radix36.DecodeUUID(p)
 		if result != uuid.Nil {
-			cu.errors = append(cu.errors, fmt.Errorf("parameter '%s' is not radix36", parameter))
-			cu.httpCode = append(cu.httpCode, http.StatusUnprocessableEntity)
-			cu.code = append(cu.code, code.PARAMETER_ERROR)
+			cu.err = fmt.Errorf("parameter '%s' is not radix36", parameter)
+			cu.httpCode = http.StatusUnprocessableEntity
+			cu.code = code.PARAMETER_ERROR
+			cu.isError = true
 		} else {
 			cu.params[parameter] = result.String()
 		}
@@ -61,11 +76,15 @@ func (cu *ControlChain) ParamID(parameter string) *ControlChain {
 }
 
 func (cu *ControlChain) Param(parameter string) *ControlChain {
+	if cu.isError {
+		return cu
+	}
 	p := cu.ctx.Param(parameter)
 	if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
-		cu.errors = append(cu.errors, fmt.Errorf("parameter '%s' is missing", parameter))
-		cu.httpCode = append(cu.httpCode, http.StatusUnprocessableEntity)
-		cu.code = append(cu.code, code.PARAMETER_ERROR)
+		cu.err = fmt.Errorf("parameter '%s' is missing", parameter)
+		cu.httpCode = http.StatusUnprocessableEntity
+		cu.code = code.PARAMETER_ERROR
+		cu.isError = true
 	} else {
 		cu.params[parameter] = p
 	}
@@ -73,6 +92,9 @@ func (cu *ControlChain) Param(parameter string) *ControlChain {
 }
 
 func (cu *ControlChain) Query(query, def string) *ControlChain {
+	if cu.isError {
+		return cu
+	}
 	q := cu.ctx.DefaultQuery(query, def)
 	if len(q) == 0 || len(strings.TrimSpace(q)) == 0 {
 		q = def
@@ -81,18 +103,15 @@ func (cu *ControlChain) Query(query, def string) *ControlChain {
 	return cu
 }
 
-func (cu *ControlChain) End() (bool, map[string]string, map[string]string) {
-	if len(cu.errors) > 0 && len(cu.httpCode) > 0 && len(cu.code) > 0 {
-		err := cu.errors[0]
-		httpCode := cu.httpCode[0]
-		code := cu.code[0]
+func (cu *ControlChain) End() (bool, Parameters, Queries) {
+	if cu.isError {
 		utils.AbortAndResponseData(
 			cu.ctx,
-			httpCode,
-			code,
-			err.Error(),
+			cu.httpCode,
+			cu.code,
+			cu.err.Error(),
 		)
-		return false, map[string]string{}, map[string]string{}
+		return false, Parameters{}, Queries{}
 	}
 	return true, cu.params, cu.query
 }
