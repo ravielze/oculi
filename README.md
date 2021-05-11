@@ -9,4 +9,5 @@ Backend template using Golang
 
 # Todos
 
-1. Compress storage file using gzip
+1. Compress storage file
+2. Generator: controller & module attach
