@@ -3,10 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
-
-	generator_utils "github.com/ravielze/fuzzy-broccoli/module/generator/utils"
-	w "github.com/ravielze/fuzzy-broccoli/module/generator/wrapper"
 
 	"github.com/ravielze/fuzzy-broccoli/module/generator"
 )
@@ -23,7 +19,7 @@ func main() {
 		generator.Generate(os.Args[2], os.Args[3])
 	case "regenerate", "regen", "r":
 		CheckArgs(2)
-		Testing(os.Args[2], os.Args[3])
+		generator.Regenerate(os.Args[2], os.Args[3])
 	default:
 		fmt.Println("Command not found. Try", os.Args[0], "help")
 	}
@@ -53,22 +49,4 @@ func ShowHelp() {
 	fmt.Println(cmd, "help")
 	fmt.Println(cmd, "[generate|gen|g] [packageName] [moduleName]")
 	fmt.Println(cmd, "[regenerate|regen|r] [packageName] [moduleName]")
-}
-
-func GetFileContent(folderName, fileName, content string) {
-	//TODO
-}
-
-func Testing(arg1, arg2 string) []string {
-	packageName := strings.ToLower(arg1)
-	x := w.GetMethodWrapper(packageName)["Repository"].String("(repo Repository)")
-	repo := generator_utils.ReadFile(packageName, "repository.go")
-	repo += x
-	generator_utils.WriteFile(packageName, "repository.go", repo)
-	// fmt.Println(generator.ReadDeclaredFunctions(packageName, "controller.go"))
-	// fmt.Println(generator.ReadDeclaredFunctions(packageName, "repository.go"))
-	// fmt.Println(generator.ReadDeclaredFunctions(packageName, "usecase.go"))
-	// fmt.Println()
-	//generator.ReadDeclaredInterfaces(packageName, "entity.go")
-	return nil
 }

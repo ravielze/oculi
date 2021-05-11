@@ -10,7 +10,7 @@ import (
 	u "github.com/ravielze/fuzzy-broccoli/module/generator/utils"
 )
 
-func GetMethodWrapper(folderName string) map[string]InterfaceWrapper {
+func GetMethodWrapper(folderName string) (InterfaceWrapper, InterfaceWrapper, InterfaceWrapper) {
 	controllerImplemented := readDeclaredFunctions(folderName, "controller.go")
 	usecaseImplemented := readDeclaredFunctions(folderName, "usecase.go")
 	repositoryImplemented := readDeclaredFunctions(folderName, "repository.go")
@@ -20,21 +20,16 @@ func GetMethodWrapper(folderName string) map[string]InterfaceWrapper {
 	usecaseDeclared := allDeclared["IUsecase"]
 	repositoryDeclared := allDeclared["IRepo"]
 
-	result := map[string]InterfaceWrapper{
-		"Controller": {
+	return InterfaceWrapper{
 			Implemented: controllerImplemented,
 			Declared:    controllerDeclared,
-		},
-		"Usecase": {
+		}, InterfaceWrapper{
 			Implemented: usecaseImplemented,
 			Declared:    usecaseDeclared,
-		},
-		"Repository": {
+		}, InterfaceWrapper{
 			Implemented: repositoryImplemented,
 			Declared:    repositoryDeclared,
-		},
-	}
-	return result
+		}
 }
 
 func readDeclaredFunctions(folderName, fileName string) []MethodWrapper {
@@ -74,7 +69,7 @@ func readDeclaredFunctions(folderName, fileName string) []MethodWrapper {
 			Name:      fn.Name.Name,
 			Return:    results,
 			Parameter: params,
-			Body:      fileData[fn.Body.Pos()+2 : fn.Body.End()-3],
+			Body:      fileData[fn.Body.Pos()+3 : fn.Body.End()-4],
 		})
 	}
 	sort.Sort(MethodWrapperSorter(result))
