@@ -4,14 +4,18 @@ import (
 	"math/big"
 	"strings"
 
+	uuid "github.com/gofrs/uuid"
+
 	"github.com/martinlindhe/base36"
-	uuid "github.com/satori/go.uuid"
 )
 
 func EncodeUUID4() (string, error) {
 	var i big.Int
-	uuid := uuid.NewV4().String()
-	i.SetString(strings.Replace(uuid, "-", "", 4), 16)
+	uuid, erru := uuid.NewV4()
+	if erru != nil {
+		return "", erru
+	}
+	i.SetString(strings.Replace(uuid.String(), "-", "", 4), 16)
 	byteArr, err := i.GobEncode()
 	if err != nil {
 		return "", err

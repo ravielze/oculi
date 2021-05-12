@@ -4,8 +4,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ravielze/fuzzy-broccoli/common/radix36"
-	uuid "github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
+	"github.com/ravielze/oculi/common/radix36"
 	"gorm.io/gorm"
 )
 
@@ -29,8 +29,11 @@ func (e *UUIDBase) BeforeCreate(scope *gorm.DB) error {
 	if strings.Contains(e.ID, "default") {
 		return nil
 	}
-	uuid := uuid.NewV4().String()
-	e.ID = strings.ToUpper(strings.Replace(uuid, "-", "", 4))
+	uuid, err := uuid.NewV4()
+	if err != nil {
+		return err
+	}
+	e.ID = strings.ToUpper(strings.Replace(uuid.String(), "-", "", 4))
 	return nil
 }
 

@@ -6,11 +6,12 @@ import (
 	"net/http"
 	"strings"
 
+	uuid "github.com/gofrs/uuid"
+
 	"github.com/gin-gonic/gin"
-	"github.com/ravielze/fuzzy-broccoli/common/code"
-	"github.com/ravielze/fuzzy-broccoli/common/radix36"
-	"github.com/ravielze/fuzzy-broccoli/common/utils"
-	uuid "github.com/satori/go.uuid"
+	"github.com/ravielze/oculi/common/code"
+	"github.com/ravielze/oculi/common/radix36"
+	"github.com/ravielze/oculi/common/utils"
 )
 
 type Parameters map[string]string
