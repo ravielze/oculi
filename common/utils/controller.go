@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ravielze/fuzzy-broccoli/common/code"
-	"github.com/ravielze/fuzzy-broccoli/common/serializer"
+	"github.com/ravielze/oculi/common/code"
+	"github.com/ravielze/oculi/common/serializer"
 )
 
 func AbortAndResponse(ctx *gin.Context, code int, msg string) {

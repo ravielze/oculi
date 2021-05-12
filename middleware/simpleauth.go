@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ravielze/fuzzy-broccoli/common/code"
-	"github.com/ravielze/fuzzy-broccoli/common/serializer"
+	"github.com/ravielze/oculi/common/code"
+	"github.com/ravielze/oculi/common/serializer"
 )
 
 func GetStaticTokenMiddleware() gin.HandlerFunc {

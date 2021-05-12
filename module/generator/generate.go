@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	u "github.com/ravielze/fuzzy-broccoli/module/generator/utils"
+	u "github.com/ravielze/oculi/module/generator/utils"
 )
 
 //go:embed template/entity.txt

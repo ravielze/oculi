@@ -3,8 +3,8 @@ package generator
 import (
 	"strings"
 
-	u "github.com/ravielze/fuzzy-broccoli/module/generator/utils"
-	w "github.com/ravielze/fuzzy-broccoli/module/generator/wrapper"
+	u "github.com/ravielze/oculi/module/generator/utils"
+	w "github.com/ravielze/oculi/module/generator/wrapper"
 )
 
 func Regenerate(arg1, arg2 string) {

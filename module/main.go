@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ravielze/fuzzy-broccoli/module/generator"
+	"github.com/ravielze/oculi/module/generator"
 )
 
 func main() {

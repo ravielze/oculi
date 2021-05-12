@@ -4,7 +4,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ravielze/fuzzy-broccoli/connection/database"
+	"github.com/ravielze/oculi/connection/database"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
