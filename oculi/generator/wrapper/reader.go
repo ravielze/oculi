@@ -7,7 +7,7 @@ import (
 	"go/token"
 	"sort"
 
-	u "github.com/ravielze/oculi/module/generator/utils"
+	u "github.com/ravielze/oculi/oculi/generator/utils"
 )
 
 func GetMethodWrapper(folderName string) (InterfaceWrapper, InterfaceWrapper, InterfaceWrapper) {

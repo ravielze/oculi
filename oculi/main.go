@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ravielze/oculi/module/generator"
+	"github.com/ravielze/oculi/oculi/generator"
 )
 
 func main() {
@@ -14,10 +14,10 @@ func main() {
 	switch os.Args[1] {
 	case "help", "h":
 		ShowHelp()
-	case "gen", "generate", "g":
+	case "addmodule", "am":
 		CheckArgs(2)
 		generator.Generate(os.Args[2], os.Args[3])
-	case "regenerate", "regen", "r":
+	case "updatemodule", "um":
 		CheckArgs(2)
 		generator.Regenerate(os.Args[2], os.Args[3])
 	default:

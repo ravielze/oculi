@@ -6,7 +6,7 @@ import (
 	"go/parser"
 	"go/token"
 
-	u "github.com/ravielze/oculi/module/generator/utils"
+	u "github.com/ravielze/oculi/oculi/generator/utils"
 )
 
 func ReadDeclaredFunctions(folderName, fileName string) []string {
