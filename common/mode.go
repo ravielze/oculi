@@ -2,14 +2,16 @@ package common
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
-func IsDevMode(mode string) bool {
+func DevMode() bool {
 	godotenv.Load()
+	mode := os.Getenv("MODE")
 	result := true
 	switch {
 	case strings.EqualFold(mode, "production"):

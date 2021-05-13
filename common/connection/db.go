@@ -13,7 +13,8 @@ type DatabaseConnector interface {
 	Connect(config *gorm.Config) *gorm.DB
 }
 
-func ConnectDatabase(databaseDriver string, development bool) *gorm.DB {
+func ConnectDatabase(development bool) *gorm.DB {
+	databaseDriver := os.Getenv("DB_DRIVER")
 	config := &gorm.Config{
 		// Enable this if there is any nullable foreign key
 		// Don't forget to set up relation manually

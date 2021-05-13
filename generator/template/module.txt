@@ -12,7 +12,7 @@ type Module struct {
 }
 
 func (Module) Name() string {
-	return "$$package$$_module"
+	return "$$package$$"
 }
 
 func (Module) Reset(db *gorm.DB) {

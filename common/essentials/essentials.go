@@ -7,19 +7,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type EssentialsModule struct {
+type Module struct {
 }
 
-func (EssentialsModule) Reset(db *gorm.DB) {}
+func (Module) Reset(db *gorm.DB) {}
 
-func (EssentialsModule) Name() string {
-	return "Essentials Module"
+func (Module) Name() string {
+	return "essentials"
 }
 
-func NewModule(db *gorm.DB, g *gin.Engine) EssentialsModule {
+func NewModule(db *gorm.DB, g *gin.Engine) Module {
 	g.GET("/ping", func(ctx *gin.Context) {
 		utils.OKAndResponseData(ctx, "Pong!")
 	})
 	g.GET("/reset", middleware.GetResetTokenMiddleware(), middleware.GetResetHandler(db))
-	return EssentialsModule{}
+	return Module{}
 }

@@ -1,7 +1,6 @@
 package contutils
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -30,11 +29,11 @@ type ControlChain struct {
 func NewControlChain(context *gin.Context) *ControlChain {
 	return &ControlChain{
 		ctx:      context,
-		err:      errors.New("not error"),
+		err:      nil,
 		code:     "",
 		httpCode: -1,
-		params:   map[string]string{},
-		query:    map[string]string{},
+		params:   Parameters{},
+		query:    Queries{},
 		isError:  false,
 	}
 }
