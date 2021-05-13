@@ -99,22 +99,6 @@ func (cu *ControlChain) ParamUUIDToBase36(parameter string) *ControlChain {
 	return cu
 }
 
-func (cu *ControlChain) ParamID(parameter string) *ControlChain {
-	if cu.isError {
-		return cu
-	}
-	p := cu.ctx.Param(parameter)
-	if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
-		cu.err = fmt.Errorf("parameter '%s' is missing", parameter)
-		cu.httpCode = http.StatusUnprocessableEntity
-		cu.code = code.PARAMETER_ERROR
-		cu.isError = true
-	} else {
-		cu.params[parameter] = p
-	}
-	return cu
-}
-
 func (cu *ControlChain) Param(parameter string) *ControlChain {
 	if cu.isError {
 		return cu
