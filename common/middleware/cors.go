@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InstallCors(g *gin.Engine) {
+func InstallCors(g *gin.Engine, origins []string) {
 
 	corsConfig := cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "https://example.com"},
+		AllowOrigins:     origins,
 		AllowMethods:     []string{"PUT", "GET", "POST", "DELETE", "OPTIONS", "PATCH", "HEAD"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		AllowCredentials: true,

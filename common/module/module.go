@@ -3,9 +3,6 @@ package module
 import (
 	"os"
 
-	"github.com/gin-gonic/gin"
-	"github.com/ravielze/oculi/essentials"
-	"github.com/ravielze/oculi/middleware"
 	"gorm.io/gorm"
 )
 
@@ -30,16 +27,6 @@ func ResetAll(db *gorm.DB) {
 		module.Reset(db)
 	}
 	os.Exit(0)
-}
-
-func NewModule(db *gorm.DB, g *gin.Engine, devMode bool) *ModuleList {
-	middleware.InstallCors(g)
-	middleware.InstallDefaultLimiter(g)
-
-	essentialsModule := essentials.NewModule(db, g)
-
-	AddModule(essentialsModule)
-	return &moduleList
 }
 
 func AddModule(m Module) {

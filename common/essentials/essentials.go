@@ -2,8 +2,8 @@ package essentials
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/ravielze/oculi/common/middleware"
 	"github.com/ravielze/oculi/common/utils"
-	"github.com/ravielze/oculi/middleware"
 	"gorm.io/gorm"
 )
 
