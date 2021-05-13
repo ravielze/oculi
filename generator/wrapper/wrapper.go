@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	u "github.com/ravielze/oculi/oculi/generator/utils"
+	u "github.com/ravielze/oculi/generator/utils"
 )
 
 type InterfaceWrapper struct {

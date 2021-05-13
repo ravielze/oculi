@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ravielze/oculi/oculi/generator"
+	"github.com/ravielze/oculi/generator"
 )
 
 func main() {

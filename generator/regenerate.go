@@ -3,8 +3,8 @@ package generator
 import (
 	"strings"
 
-	u "github.com/ravielze/oculi/oculi/generator/utils"
-	w "github.com/ravielze/oculi/oculi/generator/wrapper"
+	u "github.com/ravielze/oculi/generator/utils"
+	w "github.com/ravielze/oculi/generator/wrapper"
 )
 
 func Regenerate(arg1, arg2 string) {
