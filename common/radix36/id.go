@@ -33,6 +33,16 @@ func EncodeUUID(uuid string) (string, error) {
 	return base36.EncodeBytes(byteArr[1:]), nil
 }
 
+func MustEncodeUUID(uuid string) string {
+	var i big.Int
+	i.SetString(strings.Replace(uuid, "-", "", 4), 16)
+	byteArr, err := i.GobEncode()
+	if err != nil {
+		panic(err)
+	}
+	return base36.EncodeBytes(byteArr[1:])
+}
+
 func EncodeInt(value uint64) (string, error) {
 	var i big.Int
 	i.SetUint64(value)
