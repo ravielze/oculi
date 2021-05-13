@@ -1,4 +1,4 @@
-package code
+package common_code
 
 const (
 	UNKNOWN             = "unknown"

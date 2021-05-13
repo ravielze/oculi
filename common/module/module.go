@@ -3,12 +3,14 @@ package module
 import (
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type Module interface {
 	Name() string
-	Reset(*gorm.DB)
+	Reset(db *gorm.DB)
+	NewModule(db *gorm.DB, g *gin.Engine, obj ...interface{})
 }
 
 type ModuleList map[string]Module
