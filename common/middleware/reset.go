@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ravielze/oculi/common/code"
+	code "github.com/ravielze/oculi/common/code"
 	"github.com/ravielze/oculi/common/serializer"
 	"github.com/ravielze/oculi/common/utils"
 	"gorm.io/gorm"

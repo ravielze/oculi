@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ravielze/oculi/common/code"
+	code "github.com/ravielze/oculi/common/code"
 	"github.com/ravielze/oculi/common/utils"
 	limit "github.com/yangxikun/gin-limit-by-key"
 	"golang.org/x/time/rate"

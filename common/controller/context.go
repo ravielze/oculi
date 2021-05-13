@@ -9,7 +9,7 @@ import (
 	uuid "github.com/gofrs/uuid"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ravielze/oculi/common/code"
+	code "github.com/ravielze/oculi/common/code"
 	"github.com/ravielze/oculi/common/radix36"
 	"github.com/ravielze/oculi/common/utils"
 )
