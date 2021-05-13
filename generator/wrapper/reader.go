@@ -10,12 +10,12 @@ import (
 	u "github.com/ravielze/oculi/generator/utils"
 )
 
-func GetMethodWrapper(folderName string) (InterfaceWrapper, InterfaceWrapper, InterfaceWrapper) {
-	controllerImplemented := readDeclaredFunctions(folderName, "controller.go")
-	usecaseImplemented := readDeclaredFunctions(folderName, "usecase.go")
-	repositoryImplemented := readDeclaredFunctions(folderName, "repository.go")
+func GetMethodWrapper(folderName, moduleNameLower string) (InterfaceWrapper, InterfaceWrapper, InterfaceWrapper) {
+	controllerImplemented := readDeclaredFunctions(folderName, fmt.Sprintf("%d_%s_%s", 4, moduleNameLower, "controller.go"))
+	usecaseImplemented := readDeclaredFunctions(folderName, fmt.Sprintf("%d_%s_%s", 3, moduleNameLower, "usecase.go"))
+	repositoryImplemented := readDeclaredFunctions(folderName, fmt.Sprintf("%d_%s_%s", 2, moduleNameLower, "repository.go"))
 
-	allDeclared := readDeclaredInterfaces(folderName, "entity.go")
+	allDeclared := readDeclaredInterfaces(folderName, fmt.Sprintf("%d_%s_%s", 1, moduleNameLower, "entity.go"))
 	controllerDeclared := allDeclared["IController"]
 	usecaseDeclared := allDeclared["IUsecase"]
 	repositoryDeclared := allDeclared["IRepo"]
