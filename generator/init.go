@@ -12,6 +12,10 @@ var mainContent string
 
 func Init() {
 
+	if u.IsPackageExist("app") {
+		fmt.Println("That package is already exist.")
+		return
+	}
 	fmt.Printf("Initiating oculi project...\n")
 
 	u.WriteFile("app", "main.go", mainContent)

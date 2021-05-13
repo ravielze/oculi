@@ -5,6 +5,13 @@ import (
 	"os"
 )
 
+func IsPackageExist(folderName string) bool {
+	if _, err := os.Stat(folderName); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
+
 func WriteFile(folderName, fileName, content string) {
 	if _, err0 := os.Stat(folderName); os.IsNotExist(err0) {
 		os.Mkdir(folderName, 0755)

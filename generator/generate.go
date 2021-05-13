@@ -23,6 +23,9 @@ var controllerRawContent string
 //go:embed template/module.txt
 var moduleRawContent string
 
+//go:embed template/simplemodule.txt
+var simpleModuleRawContent string
+
 func MakePlaceholders(packageName, moduleName string) []u.Placeholder {
 	return []u.Placeholder{
 		u.NewPlaceholder("$$package$$", packageName),
@@ -33,6 +36,12 @@ func MakePlaceholders(packageName, moduleName string) []u.Placeholder {
 
 func Generate(arg1, arg2 string) {
 	packageName := strings.ToLower(arg1)
+
+	if u.IsPackageExist(packageName) {
+		fmt.Println("That package is already exist.")
+		return
+	}
+
 	moduleName := strings.Title(strings.ToLower(arg2))
 	moduleNameLower := strings.ToLower(arg2)
 
@@ -54,4 +63,20 @@ func Generate(arg1, arg2 string) {
 
 	moduleContent := u.Replacer(moduleRawContent, placeholders)
 	u.WriteFile(packageName, fmt.Sprintf("%d_%s_%s", 0, moduleNameLower, "module.go"), moduleContent)
+}
+
+func GenerateSimple(arg1 string) {
+	packageName := strings.ToLower(arg1)
+
+	if u.IsPackageExist(packageName) {
+		fmt.Println("That package is already exist.")
+		return
+	}
+
+	placeholders := MakePlaceholders(packageName, "")
+
+	fmt.Printf("Generating package %s: simple mode\n", packageName)
+
+	simpleModuleContent := u.Replacer(simpleModuleRawContent, placeholders)
+	u.WriteFile(packageName, packageName+".go", simpleModuleContent)
 }

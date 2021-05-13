@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"fmt"
 	"strings"
 
 	u "github.com/ravielze/oculi/generator/utils"
@@ -9,6 +10,11 @@ import (
 
 func Regenerate(arg1, arg2 string) {
 	packageName := strings.ToLower(arg1)
+
+	if !u.IsPackageExist(packageName) {
+		fmt.Println("That package is not exist.")
+		return
+	}
 	cont, uc, repo := w.GetMethodWrapper(packageName)
 
 	contContent := u.ReadFile(packageName, "controller.go")
