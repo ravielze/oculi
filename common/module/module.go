@@ -3,6 +3,7 @@ package module_manager
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"gorm.io/gorm"
 )
@@ -39,7 +40,7 @@ func ShowModule() {
 		fmt.Println("| \u001b[44;1mOculi\u001b[0m | \033[33mModule:\033[0m")
 		i := 1
 		for _, x := range moduleList {
-			fmt.Printf("\033[34m[%d] \033[0m: \033[32m%s\033[0m\n", i, (*x).Name())
+			fmt.Printf("| \u001b[44;1mOculi\u001b[0m | \033[34m[%d] \033[0m: \033[32m%s\033[0m\n", i, strings.Title((*x).Name()))
 			i++
 		}
 	}

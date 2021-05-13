@@ -10,7 +10,10 @@ import (
 func main() {
 
 	defer handleError()
-	CheckArgs(0)
+	if len(os.Args) <= 1 {
+		ShowHelp()
+		return
+	}
 	switch os.Args[1] {
 	case "help", "h":
 		ShowHelp()
@@ -20,6 +23,9 @@ func main() {
 	case "updatemodule", "um":
 		CheckArgs(2)
 		generator.Regenerate(os.Args[2], os.Args[3])
+	case "init", "i":
+		CheckArgs(0)
+		generator.Init()
 	default:
 		fmt.Println("Command not found. Try", os.Args[0], "help")
 	}
@@ -34,10 +40,12 @@ func CheckArgs(argsNeeded int) {
 	if len(os.Args) < (argsNeeded + 2) {
 		if len(os.Args) >= 2 {
 			switch os.Args[1] {
-			case "gen", "generate", "g":
-				fmt.Printf("Usage: %s [generate|gen|g] [packageName] [moduleName]\n", os.Args[0])
-			case "regenerate", "regen", "r":
-				fmt.Printf("Usage: %s [regenerate|regen|r] [packageName] [moduleName]\n", os.Args[0])
+			case "init", "i":
+				fmt.Printf("Usage: %s [init|i]\n", os.Args[0])
+			case "addmodule", "am":
+				fmt.Printf("Usage: %s [addmodule|am] [packageName] [moduleName]\n", os.Args[0])
+			case "updatemodule", "um":
+				fmt.Printf("Usage: %s [updatemodule|um] [packageName] [moduleName]\n", os.Args[0])
 			}
 		}
 		panic("Invalid command.")
@@ -47,6 +55,7 @@ func CheckArgs(argsNeeded int) {
 func ShowHelp() {
 	cmd := os.Args[0]
 	fmt.Println(cmd, "help")
-	fmt.Println(cmd, "[generate|gen|g] [packageName] [moduleName]")
-	fmt.Println(cmd, "[regenerate|regen|r] [packageName] [moduleName]")
+	fmt.Println(cmd, "[init|i]")
+	fmt.Println(cmd, "[addmodule|am] [packageName] [moduleName]")
+	fmt.Println(cmd, "[updatemodule|um] [packageName] [moduleName]")
 }

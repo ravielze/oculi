@@ -10,10 +10,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type Test struct {
-	Abc string
-}
-
 type InitFunction func(db *gorm.DB, g *gin.Engine)
 
 func New(appName string, initModule InitFunction, initMiddleware InitFunction) {
@@ -32,12 +28,9 @@ func New(appName string, initModule InitFunction, initMiddleware InitFunction) {
 
 	fmt.Printf("| \u001b[44;1mOculi\u001b[0m | Initiating middleware...\n")
 	initMiddleware(db, g)
-	// middleware.InstallCors(g, []string{"http://localhost:3000", "https://example.com"})
-	// middleware.InstallDefaultLimiter(g)
 
 	fmt.Printf("| \u001b[44;1mOculi\u001b[0m | Initiating module...\n")
 	initModule(db, g)
-	// mm.AddModule(essentials.NewModule(db, g))
 
 	mm.ShowModule()
 	g.Run()
