@@ -36,8 +36,5 @@ func (r Role) Equal(other Role) bool {
 }
 
 func (r Role) IsRestricted() bool {
-	if r.Equal(ROLE_ADMIN) {
-		return true
-	}
-	return false
+	return r.Equal(ROLE_ADMIN)
 }

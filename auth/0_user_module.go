@@ -15,6 +15,10 @@ func (Module) Name() string {
 	return "auth"
 }
 
+func (m Module) Usecase() IUsecase {
+	return m.usecase
+}
+
 func (Module) Reset(db *gorm.DB) {
 	db.Migrator().DropTable(&User{})
 }

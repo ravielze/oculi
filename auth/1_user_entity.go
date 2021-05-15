@@ -1,9 +1,14 @@
 package auth
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/ravielze/oculi/common"
+	"gorm.io/gorm"
 )
+
+const TOKEN_EXPIRED_TIME time.Duration = time.Hour * 3
 
 type User struct {
 	common.IntIDBase      `gorm:"embedded;embeddedPrefix:user_"`
@@ -19,6 +24,15 @@ func (User) TableName() string {
 	return "user"
 }
 
+func (u *User) BeforeSave(db *gorm.DB) error {
+	hashedPassword, err := Hash(u.Password)
+	if err != nil {
+		return err
+	}
+	u.Password = hashedPassword
+	return nil
+}
+
 type IController interface {
 	Register(ctx *gin.Context)
 	Login(ctx *gin.Context)
@@ -29,9 +43,15 @@ type IController interface {
 type IUsecase interface {
 	Login(item LoginRequest) (UserTokenResponse, error)
 	Register(item RegisterRequest) (UserResponse, error)
-	Update(user User) error
+	Update(user User, item UpdateRequest) error
 	RegisterAdmin(item RegisterRequest) (UserResponse, error)
 	GetByID(userId uint) (UserResponse, error)
+	GetRawUser(userId uint) (User, error)
+
+	//Middleware thing
+	GetUser(ctx *gin.Context) User
+	AllowedRole(allowedRole ...Role) gin.HandlerFunc
+	AuthenticationNeeded() gin.HandlerFunc
 }
 
 type IRepo interface {

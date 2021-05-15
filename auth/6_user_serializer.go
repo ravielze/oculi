@@ -57,10 +57,13 @@ func (item RegisterRequest) Convert() User {
 
 func (item UpdateRequest) Convert(origin User) User {
 	return User{
+		//Unchangeable
 		IntIDBase: common.IntIDBase{ID: origin.ID},
 		Email:     origin.Email,
-		Name:      item.Name,
 		Password:  origin.Password,
 		Role:      origin.Role,
+
+		//Changeable
+		Name: item.Name,
 	}
 }
