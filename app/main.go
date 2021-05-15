@@ -7,6 +7,7 @@ import (
 	"github.com/ravielze/oculi/common/essentials"
 	"github.com/ravielze/oculi/common/middleware"
 	mm "github.com/ravielze/oculi/common/module"
+	"github.com/ravielze/oculi/filemanager"
 	"gorm.io/gorm"
 )
 
@@ -18,5 +19,6 @@ func main() {
 	}, func(db *gorm.DB, g *gin.Engine) {
 		mm.AddModule(essentials.NewModule(db, g))
 		mm.AddModule(auth.NewModule(db, g))
+		mm.AddModule(filemanager.NewModule(db, g))
 	})
 }

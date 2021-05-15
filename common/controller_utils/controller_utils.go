@@ -76,7 +76,7 @@ func (cu *ControlChain) ParamBase36ToUUID(parameter string) *ControlChain {
 		cu.isError = true
 	} else {
 		result := radix36.DecodeUUID(strings.ToUpper(p))
-		if result != uuid.Nil {
+		if result == uuid.Nil {
 			cu.err = fmt.Errorf("parameter '%s' is not radix36", parameter)
 			cu.httpCode = http.StatusUnprocessableEntity
 			cu.code = code.PARAMETER_ERROR
@@ -100,7 +100,7 @@ func (cu *ControlChain) ParamUUIDToBase36(parameter string) *ControlChain {
 		cu.isError = true
 	} else {
 		result, err := radix36.EncodeUUID(p)
-		if err != nil {
+		if err == nil {
 			cu.err = fmt.Errorf("parameter '%s' is not uuid", parameter)
 			cu.httpCode = http.StatusUnprocessableEntity
 			cu.code = code.PARAMETER_ERROR

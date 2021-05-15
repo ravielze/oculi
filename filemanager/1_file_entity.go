@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ravielze/oculi/auth"
 	"github.com/ravielze/oculi/common"
 	"gorm.io/gorm"
 )
@@ -13,11 +14,13 @@ type File struct {
 	common.UUIDBase `gorm:"embedded;embeddedPrefix:file_"`
 	common.InfoBase `gorm:"embedded"`
 	FileGroup       string `gorm:"type:VARCHAR(256);index:,type:hash;"`
-	FileType        string `gorm:"type:VARCHAR(256);" json:"file_type"`
-	FileExt         string `gorm:"type:VARCHAR(16);" json:"file_ext"`
-	RealFilename    string `gorm:"type:VARCHAR(512);index:,sort:asc,type:btree" json:"-"`
-	Path            string `gorm:"type:VARCHAR(1024)" json:"path"`
-	Size            uint64 `json:"size"`
+	FileType        string `gorm:"type:VARCHAR(256);"`
+	FileExt         string `gorm:"type:VARCHAR(16);"`
+	RealFilename    string `gorm:"type:VARCHAR(512);index:,sort:asc,type:btree"`
+	Path            string `gorm:"type:VARCHAR(1024)"`
+	Size            uint64 `gorm:"check:size >= 0;default:0"`
+	OwnerID         uint
+	Owner           auth.User `gorm:"constraint:OnUpdate:RESTRICT,OnDelete:RESTRICT;"`
 }
 
 func (f *File) BeforeSave(db *gorm.DB) error {
@@ -44,13 +47,13 @@ type IController interface {
 type IUsecase interface {
 	GetFile(idFile string) (FileResponse, error)
 	GetFilesByGroup(fileGroup string) ([]FileResponse, error)
-	AddFile(item common.FileAttachment) (FileResponse, error)
+	AddFile(user auth.User, fileGroup string, item common.FileAttachment) (FileResponse, error)
 	DeleteFile(idFile string) error
 }
 
 type IRepo interface {
 	GetFile(idFile string) (File, error)
 	GetFilesByGroup(fileGroup string) ([]File, error)
-	AddFile(file File, attachment *multipart.FileHeader) (File, error)
+	AddFile(userId uint, fileGroup string, attachment *multipart.FileHeader) (File, error)
 	DeleteFile(idFile string) error
 }

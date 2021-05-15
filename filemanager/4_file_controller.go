@@ -1,9 +1,9 @@
 package filemanager
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
+	cutils "github.com/ravielze/oculi/common/controller_utils"
+	"github.com/ravielze/oculi/common/utils"
 )
 
 type Controller struct {
@@ -14,19 +14,34 @@ func NewController(g *gin.Engine, uc IUsecase) IController {
 	cont := Controller{
 		uc: uc,
 	}
-	filemanagerGroup := g.Group("/filemanager")
+	filemanagerGroup := g.Group("/file")
 	{
-		filemanagerGroup.GET("/", func(ctx *gin.Context) {
-			fmt.Println("Module filemanager.")
-		})
+		filemanagerGroup.GET("/id/:fileid", cont.GetFile)
+		filemanagerGroup.GET("/group/:filegroup", cont.GetFilesByGroup)
 	}
 	return cont
 }
 
 func (cont Controller) GetFile(ctx *gin.Context) {
-	panic("not implemented")
+	ok, params, _ := cutils.NewControlChain(ctx).ParamBase36ToUUID("fileid").End()
+	if ok {
+		result, err := cont.uc.GetFile(params["fileid"])
+		if err != nil {
+			utils.AbortUsecaseError(ctx, err)
+			return
+		}
+		utils.OKAndResponseData(ctx, result)
+	}
 }
 
 func (cont Controller) GetFilesByGroup(ctx *gin.Context) {
-	panic("not implemented")
+	ok, params, _ := cutils.NewControlChain(ctx).Param("filegroup").End()
+	if ok {
+		result, err := cont.uc.GetFilesByGroup(params["filegroup"])
+		if err != nil {
+			utils.AbortUsecaseError(ctx, err)
+			return
+		}
+		utils.OKAndResponseData(ctx, result)
+	}
 }
