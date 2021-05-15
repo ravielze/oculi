@@ -1,12 +1,14 @@
 package auth
 
-import "strings"
+import (
+	"strings"
+)
 
 type Role int16
 
 const (
-	ROLE_DEFAULT Role = iota + 1
-	ROLE_ADMIN
+	ROLE_ADMIN Role = iota + 1
+	ROLE_DEFAULT
 	//insert new role here
 )
 
@@ -24,11 +26,15 @@ func (r Role) IsExist() bool {
 
 func (r Role) String() string {
 	//add role name here
-	return [...]string{"Default", "Admin"}[r]
+	return [...]string{"Admin", "Default"}[r-1]
 }
 
 func GetRole(role string) Role {
-	return roles[strings.ToLower(role)]
+	result := roles[strings.ToLower(role)]
+	if int16(result) == 0 {
+		result = ROLE_DEFAULT
+	}
+	return result
 }
 
 func (r Role) Equal(other Role) bool {

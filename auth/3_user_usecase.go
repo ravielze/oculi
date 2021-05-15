@@ -54,11 +54,11 @@ func (uc Usecase) Login(item LoginRequest) (UserTokenResponse, error) {
 func (uc Usecase) Register(item RegisterRequest) (UserResponse, error) {
 	user := item.Convert()
 	role := Role(user.Role)
+	if !role.IsExist() {
+		return UserResponse{}, errors.New("role not exist")
+	}
 	if role.IsRestricted() {
 		return UserResponse{}, errors.New("registering with that role is restricted")
-	}
-	if role.IsExist() {
-		return UserResponse{}, errors.New("role not exist")
 	}
 	if _, err := uc.repo.GetByEmail(user.Email); err == nil {
 		return UserResponse{}, errors.New("account with that email is already exist")

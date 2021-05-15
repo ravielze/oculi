@@ -48,10 +48,11 @@ func (u User) Convert() UserResponse {
 
 func (item RegisterRequest) Convert() User {
 	return User{
-		Email:    item.Email,
-		Name:     item.Name,
-		Password: item.Password,
-		Role:     int16(GetRole(item.Role)),
+		IntIDBase: common.IntIDBase{},
+		Email:     item.Email,
+		Name:      item.Name,
+		Password:  item.Password,
+		Role:      int16(GetRole(item.Role)),
 	}
 }
 

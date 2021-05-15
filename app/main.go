@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/ravielze/oculi"
+	"github.com/ravielze/oculi/auth"
 	"github.com/ravielze/oculi/common/essentials"
 	"github.com/ravielze/oculi/common/middleware"
 	mm "github.com/ravielze/oculi/common/module"
@@ -16,6 +17,6 @@ func main() {
 		// Add your middleware here
 	}, func(db *gorm.DB, g *gin.Engine) {
 		mm.AddModule(essentials.NewModule(db, g))
-		// Add your module here
+		mm.AddModule(auth.NewModule(db, g))
 	})
 }
