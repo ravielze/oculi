@@ -16,10 +16,22 @@ func AbortAndResponseData(ctx *gin.Context, code int, msg string, data interface
 	ctx.AbortWithStatusJSON(code, serializer.NewResponseData(code, msg, data))
 }
 
+func AbortUsecaseError(ctx *gin.Context, err error) {
+	ctx.AbortWithStatusJSON(http.StatusBadRequest,
+		serializer.NewResponseData(http.StatusBadRequest,
+			code.LOGIC_ERROR, err.Error(),
+		),
+	)
+}
+
 func OKAndResponse(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, serializer.NewResponse(http.StatusOK, code.OK))
+	ctx.JSON(http.StatusOK,
+		serializer.NewResponse(http.StatusOK, code.OK),
+	)
 }
 
 func OKAndResponseData(ctx *gin.Context, data interface{}) {
-	ctx.JSON(http.StatusOK, serializer.NewResponseData(http.StatusOK, code.OK, data))
+	ctx.JSON(http.StatusOK,
+		serializer.NewResponseData(http.StatusOK, code.OK, data),
+	)
 }

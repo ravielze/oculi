@@ -1,4 +1,4 @@
-package contutils
+package controller_utils
 
 import (
 	"fmt"
@@ -38,7 +38,20 @@ func NewControlChain(context *gin.Context) *ControlChain {
 	}
 }
 
-func (cu *ControlChain) Bind(obj interface{}) *ControlChain {
+func (cu *ControlChain) BindJSON(obj interface{}) *ControlChain {
+	if cu.isError {
+		return cu
+	}
+	if err := cu.ctx.ShouldBindJSON(obj); err != nil {
+		cu.err = err
+		cu.httpCode = http.StatusUnprocessableEntity
+		cu.code = code.UNCOMPATIBLE_ENTITY
+		cu.isError = true
+	}
+	return cu
+}
+
+func (cu *ControlChain) BindForm(obj interface{}) *ControlChain {
 	if cu.isError {
 		return cu
 	}
