@@ -10,11 +10,11 @@ import (
 )
 
 type IntIDBase struct {
-	ID uint `gorm:"type:BIGINT;primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
+	ID uint `gorm:"primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
 }
 
 type BigIntIDBase struct {
-	ID uint64 `gorm:"type:BIGINT;primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
+	ID uint64 `gorm:"primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
 }
 
 type StringIDBase struct {

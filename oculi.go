@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ravielze/oculi/common"
 	conn "github.com/ravielze/oculi/common/connection"
+	"github.com/ravielze/oculi/common/middleware"
 	mm "github.com/ravielze/oculi/common/module"
 	"gorm.io/gorm"
 )
@@ -33,5 +34,7 @@ func New(appName string, initModule InitFunction, initMiddleware InitFunction) {
 	initModule(db, g)
 
 	mm.ShowModule()
+
+	middleware.ResetFunction = mm.ResetAll
 	g.Run()
 }
