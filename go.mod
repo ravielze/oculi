@@ -1,4 +1,4 @@
-module github.com/ravielze/oculi/v2
+module github.com/ravielze/oculi
 
 go 1.16
 
