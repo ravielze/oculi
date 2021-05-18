@@ -3,8 +3,6 @@ module github.com/ravielze/oculi
 go 1.16
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/gabriel-vasile/mimetype v1.3.0
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
@@ -16,12 +14,11 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/martinlindhe/base36 v1.1.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
-	github.com/ramadani/go-filestorage v0.0.0-20181209121202-7256972fe37b
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/yangxikun/gin-limit-by-key v0.0.0-20190512072151-520697354d5f
-	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
-	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
+	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a // indirect
 	golang.org/x/sys v0.0.0-20210514084401-e8d321eab015 // indirect
+	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
