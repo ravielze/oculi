@@ -43,7 +43,7 @@ func NewModule(db *gorm.DB, g *gin.Engine) Module {
 
 	if _, err := os.Stat(fmt.Sprintf("./%s/default", storageRoot)); os.IsNotExist(err) {
 		storageComponent.MakeDir("default")
-		fileName, errd := DownloadFile("https://i.ibb.co/TBjtryF/default.jpg", fmt.Sprintf("./%s/default", storageRoot))
+		fileName, errd := DownloadFile("https://i.ibb.co/TBjtryF/default.jpg", fmt.Sprintf("%s/default", storageRoot))
 		if errd != nil {
 			panic(errd.Error())
 		}
@@ -57,8 +57,6 @@ func NewModule(db *gorm.DB, g *gin.Engine) Module {
 			Size:         7007,
 			OwnerID:      1,
 		})
-		//TODO generator env, filemanager, auth
-		//add admin default to user
 	}
 
 	return Module{

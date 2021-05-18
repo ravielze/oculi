@@ -28,6 +28,7 @@ func DownloadFile(URL, path string) (string, error) {
 	defer response.Body.Close()
 
 	if response.StatusCode != 200 {
+		fmt.Println(response.StatusCode)
 		panic("received non 200 response code")
 	}
 
