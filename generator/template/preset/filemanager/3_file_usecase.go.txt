@@ -1,7 +1,6 @@
 package filemanager
 
 import (
-	"github.com/ravielze/oculi/auth"
 	"github.com/ravielze/oculi/common"
 )
 

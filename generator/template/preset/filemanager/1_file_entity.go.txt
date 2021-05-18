@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ravielze/oculi/auth"
 	"github.com/ravielze/oculi/common"
 	"gorm.io/gorm"
 )

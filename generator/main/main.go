@@ -29,8 +29,9 @@ func main() {
 	case "init", "i":
 		CheckArgs(0)
 		generator.Init()
-	case "preset":
-		generator.GenerateAuthPreset()
+	case "preset", "p":
+		CheckArgs(1)
+		generator.GeneratePresets(os.Args[2])
 	default:
 		fmt.Println("Command not found. Try", os.Args[0], "help")
 	}
@@ -53,6 +54,8 @@ func CheckArgs(argsNeeded int) {
 				fmt.Printf("Usage: %s [add-simple|add-s|as] [packageName]\n", os.Args[0])
 			case "update", "upd", "u":
 				fmt.Printf("Usage: %s [update|upd|u] [packageName] [moduleName]\n", os.Args[0])
+			case "preset", "p":
+				fmt.Printf("Usage: %s [preset|p] [list|<preset-name>]\n", os.Args[0])
 			}
 		}
 		panic("Invalid command.")
@@ -66,4 +69,5 @@ func ShowHelp() {
 	fmt.Println(cmd, "[add|a] [packageName] [moduleName]")
 	fmt.Println(cmd, "[add-simple|add-s|as] [packageName]")
 	fmt.Println(cmd, "[update|upd|u] [packageName] [moduleName]")
+	fmt.Println(cmd, "[preset|p] [list|<preset-name>]")
 }

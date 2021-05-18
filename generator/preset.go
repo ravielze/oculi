@@ -12,11 +12,35 @@ import (
 //go:embed template/preset/auth/*
 var authFiles embed.FS
 
-func GenerateAuthPreset() {
-	GeneratePreset(authFiles, "auth")
+//go:embed template/preset/filemanager/*
+var fileManagerFiles embed.FS
+
+func GeneratePresets(arg1 string) {
+	switch strings.ToLower(arg1) {
+	case "auth":
+		generateAuthPreset()
+	case "filemanager", "file":
+		generateFileManagerPreset()
+	case "list":
+		fmt.Println("Preset List:")
+		fmt.Println(
+			`- Auth
+- FileManager`,
+		)
+	default:
+		fmt.Println("Preset not found.")
+	}
 }
 
-func GeneratePreset(fsys fs.FS, packageName string) {
+func generateAuthPreset() {
+	generatePreset(authFiles, "auth")
+}
+
+func generateFileManagerPreset() {
+	generatePreset(fileManagerFiles, "filemanager")
+}
+
+func generatePreset(fsys fs.FS, packageName string) {
 	writePackageName := packageName
 	if u.IsPackageExist(packageName) {
 		i := 1
