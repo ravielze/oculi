@@ -29,6 +29,8 @@ func main() {
 	case "init", "i":
 		CheckArgs(0)
 		generator.Init()
+	case "preset":
+		generator.GenerateAuthPreset()
 	default:
 		fmt.Println("Command not found. Try", os.Args[0], "help")
 	}

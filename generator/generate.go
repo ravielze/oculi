@@ -8,22 +8,22 @@ import (
 	u "github.com/ravielze/oculi/generator/utils"
 )
 
-//go:embed template/entity.txt
+//go:embed template/module/entity.txt
 var entityRawContent string
 
-//go:embed template/repo.txt
+//go:embed template/module/repo.txt
 var repositoryRawContent string
 
-//go:embed template/uc.txt
+//go:embed template/module/uc.txt
 var usecaseRawContent string
 
-//go:embed template/cont.txt
+//go:embed template/module/cont.txt
 var controllerRawContent string
 
-//go:embed template/module.txt
+//go:embed template/module/module.txt
 var moduleRawContent string
 
-//go:embed template/simplemodule.txt
+//go:embed template/module/simplemodule.txt
 var simpleModuleRawContent string
 
 func MakePlaceholders(packageName, moduleName string) []u.Placeholder {

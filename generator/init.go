@@ -7,13 +7,13 @@ import (
 	u "github.com/ravielze/oculi/generator/utils"
 )
 
-//go:embed template/main.txt
+//go:embed template/main/main.txt
 var mainContent string
 
-//go:embed template/gitignore.txt
+//go:embed template/main/gitignore.txt
 var gitignore string
 
-//go:embed template/env.txt
+//go:embed template/main/env.txt
 var env string
 
 func Init() {
