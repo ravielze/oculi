@@ -1,0 +1,17 @@
+package $$package$$
+
+type $$module$$ struct {
+}
+
+func ($$module$$) TableName() string {
+	return "$$module_lower$$"
+}
+
+type IController interface {
+}
+
+type IUsecase interface {
+}
+
+type IRepo interface {
+}

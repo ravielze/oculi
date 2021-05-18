@@ -1,4 +1,4 @@
-# Fuzzy Broccoli
+# Oculi
 Backend template using Golang
 
 # Tech Stacks
@@ -9,4 +9,6 @@ Backend template using Golang
 
 # Todos
 
-1. Compress storage file using gzip
+1. Compress storage file
+2. Generator: controller & module attach
+3. Translate sql error to understandable string

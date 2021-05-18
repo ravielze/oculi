@@ -1,22 +1,51 @@
 package common
 
 import (
+	"strings"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
+	"github.com/ravielze/oculi/common/radix36"
 	"gorm.io/gorm"
 )
 
-type IDBase struct {
-	ID uint `gorm:"primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree" json:"id"`
+type IntIDBase struct {
+	ID uint `gorm:"primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
+}
+
+type BigIntIDBase struct {
+	ID uint64 `gorm:"primaryKey;autoIncrement;uniqueIndex:,sort:asc,type:btree"`
+}
+
+type StringIDBase struct {
+	ID string `gorm:"primaryKey;type:VARCHAR(25);uniqueIndex:,sort:asc,type:btree"`
 }
 
 type UUIDBase struct {
-	ID string `gorm:"primaryKey;type:VARCHAR(36);uniqueIndex:,sort:asc,type:btree" json:"id" binding:"uuid4"`
+	ID string `gorm:"primaryKey;type:VARCHAR(32);uniqueIndex:,sort:asc,type:btree"`
 }
 
 func (e *UUIDBase) BeforeCreate(scope *gorm.DB) error {
-	e.ID = uuid.NewV4().String()
+	if strings.Contains(e.ID, "default") {
+		return nil
+	}
+	uuid, err := uuid.NewV4()
+	if err != nil {
+		return err
+	}
+	e.ID = strings.ToUpper(strings.Replace(uuid.String(), "-", "", 4))
+	return nil
+}
+
+func (e *StringIDBase) BeforeCreate(scope *gorm.DB) error {
+	if strings.EqualFold(e.ID, "default") {
+		return nil
+	}
+	id, err := radix36.EncodeUUID4()
+	if err != nil {
+		return err
+	}
+	e.ID = id
 	return nil
 }
 
