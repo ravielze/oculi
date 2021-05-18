@@ -126,7 +126,7 @@ func readDeclaredInterfaces(folderName, fileName string) map[string][]MethodWrap
 						if len(results) > 0 {
 							results += ", "
 						}
-						results += fmt.Sprintf("%s", r.Type)
+						results += fmt.Sprintf("%s", fileData[r.Type.Pos()-1:r.Type.End()-1])
 					}
 				}
 				methods = append(methods, MethodWrapper{
