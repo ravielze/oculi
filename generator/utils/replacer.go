@@ -21,3 +21,8 @@ func Replacer(raw string, placeholders []Placeholder) string {
 	}
 	return result
 }
+
+func ReplacerWriter(raw, packageName, fileName string, placeholders []Placeholder) {
+	content := Replacer(raw, placeholders)
+	WriteFile(packageName, fileName, content)
+}

@@ -49,20 +49,31 @@ func Generate(arg1, arg2 string) {
 
 	fmt.Printf("Generating package %s: entity -> %s\n", packageName, moduleName)
 
-	entityContent := u.Replacer(entityRawContent, placeholders)
-	u.WriteFile(packageName, fmt.Sprintf("%d_%s_%s", 1, moduleNameLower, "entity.go"), entityContent)
-
-	repositoryContent := u.Replacer(repositoryRawContent, placeholders)
-	u.WriteFile(packageName, fmt.Sprintf("%d_%s_%s", 2, moduleNameLower, "repository.go"), repositoryContent)
-
-	usecaseContent := u.Replacer(usecaseRawContent, placeholders)
-	u.WriteFile(packageName, fmt.Sprintf("%d_%s_%s", 3, moduleNameLower, "usecase.go"), usecaseContent)
-
-	controllerContent := u.Replacer(controllerRawContent, placeholders)
-	u.WriteFile(packageName, fmt.Sprintf("%d_%s_%s", 4, moduleNameLower, "controller.go"), controllerContent)
-
-	moduleContent := u.Replacer(moduleRawContent, placeholders)
-	u.WriteFile(packageName, fmt.Sprintf("%d_%s_%s", 0, moduleNameLower, "module.go"), moduleContent)
+	u.ReplacerWriter(entityRawContent,
+		packageName,
+		fmt.Sprintf("%d_%s_%s", 1, moduleNameLower, "entity.go"),
+		placeholders,
+	)
+	u.ReplacerWriter(repositoryRawContent,
+		packageName,
+		fmt.Sprintf("%d_%s_%s", 2, moduleNameLower, "repository.go"),
+		placeholders,
+	)
+	u.ReplacerWriter(usecaseRawContent,
+		packageName,
+		fmt.Sprintf("%d_%s_%s", 3, moduleNameLower, "usecase.go"),
+		placeholders,
+	)
+	u.ReplacerWriter(controllerRawContent,
+		packageName,
+		fmt.Sprintf("%d_%s_%s", 4, moduleNameLower, "controller.go"),
+		placeholders,
+	)
+	u.ReplacerWriter(moduleRawContent,
+		packageName,
+		fmt.Sprintf("%d_%s_%s", 0, moduleNameLower, "module.go"),
+		placeholders,
+	)
 }
 
 func GenerateSimple(arg1 string) {
