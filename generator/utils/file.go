@@ -13,28 +13,49 @@ func IsPackageExist(folderName string) bool {
 }
 
 func WriteFile(folderName, fileName, content string) {
-	if _, err0 := os.Stat(folderName); os.IsNotExist(err0) {
-		os.Mkdir(folderName, 0755)
-	}
+	if len(folderName) > 0 {
+		if _, err0 := os.Stat(folderName); os.IsNotExist(err0) {
+			os.Mkdir(folderName, 0755)
+		}
 
-	f, err := os.Create(fmt.Sprintf("%s/%s", folderName, fileName))
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
+		f, err := os.Create(fmt.Sprintf("%s/%s", folderName, fileName))
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
 
-	_, err2 := f.WriteString(content)
-	if err2 != nil {
-		panic(err2)
+		_, err2 := f.WriteString(content)
+		if err2 != nil {
+			panic(err2)
+		}
+		fmt.Printf("Writing %s/%s\n", folderName, fileName)
+	} else {
+		f, err := os.Create(fileName)
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+
+		_, err2 := f.WriteString(content)
+		if err2 != nil {
+			panic(err2)
+		}
+		fmt.Printf("Writing %s\n", fileName)
 	}
-	fmt.Printf("Writing %s/%s\n", folderName, fileName)
 }
 
 func ReadFile(folderName, fileName string) string {
-	fileDataBuff, errf := os.ReadFile(fmt.Sprintf("%s/%s", folderName, fileName))
-	if errf != nil {
-		panic(errf)
+	if len(folderName) > 0 {
+		fileDataBuff, errf := os.ReadFile(fmt.Sprintf("%s/%s", folderName, fileName))
+		if errf != nil {
+			panic(errf)
+		}
+		return string(fileDataBuff)
+	} else {
+		fileDataBuff, errf := os.ReadFile(fileName)
+		if errf != nil {
+			panic(errf)
+		}
+		return string(fileDataBuff)
 	}
-	fileData := string(fileDataBuff)
-	return fileData
 }
