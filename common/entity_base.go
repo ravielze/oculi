@@ -22,7 +22,7 @@ type StringIDBase struct {
 }
 
 type UUIDBase struct {
-	ID string `gorm:"primaryKey;type:VARCHAR(32);uniqueIndex:,sort:asc,type:btree"`
+	ID string `gorm:"primaryKey;type:VARCHAR(36);uniqueIndex:,sort:asc,type:btree"`
 }
 
 func (e *UUIDBase) BeforeCreate(scope *gorm.DB) error {
