@@ -1,3 +1,0 @@
-func $$struct$$$$method_name$$($$parameter$$)$$result$${
-    $$body$$
-}
