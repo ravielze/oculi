@@ -33,7 +33,7 @@ func (e *UUIDBase) BeforeCreate(scope *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	e.ID = strings.ToUpper(strings.Replace(uuid.String(), "-", "", 4))
+	e.ID = uuid.String()
 	return nil
 }
 

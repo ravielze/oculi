@@ -33,15 +33,12 @@ func NewModule(db *gorm.DB, g *gin.Engine) Module {
 
 	db.AutoMigrate(&User{})
 
-	hashedPassword, err := Hash(os.Getenv("ADMIN_DEFAULT_PASSWORD"))
-	if err != nil {
-		panic(err)
-	}
-	db.FirstOrCreate(&User{
+	db.Attrs(User{
+		Password: os.Getenv("ADMIN_DEFAULT_PASSWORD"),
+	}).FirstOrCreate(&User{
 		IntIDBase: common.IntIDBase{ID: 1},
 		Email:     os.Getenv("ADMIN_DEFAULT_EMAIL"),
 		Name:      "admin",
-		Password:  hashedPassword,
 		Role:      int16(ROLE_ADMIN),
 	})
 
