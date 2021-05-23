@@ -7,7 +7,7 @@ import (
 
 type (
 	Parameters map[string]string
-	Queries    map[string]string
+	Queries    map[string]interface{}
 	Context    struct {
 		ginCtx *gin.Context
 

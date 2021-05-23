@@ -66,7 +66,7 @@ func (ctx *Context) Param36(param string) *Context {
 				stdcode.PARAMETER_ERROR,
 			)
 		} else {
-			if radix36.ValidateRadix36(p) {
+			if !radix36.ValidateRadix36(p) {
 				ctx.Error(
 					stderr.NewSpecific(param, "not_radix36"),
 					http.StatusBadRequest,
