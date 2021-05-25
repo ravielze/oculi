@@ -13,7 +13,7 @@ import (
 
 type InitFunction func(db *gorm.DB, g *gin.Engine)
 
-func New(appName string, initModule InitFunction, initMiddleware InitFunction) {
+func New(appName string, initModule InitFunction, initMiddleware InitFunction, other ...InitFunction) {
 	devMode := common.DevMode()
 	var mode string
 	if devMode {
@@ -36,5 +36,9 @@ func New(appName string, initModule InitFunction, initMiddleware InitFunction) {
 	mm.ShowModule()
 
 	middleware.ResetFunction = mm.ResetAll
+
+	for i := range other {
+		other[i](db, g)
+	}
 	g.Run()
 }
