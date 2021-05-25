@@ -28,6 +28,7 @@ func New(appName string, initModule InitFunction, initMiddleware InitFunction, o
 	g := gin.Default()
 
 	fmt.Printf("| \u001b[44;1mOculi\u001b[0m | Initiating middleware...\n")
+	middleware.InstallCors(g)
 	initMiddleware(db, g)
 
 	fmt.Printf("| \u001b[44;1mOculi\u001b[0m | Initiating module...\n")
