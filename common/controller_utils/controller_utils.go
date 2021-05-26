@@ -83,6 +83,9 @@ func (cu *ControlChain) ParamBase36ToUUID(parameter string) *ControlChain {
 			cu.isError = true
 		} else {
 			cu.params[parameter] = result.String()
+			if p == "default" {
+				cu.params[parameter] = "default"
+			}
 		}
 	}
 	return cu
@@ -107,6 +110,9 @@ func (cu *ControlChain) ParamUUIDToBase36(parameter string) *ControlChain {
 			cu.isError = true
 		} else {
 			cu.params[parameter] = result
+			if p == "default" {
+				cu.params[parameter] = "default"
+			}
 		}
 	}
 	return cu
