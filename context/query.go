@@ -1,20 +1,9 @@
 package context
 
 import (
+	"strconv"
 	"strings"
 )
-
-func boolString(x bool) string {
-	if x {
-		return "true"
-	}
-	return "false"
-}
-
-func stringBool(x string) bool {
-	x = strings.ToLower(x)
-	return x == "true"
-}
 
 // Get query with string value and set it to default if it's empty
 func (ctx *Context) Query(query, def string) *Context {
@@ -35,13 +24,13 @@ func (ctx *Context) Query(query, def string) *Context {
 func (ctx *Context) QueryBoolean(query string, def bool) *Context {
 	if !ctx.IsError() {
 
-		q := ctx.ginCtx.DefaultQuery(query, boolString(def))
-		if (q != boolString(false) && q != boolString(true)) ||
+		q := ctx.ginCtx.DefaultQuery(query, strconv.FormatBool(def))
+		if (q != strconv.FormatBool(false) && q != strconv.FormatBool(true)) ||
 			(len(q) == 0 || len(strings.TrimSpace(q)) == 0) {
-			q = boolString(def)
+			q = strconv.FormatBool(def)
 		}
 
-		ctx.query[query] = stringBool(q)
+		ctx.query[query], _ = strconv.ParseBool(q)
 
 	}
 	return ctx

@@ -39,7 +39,9 @@ func (ctx *Context) ParamUUID(param string) *Context {
 			)
 		} else {
 			uuidParsed := uuid.FromStringOrNil(p)
-			if uuidParsed == uuid.Nil {
+			if strings.EqualFold(p, "default") {
+				ctx.params[param] = "default"
+			} else if uuidParsed == uuid.Nil {
 				ctx.Error(
 					stderr.NewSpecific(param, "not_uuid"),
 					http.StatusBadRequest,
@@ -59,7 +61,9 @@ func (ctx *Context) Param36(param string) *Context {
 	if !ctx.IsError() {
 
 		p := strings.ToUpper(ctx.ginCtx.Param(param))
-		if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
+		if strings.EqualFold(p, "default") {
+			ctx.params[param] = "default"
+		} else if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
 			ctx.Error(
 				stderr.NewSpecific(param, "missing"),
 				http.StatusBadRequest,
@@ -86,7 +90,9 @@ func (ctx *Context) ParamUUID36(param string) *Context {
 	if !ctx.IsError() {
 
 		p := ctx.ginCtx.Param(param)
-		if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
+		if strings.EqualFold(p, "default") {
+			ctx.params[param] = "default"
+		} else if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
 			ctx.Error(
 				stderr.NewSpecific(param, "missing"),
 				http.StatusBadRequest,
@@ -114,7 +120,9 @@ func (ctx *Context) Param36UUID(param string) *Context {
 	if !ctx.IsError() {
 
 		p := ctx.ginCtx.Param(param)
-		if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
+		if strings.EqualFold(p, "default") {
+			ctx.params[param] = "default"
+		} else if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
 			ctx.Error(
 				stderr.NewSpecific(param, "missing"),
 				http.StatusBadRequest,

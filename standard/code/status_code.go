@@ -15,6 +15,10 @@ const (
 	UNAUTHORIZED       std.Code = "unauthorized"
 	ROLE_NO_PERMISSION std.Code = "role_unauthorized"
 
+	// Server Group
+
+	SERVER_ERROR std.Code = "server_error"
+
 	// Controller Group
 
 	PARAMETER_ERROR std.Code = "parameter_error"
