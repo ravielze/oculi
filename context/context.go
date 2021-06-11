@@ -1,6 +1,8 @@
 package context
 
 import (
+	"context"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,4 +35,12 @@ func New(ctx *gin.Context) *Context {
 
 func (ctx *Context) ClientIP() string {
 	return ctx.ginCtx.ClientIP()
+}
+
+func (ctx *Context) Gin() *gin.Context {
+	return ctx.ginCtx
+}
+
+func (ctx *Context) Context() context.Context {
+	return ctx.ginCtx.Request.Context()
 }
