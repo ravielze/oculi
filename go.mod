@@ -11,6 +11,7 @@ require (
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/json-iterator/go v1.1.11 // indirect
+	github.com/kelseyhightower/envconfig v1.4.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/martinlindhe/base36 v1.1.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
