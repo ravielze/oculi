@@ -2,7 +2,10 @@ package enum
 
 import (
 	"database/sql/driver"
+	"errors"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type (
@@ -11,7 +14,8 @@ type (
 		code string
 	}
 
-	TestEnum int
+	TestEnum  int
+	WrongEnum int
 )
 
 const (
@@ -20,10 +24,10 @@ const (
 	OnGoing
 )
 
-var enumData = []IEnum{
-	testEnumClass{"Waiting", "waiting"},
-	testEnumClass{"Confirmed", "confirmed"},
-	testEnumClass{"On Going", "on_going"},
+var enumData = []testEnumClass{
+	{"Waiting", "waiting"},
+	{"Confirmed", "confirmed"},
+	{"On Going", "on_going"},
 }
 
 func (t testEnumClass) Name() string {
@@ -38,14 +42,14 @@ func (t TestEnum) Name() string {
 	if int(t) < 1 || int(t) > len(enumData) {
 		return ""
 	}
-	return enumData[int(1)-1].Name()
+	return enumData[int(t)-1].name
 }
 
 func (t TestEnum) Code() string {
 	if int(t) < 1 || int(t) > len(enumData) {
 		return ""
 	}
-	return enumData[int(1)-1].Code()
+	return enumData[int(t)-1].code
 }
 
 func (t TestEnum) MarshalJSON() ([]byte, error) {
@@ -53,7 +57,7 @@ func (t TestEnum) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TestEnum) UnmarshalJSON(val []byte) error {
-	idx, err := UnmarshalJSON(val, enumData)
+	idx, err := UnmarshalJSON(val, "test_enum")
 	if err != nil {
 		return err
 	}
@@ -62,7 +66,7 @@ func (t *TestEnum) UnmarshalJSON(val []byte) error {
 }
 
 func (t *TestEnum) Scan(val interface{}) error {
-	idx, err := Scan(val, enumData)
+	idx, err := Scan(val, "test_enum")
 	if err != nil {
 		return err
 	}
@@ -74,6 +78,42 @@ func (t TestEnum) Value() (driver.Value, error) {
 	return Value(t)
 }
 
-func TestScan(t *testing.T) {
+func TestRegister(t *testing.T) {
 
+	t.Run("normal enum registration", func(t *testing.T) {
+		enum := TestEnum(0)
+		err := Register("test_enum", enumData, enum, &enum)
+		assert.Nil(t, err)
+	})
+
+	t.Run("when register same key", func(t *testing.T) {
+		enum := TestEnum(0)
+		Register("test_enum", enumData, enum, &enum)
+		err := Register("test_enum", enumData, enum, &enum)
+		assert.Equal(t, errors.New("enum with that key already registered"), err)
+	})
+
+	t.Run("when register non-integer enum", func(t *testing.T) {
+		wrongEnum := "a"
+		err := Register("wrong_enum_type", enumData, wrongEnum, &wrongEnum)
+		assert.Equal(t, errors.New("objStruct is not an int"), err)
+	})
+
+	t.Run("when register not-fully-implemented RegisterableEnum", func(t *testing.T) {
+		wrongEnum := WrongEnum(0)
+		err := Register("wrong_enum_type", enumData, wrongEnum, &wrongEnum)
+		assert.Equal(t, errors.New("enum must implement EnumRegisterable"), err)
+	})
+
+	t.Run("when wrong param", func(t *testing.T) {
+		enum := TestEnum(0)
+		err := Register("wrong_test_enum_param", enumData, enum, enum)
+		assert.Equal(t, errors.New("objStructPtr is not a int pointer"), err)
+	})
+	t.Run("when wrong param", func(t *testing.T) {
+		enum := TestEnum(0)
+		enum2 := WrongEnum(0)
+		err := Register("wrong_test_enum_param", enumData, enum, &enum2)
+		assert.Equal(t, errors.New("enum pointer must implement EnumRegisterablePtr"), err)
+	})
 }
