@@ -17,8 +17,6 @@ type (
 	MultiError struct {
 		errors []error
 	}
-
-	A interface{}
 )
 
 func (e BasicError) Error() string {
