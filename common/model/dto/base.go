@@ -1,8 +1,8 @@
 package dto
 
 import (
-	"github.com/ravielze/oculi/common/constant/format"
 	"github.com/ravielze/oculi/common/model/dao"
+	"github.com/ravielze/oculi/constant/format"
 )
 
 type (

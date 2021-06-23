@@ -2,9 +2,9 @@ package enum
 
 import (
 	"database/sql/driver"
-	"errors"
 	"testing"
 
+	"github.com/ravielze/oculi/constant/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -90,30 +90,31 @@ func TestRegister(t *testing.T) {
 		enum := TestEnum(0)
 		Register("test_enum", enumData, enum, &enum)
 		err := Register("test_enum", enumData, enum, &enum)
-		assert.Equal(t, errors.New("enum with that key already registered"), err)
+		assert.Error(t, err)
+		assert.Equal(t, errors.ErrEnumKeyRegistered, err)
 	})
 
 	t.Run("when register non-integer enum", func(t *testing.T) {
 		wrongEnum := "a"
 		err := Register("wrong_enum_type", enumData, wrongEnum, &wrongEnum)
-		assert.Equal(t, errors.New("objStruct is not an int"), err)
+		assert.Equal(t, errors.ErrEnumNotInt, err)
 	})
 
 	t.Run("when register not-fully-implemented RegisterableEnum", func(t *testing.T) {
 		wrongEnum := WrongEnum(0)
 		err := Register("wrong_enum_type", enumData, wrongEnum, &wrongEnum)
-		assert.Equal(t, errors.New("enum must implement EnumRegisterable"), err)
+		assert.Equal(t, errors.ErrEnumImplRegisterable, err)
 	})
 
 	t.Run("when wrong param", func(t *testing.T) {
 		enum := TestEnum(0)
 		err := Register("wrong_test_enum_param", enumData, enum, enum)
-		assert.Equal(t, errors.New("objStructPtr is not a int pointer"), err)
+		assert.Equal(t, errors.ErrEnumNotIntPointer, err)
 	})
 	t.Run("when wrong param", func(t *testing.T) {
 		enum := TestEnum(0)
 		enum2 := WrongEnum(0)
 		err := Register("wrong_test_enum_param", enumData, enum, &enum2)
-		assert.Equal(t, errors.New("enum pointer must implement EnumRegisterablePtr"), err)
+		assert.Equal(t, errors.ErrEnumImplRegisterablePtr, err)
 	})
 }

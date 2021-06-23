@@ -3,8 +3,9 @@ package enum
 import (
 	"database/sql/driver"
 	"encoding/json"
-	"errors"
 	"reflect"
+
+	"github.com/ravielze/oculi/constant/errors"
 )
 
 type (
@@ -29,32 +30,32 @@ var enumArrayMap = map[string][]IEnum{}
 
 func Register(key string, slice interface{}, objStruct interface{}, objStructPtr interface{}) error {
 	if enumArrayMap[key] != nil {
-		return errors.New("enum with that key already registered")
+		return errors.ErrEnumKeyRegistered
 	}
 
 	val := reflect.ValueOf(objStruct)
 	if val.Kind() != reflect.Int {
-		return errors.New("objStruct is not an int")
+		return errors.ErrEnumNotInt
 	}
 	if _, ok := objStruct.(EnumRegisterable); !ok {
-		return errors.New("enum must implement EnumRegisterable")
+		return errors.ErrEnumImplRegisterable
 	}
 
 	valPtr := reflect.ValueOf(objStructPtr)
 	if valPtr.Kind() != reflect.Ptr {
-		return errors.New("objStructPtr is not a int pointer")
+		return errors.ErrEnumNotIntPointer
 	}
 	if _, ok := objStructPtr.(EnumRegisterablePtr); !ok {
-		return errors.New("enum pointer must implement EnumRegisterablePtr")
+		return errors.ErrEnumImplRegisterablePtr
 	}
 	register(key, slice)
 	return nil
 }
 
-func register(key string, slice interface{}) {
-	val := reflect.ValueOf(slice)
+func register(key string, data interface{}) {
+	val := reflect.ValueOf(data)
 	if val.Kind() != reflect.Slice {
-		panic("enum object is non-slice type")
+		panic(errors.ErrEnumNotSlice)
 	}
 	if val.IsNil() {
 		return
@@ -69,12 +70,12 @@ func register(key string, slice interface{}) {
 func Scan(val interface{}, key string) (int, error) {
 	rawValue, ok := val.([]byte)
 	if !ok {
-		return 0, errors.New("enum error on parsing")
+		return 0, errors.ErrEnumParsing
 	}
 	dbValue := string(rawValue)
 	idx := findIndex(dbValue, key, func(e IEnum) string { return e.Code() })
 	if idx == 0 {
-		return 0, errors.New("enum not found")
+		return 0, errors.ErrEnumNotFound
 	}
 	return idx, nil
 }
@@ -87,7 +88,7 @@ func UnmarshalJSON(val []byte, key string) (int, error) {
 
 	idx := findIndex(rawValue, key, func(e IEnum) string { return e.Name() })
 	if idx == 0 {
-		return 0, errors.New("enum not found")
+		return 0, errors.ErrEnumNotFound
 	}
 	return idx, nil
 }
