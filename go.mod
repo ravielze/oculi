@@ -19,8 +19,8 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/yangxikun/gin-limit-by-key v0.0.0-20190512072151-520697354d5f
-	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
-	golang.org/x/sys v0.0.0-20210521203332-0cec03c779c1 // indirect
+	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e
+	golang.org/x/sys v0.0.0-20210616094352-59db8d763f22 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect

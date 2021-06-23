@@ -6,57 +6,64 @@ import (
 
 type (
 	BasicError struct {
-		detail string
+		Detail string `json:"detail"`
 	}
 
 	SpecifiedError struct {
-		thing  string
-		detail string
+		Thing  string `json:"thing"`
+		Detail string `json:"detail"`
 	}
 
 	MultiError struct {
-		errors []error
+		Errors []error `json:"errors"`
 	}
 )
 
 func (e BasicError) Error() string {
-	return fmt.Sprintf("detail: '%s'", e.detail)
+	return fmt.Sprintf("detail: '%s'", e.Detail)
 }
 
 func (e SpecifiedError) Error() string {
-	return fmt.Sprintf("thing: '%s', detail: '%s'", e.thing, e.detail)
+	return fmt.Sprintf("thing: '%s', detail: '%s'", e.Thing, e.Detail)
 }
 
 func (e MultiError) Error() string {
-	return fmt.Sprint(e.errors)
+	return fmt.Sprint(e.Errors)
 }
 
 // Create new basic standard error
 func New(detail string) error {
 	return BasicError{
-		detail: detail,
+		Detail: detail,
+	}
+}
+
+// Create new basic standard error from error
+func NewFromError(err error) error {
+	return BasicError{
+		Detail: err.Error(),
 	}
 }
 
 // Create new specific standard error
 func NewSpecific(thing string, detail string) error {
 	return SpecifiedError{
-		thing:  thing,
-		detail: detail,
+		Thing:  thing,
+		Detail: detail,
 	}
 }
 
 // Wrap multiple errors into an error
-func Wrap(errors ...error) error {
+func NewMultipleError(errors ...error) error {
 	var errFinal []error
 	for _, e := range errors {
 		if me, ok := e.(MultiError); ok {
-			errFinal = append(errFinal, me.errors...)
+			errFinal = append(errFinal, me.Errors...)
 		} else {
 			errFinal = append(errFinal, e)
 		}
 	}
 	return MultiError{
-		errors: errFinal,
+		Errors: errFinal,
 	}
 }
