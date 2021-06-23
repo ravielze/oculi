@@ -1,4 +1,4 @@
-package oculi_time
+package oculiTime
 
 import "time"
 

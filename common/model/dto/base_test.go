@@ -6,17 +6,17 @@ import (
 	"time"
 
 	"github.com/ravielze/oculi/common/model/dao"
-	"github.com/ravielze/oculi/constant/oculi_time"
+	"github.com/ravielze/oculi/constant/oculiTime"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
 
 func TestNewBaseModel(t *testing.T) {
 	t.Run("Base model", func(t *testing.T) {
-		oculi_time.Mock(time.Date(2021, time.June, 19, 2, 58, 30, 0, time.Local))
+		oculiTime.Mock(time.Date(2021, time.June, 19, 2, 58, 30, 0, time.Local))
 		baseModel := dao.BaseModel{
-			CreatedAt: oculi_time.Now(),
-			UpdatedAt: oculi_time.Now().Add(time.Hour * 1),
+			CreatedAt: oculiTime.Now(),
+			UpdatedAt: oculiTime.Now().Add(time.Hour * 1),
 		}
 		converted := NewBaseModel(baseModel)
 		assert.Equal(t, "19-06-2021 02:58:30", converted.CreatedAt)
@@ -30,11 +30,11 @@ func TestNewBaseModel(t *testing.T) {
 	})
 
 	t.Run("Base model soft delete, not deleted", func(t *testing.T) {
-		oculi_time.Mock(time.Date(2021, time.June, 19, 2, 38, 30, 0, time.Local))
+		oculiTime.Mock(time.Date(2021, time.June, 19, 2, 38, 30, 0, time.Local))
 		baseModel := dao.BaseModelSoftDelete{
 			BaseModel: dao.BaseModel{
-				CreatedAt: oculi_time.Now(),
-				UpdatedAt: oculi_time.Now().Add(time.Hour * 1),
+				CreatedAt: oculiTime.Now(),
+				UpdatedAt: oculiTime.Now().Add(time.Hour * 1),
 			},
 			DeletedAt: gorm.DeletedAt{
 				Valid: false,
@@ -55,15 +55,15 @@ func TestNewBaseModel(t *testing.T) {
 	})
 
 	t.Run("Base model soft delete, deleted", func(t *testing.T) {
-		oculi_time.Mock(time.Date(2021, time.June, 19, 2, 38, 30, 0, time.Local))
+		oculiTime.Mock(time.Date(2021, time.June, 19, 2, 38, 30, 0, time.Local))
 		baseModel := dao.BaseModelSoftDelete{
 			BaseModel: dao.BaseModel{
-				CreatedAt: oculi_time.Now(),
-				UpdatedAt: oculi_time.Now().Add(time.Hour * 1),
+				CreatedAt: oculiTime.Now(),
+				UpdatedAt: oculiTime.Now().Add(time.Hour * 1),
 			},
 			DeletedAt: gorm.DeletedAt{
 				Valid: true,
-				Time:  oculi_time.Now().Add(time.Minute * 140),
+				Time:  oculiTime.Now().Add(time.Minute * 140),
 			},
 		}
 		converted := NewBaseModelSoftDelete(baseModel)
