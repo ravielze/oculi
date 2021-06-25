@@ -10,6 +10,7 @@ import (
 	v10 "github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 	"github.com/ravielze/oculi/constant/errors"
+	stderr "github.com/ravielze/oculi/standard/errors"
 	"github.com/ravielze/oculi/validator"
 )
 
@@ -27,7 +28,7 @@ func Instance() (validator.Validator, error) {
 	if instance == nil {
 		var transOuter *ut.Translator
 		var vOuter *v10.Validate
-		var errOuter error
+		var errOuter error = nil
 		once.Do(func() {
 			transEn := en.New()
 			transId := id.New()
@@ -47,6 +48,7 @@ func Instance() (validator.Validator, error) {
 		})
 		if errOuter != nil {
 			once = sync.Once{}
+			instance = nil
 			return nil, errOuter
 		}
 		instance = &impl{instance: vOuter, trans: transOuter}
@@ -109,7 +111,15 @@ func (i *impl) AddTranslation(tag string, errorMsg string) error {
 }
 
 func (i *impl) TranslateError(err error) error {
-	return nil
+	if err == nil {
+		return nil
+	}
+	validatorErrs := err.(v10.ValidationErrors)
+	translatedErrs := make([]error, len(validatorErrs))
+	for x, e := range validatorErrs {
+		translatedErrs[x] = stderr.NewSpecific(e.Field(), e.Translate(*i.trans))
+	}
+	return stderr.NewMultipleError(translatedErrs...)
 }
 
 func (i *impl) InstallDefault() {
