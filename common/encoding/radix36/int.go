@@ -18,9 +18,16 @@ func (r *Radix36) ToInt() int64 {
 		return int64(binary.BigEndian.Uint64(r.data))
 	case biginteger:
 		var i big.Int
-		i.SetBytes(r.data)
-		if i.CmpAbs(big.NewInt(math.MaxInt64)) <= 0 {
-			return i.Int64()
+		x := len(r.data) - 1
+		i.SetBytes(r.data[:x])
+		if r.data[x] == byte(0) {
+			if i.CmpAbs(big.NewInt(math.MinInt64)) <= 0 {
+				return i.Int64() * -1
+			}
+		} else {
+			if i.CmpAbs(big.NewInt(math.MaxInt64)) <= 0 {
+				return i.Int64()
+			}
 		}
 	}
 	return int64(0)
