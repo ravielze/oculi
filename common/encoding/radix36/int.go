@@ -6,14 +6,23 @@ import (
 	"math/big"
 )
 
-func (r *Radix36) Int(value int64) {
+func (r *radix36) Int(value int64) {
 	r.data = make([]byte, 8)
 	binary.BigEndian.PutUint64(r.data, uint64(value))
 	r.lastType = integer
 }
 
-func (r *Radix36) ToInt() int64 {
+func (r *radix36) ToInt() int64 {
 	switch r.lastType {
+	case bytes:
+		b := len(r.data)
+		if b >= 8 {
+			return int64(binary.BigEndian.Uint64(r.data[:8]))
+		} else {
+			zero := make([]byte, 8-b)
+			zero = append(zero, r.data...)
+			return int64(binary.BigEndian.Uint64(zero))
+		}
 	case integer:
 		return int64(binary.BigEndian.Uint64(r.data))
 	case biginteger:
@@ -29,6 +38,9 @@ func (r *Radix36) ToInt() int64 {
 				return i.Int64()
 			}
 		}
+	case t_uuid:
+		j := r.ToBigInt()
+		return j.Int64()
 	}
 	return int64(0)
 }

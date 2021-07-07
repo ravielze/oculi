@@ -10,11 +10,11 @@ import (
 
 func TestRadix36_EncodeDecodeBigInt(t *testing.T) {
 	t.Run("Zero Integer to Big Int and Viceversa", func(t *testing.T) {
-		var data Radix36
+		var data radix36
 		data.Int(0)
 		result := data.ToBigInt()
 
-		var data2 Radix36
+		var data2 radix36
 		data2.BigInt(*big.NewInt(0))
 		result2 := data2.ToInt()
 
@@ -26,11 +26,11 @@ func TestRadix36_EncodeDecodeBigInt(t *testing.T) {
 	})
 
 	t.Run("Positive Integer to Big Int and Viceversa", func(t *testing.T) {
-		var data Radix36
+		var data radix36
 		data.Int(130451)
 		result := data.ToBigInt()
 
-		var data2 Radix36
+		var data2 radix36
 		data2.BigInt(*big.NewInt(130451))
 		result2 := data2.ToInt()
 
@@ -42,11 +42,11 @@ func TestRadix36_EncodeDecodeBigInt(t *testing.T) {
 	})
 
 	t.Run("Negative Integer to Big Int and Viceversa", func(t *testing.T) {
-		var data Radix36
+		var data radix36
 		data.Int(-12345678)
 		result := data.ToBigInt()
 
-		var data2 Radix36
+		var data2 radix36
 		data2.BigInt(*big.NewInt(-12345678))
 		result2 := data2.ToInt()
 
@@ -58,11 +58,11 @@ func TestRadix36_EncodeDecodeBigInt(t *testing.T) {
 	})
 
 	t.Run("Min Integer to Big Int and Viceversa", func(t *testing.T) {
-		var data Radix36
+		var data radix36
 		data.Int(math.MinInt64)
 		result := data.ToBigInt()
 
-		var data2 Radix36
+		var data2 radix36
 		data2.BigInt(*big.NewInt(math.MinInt64))
 		result2 := data2.ToInt()
 
@@ -74,11 +74,11 @@ func TestRadix36_EncodeDecodeBigInt(t *testing.T) {
 	})
 
 	t.Run("Max Integer to Big Int and Viceversa", func(t *testing.T) {
-		var data Radix36
+		var data radix36
 		data.Int(math.MaxInt64)
 		result := data.ToBigInt()
 
-		var data2 Radix36
+		var data2 radix36
 		data2.BigInt(*big.NewInt(math.MaxInt64))
 		result2 := data2.ToInt()
 

@@ -10,9 +10,8 @@ type (
 	BasicEncoding interface {
 		IntEncodeDecode
 		BigIntEncodeDecode
-		//BytesEncodeDecode
-		//UUIDEncodeDecode
-		//Randomize()
+		BytesEncodeDecode
+		UUIDEncodeDecode
 	}
 
 	IntEncodeDecode interface {
@@ -22,16 +21,18 @@ type (
 
 	BigIntEncodeDecode interface {
 		BigInt(value big.Int)
+		BigIntFromInt64(value int64)
 		ToBigInt() big.Int
 	}
 
 	BytesEncodeDecode interface {
-		EncodeBytes(value []byte)
-		DecodeBytes() ([]byte, error)
+		Bytes(value []byte)
+		ToBytes() []byte
 	}
 
 	UUIDEncodeDecode interface {
-		EncodeUUID(value uuid.UUID)
-		DecodeUUID() (uuid.UUID, error)
+		UUID(value uuid.UUID)
+		ToUUID() uuid.UUID
+		Randomize()
 	}
 )

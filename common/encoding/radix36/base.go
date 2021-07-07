@@ -5,7 +5,7 @@ import (
 )
 
 type (
-	Radix36 struct {
+	radix36 struct {
 		data     []byte
 		lastType R36Type
 	}
@@ -17,13 +17,20 @@ const (
 	none R36Type = iota + 1
 	integer
 	biginteger
-	uuid
+	bytes
+	t_uuid
 	r36
 )
 
 func New() encoding.BasicEncoding {
-	return &Radix36{
+	return &radix36{
 		data:     nil,
 		lastType: none,
 	}
+}
+
+func NewRandomize() encoding.BasicEncoding {
+	x := New()
+	x.Randomize()
+	return x
 }
