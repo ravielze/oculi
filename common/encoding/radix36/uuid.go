@@ -5,17 +5,17 @@ import (
 	"github.com/ravielze/oculi/common/encoding"
 )
 
-func (r *radix36) UUID(value uuid.UUID) {
+func (r *radix36) FromUUID(value uuid.UUID) {
 	r.data = value.Bytes()
 	r.lastType = t_uuid
 }
 
-func (r *radix36) UUIDString(value string) error {
+func (r *radix36) FromUUIDString(value string) error {
 	val, err := uuid.FromString(value)
 	if err != nil {
 		return err
 	}
-	r.UUID(val)
+	r.FromUUID(val)
 	return nil
 }
 

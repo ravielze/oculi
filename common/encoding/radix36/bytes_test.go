@@ -9,7 +9,7 @@ import (
 func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 	t.Run("Zero Integer", func(t *testing.T) {
 		var data radix36
-		data.Bytes([]byte{0, 0, 0, 0, 0, 0, 0, 0})
+		data.FromBytes([]byte{0, 0, 0, 0, 0, 0, 0, 0})
 
 		assert.Equal(t, bytes, data.lastType)
 		assert.Equal(t, int64(0), data.ToInt())
@@ -19,7 +19,7 @@ func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 
 	t.Run("Positive Integer", func(t *testing.T) {
 		var data radix36
-		data.Bytes([]byte{0, 0, 0, 0, 0, 0, 0, 100})
+		data.FromBytes([]byte{0, 0, 0, 0, 0, 0, 0, 100})
 
 		assert.Equal(t, bytes, data.lastType)
 		assert.Equal(t, int64(100), data.ToInt())
@@ -29,7 +29,7 @@ func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 
 	t.Run("Negative Integer", func(t *testing.T) {
 		var data radix36
-		data.Bytes([]byte{255, 255, 255, 255, 255, 255, 255, 156})
+		data.FromBytes([]byte{255, 255, 255, 255, 255, 255, 255, 156})
 
 		assert.Equal(t, bytes, data.lastType)
 		assert.Equal(t, int64(-100), data.ToInt())
@@ -39,7 +39,7 @@ func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 
 	t.Run("Any Bytes (1)", func(t *testing.T) {
 		var data radix36
-		data.Bytes([]byte{128})
+		data.FromBytes([]byte{128})
 
 		assert.Equal(t, bytes, data.lastType)
 		assert.Equal(t, int64(128), data.ToInt())
@@ -48,7 +48,7 @@ func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 	})
 	t.Run("Any Bytes (2)", func(t *testing.T) {
 		var data radix36
-		data.Bytes([]byte{11, 11, 11, 11, 11, 11, 128})
+		data.FromBytes([]byte{11, 11, 11, 11, 11, 11, 128})
 
 		assert.Equal(t, bytes, data.lastType)
 		assert.Equal(t, int64(3108366801636224), data.ToInt())
@@ -57,7 +57,7 @@ func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 	})
 	t.Run("Any Bytes (3)", func(t *testing.T) {
 		var data radix36
-		data.Bytes([]byte{12, 13, 14, 15, 11, 11, 11, 11, 11, 11, 128})
+		data.FromBytes([]byte{12, 13, 14, 15, 11, 11, 11, 11, 11, 11, 128})
 
 		assert.Equal(t, bytes, data.lastType)
 		assert.Equal(t, int64(868365760924945163), data.ToInt())
@@ -66,7 +66,7 @@ func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 	})
 	t.Run("Any Bytes (4)", func(t *testing.T) {
 		var data radix36
-		data.Bytes([]byte{176, 202, 111, 156, 203, 132, 12, 13, 14, 15, 11, 11, 11, 11, 11, 11, 128})
+		data.FromBytes([]byte{176, 202, 111, 156, 203, 132, 12, 13, 14, 15, 11, 11, 11, 11, 11, 11, 128})
 
 		assert.Equal(t, bytes, data.lastType)
 		assert.Equal(t, int64(-5707626858518672371), data.ToInt())

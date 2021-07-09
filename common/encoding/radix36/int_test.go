@@ -16,7 +16,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 
 	t.Run("Zero Integer", func(t *testing.T) {
 		var data radix36
-		data.Int(0)
+		data.FromInt(0)
 		assert.Equal(t, integer, data.lastType)
 		assert.Equal(t, int64(0), data.ToInt())
 		assert.Equal(t, []byte{0, 0, 0, 0, 0, 0, 0, 0}, data.ToBytes())
@@ -25,7 +25,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 
 	t.Run("Positive Integer", func(t *testing.T) {
 		var data radix36
-		data.Int(100)
+		data.FromInt(100)
 		assert.Equal(t, integer, data.lastType)
 		assert.Equal(t, int64(100), data.ToInt())
 		assert.Equal(t, []byte{0, 0, 0, 0, 0, 0, 0, 100}, data.ToBytes())
@@ -34,7 +34,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 
 	t.Run("Negative Integer", func(t *testing.T) {
 		var data radix36
-		data.Int(-100)
+		data.FromInt(-100)
 		assert.Equal(t, integer, data.lastType)
 		assert.Equal(t, int64(-100), data.ToInt())
 		assert.Equal(t, []byte{255, 255, 255, 255, 255, 255, 255, 156}, data.ToBytes())
@@ -43,7 +43,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 
 	t.Run("Max Integer", func(t *testing.T) {
 		var data radix36
-		data.Int(math.MaxInt64)
+		data.FromInt(math.MaxInt64)
 		assert.Equal(t, integer, data.lastType)
 		assert.Equal(t, int64(math.MaxInt64), data.ToInt())
 		assert.Equal(t, []byte{127, 255, 255, 255, 255, 255, 255, 255}, data.ToBytes())
@@ -52,7 +52,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 
 	t.Run("Min Integer", func(t *testing.T) {
 		var data radix36
-		data.Int(math.MinInt64)
+		data.FromInt(math.MinInt64)
 		assert.Equal(t, integer, data.lastType)
 		assert.Equal(t, int64(math.MinInt64), data.ToInt())
 		assert.Equal(t, []byte{128, 0, 0, 0, 0, 0, 0, 0}, data.ToBytes())

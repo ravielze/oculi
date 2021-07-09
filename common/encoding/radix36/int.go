@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 )
 
-func (r *radix36) Int(value int64) {
+func (r *radix36) FromInt(value int64) {
 	r.data = make([]byte, 8)
 	binary.BigEndian.PutUint64(r.data, uint64(value))
 	r.lastType = integer

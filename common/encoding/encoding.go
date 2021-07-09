@@ -10,21 +10,22 @@ type (
 		BytesEncodeDecode
 		UUIDEncodeDecode
 		String() string
+		Bytes() []byte
 	}
 
 	IntEncodeDecode interface {
-		Int(value int64)
+		FromInt(value int64)
 		ToInt() int64
 	}
 
 	BytesEncodeDecode interface {
-		Bytes(value []byte)
+		FromBytes(value []byte)
 		ToBytes() []byte
 	}
 
 	UUIDEncodeDecode interface {
-		UUID(value uuid.UUID)
-		UUIDString(value string) error
+		FromUUID(value uuid.UUID)
+		FromUUIDString(value string) error
 		ToUUID() uuid.UUID
 		Randomize() UUIDEncodeDecode
 	}

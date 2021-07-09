@@ -29,6 +29,10 @@ const (
 	r36
 )
 
+func (r *radix36) Bytes() []byte {
+	return r.data
+}
+
 func NewRadix36(r36 string) (encoding.BasicEncoding, error) {
 	if !Validate(r36) {
 		return nil, fmt.Errorf("%s is not a radix36", r36)
@@ -58,25 +62,25 @@ func New() encoding.BasicEncoding {
 
 func NewFromInt(val int64) encoding.BasicEncoding {
 	x := New()
-	x.Int(val)
+	x.FromInt(val)
 	return x
 }
 
 func NewFromUUID(val uuid.UUID) encoding.BasicEncoding {
 	x := New()
-	x.UUID(val)
+	x.FromUUID(val)
 	return x
 }
 
 func NewFromBytes(val []byte) encoding.BasicEncoding {
 	x := New()
-	x.Bytes(val)
+	x.FromBytes(val)
 	return x
 }
 
 func NewFromUUIDString(val string) (encoding.BasicEncoding, error) {
 	x := New()
-	if err := x.UUIDString(val); err != nil {
+	if err := x.FromUUIDString(val); err != nil {
 		return x, err
 	}
 	return x, nil
