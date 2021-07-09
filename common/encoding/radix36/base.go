@@ -1,8 +1,16 @@
 package radix36
 
 import (
+	"fmt"
+
+	"github.com/gofrs/uuid"
+	"github.com/martinlindhe/base36"
 	"github.com/ravielze/oculi/common/encoding"
 )
+
+// Int is int64
+// UUID is uint128
+// Bytes inherit from the lastType or can be anything.
 
 type (
 	radix36 struct {
@@ -16,11 +24,30 @@ type (
 const (
 	none R36Type = iota + 1
 	integer
-	biginteger
 	bytes
 	t_uuid
 	r36
 )
+
+func NewRadix36(r36 string) (encoding.BasicEncoding, error) {
+	if !Validate(r36) {
+		return nil, fmt.Errorf("%s is not a radix36", r36)
+	}
+	return &radix36{
+		data:     base36.DecodeToBytes(r36),
+		lastType: bytes,
+	}, nil
+}
+
+func Radix36(r36 string) encoding.BasicEncoding {
+	if !Validate(r36) {
+		panic(r36 + " is not a radix36")
+	}
+	return &radix36{
+		data:     base36.DecodeToBytes(r36),
+		lastType: bytes,
+	}
+}
 
 func New() encoding.BasicEncoding {
 	return &radix36{
@@ -29,8 +56,36 @@ func New() encoding.BasicEncoding {
 	}
 }
 
-func NewRandomize() encoding.BasicEncoding {
+func NewFromInt(val int64) encoding.BasicEncoding {
 	x := New()
-	x.Randomize()
+	x.Int(val)
 	return x
+}
+
+func NewFromUUID(val uuid.UUID) encoding.BasicEncoding {
+	x := New()
+	x.UUID(val)
+	return x
+}
+
+func NewFromBytes(val []byte) encoding.BasicEncoding {
+	x := New()
+	x.Bytes(val)
+	return x
+}
+
+func NewFromUUIDString(val string) (encoding.BasicEncoding, error) {
+	x := New()
+	if err := x.UUIDString(val); err != nil {
+		return x, err
+	}
+	return x, nil
+}
+
+func NewRandomize() encoding.BasicEncoding {
+	return New().Randomize().(encoding.BasicEncoding)
+}
+
+func (r *radix36) String() string {
+	return base36.EncodeBytes(r.data)
 }

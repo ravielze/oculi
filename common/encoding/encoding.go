@@ -1,28 +1,20 @@
 package encoding
 
 import (
-	"math/big"
-
 	"github.com/gofrs/uuid"
 )
 
 type (
 	BasicEncoding interface {
 		IntEncodeDecode
-		BigIntEncodeDecode
 		BytesEncodeDecode
 		UUIDEncodeDecode
+		String() string
 	}
 
 	IntEncodeDecode interface {
 		Int(value int64)
 		ToInt() int64
-	}
-
-	BigIntEncodeDecode interface {
-		BigInt(value big.Int)
-		BigIntFromInt64(value int64)
-		ToBigInt() big.Int
 	}
 
 	BytesEncodeDecode interface {
@@ -32,7 +24,8 @@ type (
 
 	UUIDEncodeDecode interface {
 		UUID(value uuid.UUID)
+		UUIDString(value string) error
 		ToUUID() uuid.UUID
-		Randomize()
+		Randomize() UUIDEncodeDecode
 	}
 )
