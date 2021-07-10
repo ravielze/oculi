@@ -21,6 +21,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 		assert.Equal(t, int64(0), data.ToInt())
 		assert.Equal(t, []byte{0, 0, 0, 0, 0, 0, 0, 0}, data.ToBytes())
 		assert.Equal(t, createUUID("00000000-0000-0000-0000-000000000000"), data.ToUUID())
+		assert.Equal(t, "0", data.String())
 	})
 
 	t.Run("Positive Integer", func(t *testing.T) {
@@ -30,6 +31,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 		assert.Equal(t, int64(100), data.ToInt())
 		assert.Equal(t, []byte{0, 0, 0, 0, 0, 0, 0, 100}, data.ToBytes())
 		assert.Equal(t, createUUID("00000000-0000-0000-0000-000000000064"), data.ToUUID())
+		assert.Equal(t, "2S", data.String())
 	})
 
 	t.Run("Negative Integer", func(t *testing.T) {
@@ -39,6 +41,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 		assert.Equal(t, int64(-100), data.ToInt())
 		assert.Equal(t, []byte{255, 255, 255, 255, 255, 255, 255, 156}, data.ToBytes())
 		assert.Equal(t, createUUID("00000000-0000-0000-ffff-ffffffffff9c"), data.ToUUID())
+		assert.Equal(t, "3W5E11264SGPO", data.String())
 	})
 
 	t.Run("Max Integer", func(t *testing.T) {
@@ -48,6 +51,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 		assert.Equal(t, int64(math.MaxInt64), data.ToInt())
 		assert.Equal(t, []byte{127, 255, 255, 255, 255, 255, 255, 255}, data.ToBytes())
 		assert.Equal(t, createUUID("00000000-0000-0000-7fff-ffffffffffff"), data.ToUUID())
+		assert.Equal(t, "1Y2P0IJ32E8E7", data.String())
 	})
 
 	t.Run("Min Integer", func(t *testing.T) {
@@ -57,6 +61,7 @@ func TestRadix36_EncodeDecodeInt(t *testing.T) {
 		assert.Equal(t, int64(math.MinInt64), data.ToInt())
 		assert.Equal(t, []byte{128, 0, 0, 0, 0, 0, 0, 0}, data.ToBytes())
 		assert.Equal(t, createUUID("00000000-0000-0000-8000-000000000000"), data.ToUUID())
+		assert.Equal(t, "1Y2P0IJ32E8E8", data.String())
 	})
 
 	// t.Run("Big Integer But Still In Range Int64", func(t *testing.T) {

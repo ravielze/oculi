@@ -106,5 +106,8 @@ func (r *radix36) String() string {
 			break
 		}
 	}
+	if len(r.data) == zeroPrefix {
+		return "0"
+	}
 	return base36.EncodeBytes(r.data[zeroPrefix:])
 }

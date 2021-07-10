@@ -149,6 +149,20 @@ func Test_radix36_String(t *testing.T) {
 		assert.Equal(t, "3K", data.String())
 	})
 
+	t.Run("when not empty (4)", func(t *testing.T) {
+		data := Radix36("3K")
+		assert.NotNil(t, data.Bytes())
+		assert.Equal(t, "3K", data.String())
+		assert.Equal(t, int64(128), data.ToInt())
+	})
+
+	t.Run("when not empty (5)", func(t *testing.T) {
+		data := Radix36("3W5E11264SGPO")
+		assert.NotNil(t, data.Bytes())
+		assert.Equal(t, "3W5E11264SGPO", data.String())
+		assert.Equal(t, int64(-100), data.ToInt())
+	})
+
 	t.Run("when empty", func(t *testing.T) {
 		var data radix36
 		assert.Nil(t, data.Bytes())
