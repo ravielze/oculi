@@ -5,7 +5,8 @@ import (
 	"strings"
 
 	"github.com/gofrs/uuid"
-	"github.com/ravielze/oculi/common/radix36"
+
+	"github.com/ravielze/oculi/common/encoding/radix36"
 	stderr "github.com/ravielze/oculi/standard/errors"
 
 	stdcode "github.com/ravielze/oculi/standard/code"
@@ -70,14 +71,14 @@ func (ctx *Context) Param36(param string) *Context {
 				stdcode.PARAMETER_ERROR,
 			)
 		} else {
-			if !radix36.ValidateRadix36(p) {
+			if data, err := radix36.NewRadix36(p); err != nil {
 				ctx.Error(
 					stderr.NewSpecific(param, "not_radix36"),
 					http.StatusBadRequest,
 					stdcode.PARAMETER_ERROR,
 				)
 			} else {
-				ctx.params[param] = p
+				ctx.params[param] = data.String()
 			}
 		}
 
@@ -99,7 +100,7 @@ func (ctx *Context) ParamUUID36(param string) *Context {
 				stdcode.PARAMETER_ERROR,
 			)
 		} else {
-			radix36Parsed, err := radix36.EncodeUUID(p)
+			data, err := radix36.NewFromUUIDString(p)
 			if err != nil {
 				ctx.Error(
 					stderr.NewSpecific(param, "not_uuid"),
@@ -107,7 +108,7 @@ func (ctx *Context) ParamUUID36(param string) *Context {
 					stdcode.PARAMETER_ERROR,
 				)
 			} else {
-				ctx.params[param] = radix36Parsed
+				ctx.params[param] = data.String()
 			}
 		}
 
@@ -129,15 +130,14 @@ func (ctx *Context) Param36UUID(param string) *Context {
 				stdcode.PARAMETER_ERROR,
 			)
 		} else {
-			uuidParsed := radix36.DecodeUUID(strings.ToUpper(p))
-			if uuidParsed == uuid.Nil {
+			if data, err := radix36.NewRadix36(p); err != nil {
 				ctx.Error(
 					stderr.NewSpecific(param, "not_radix36"),
 					http.StatusBadRequest,
 					stdcode.PARAMETER_ERROR,
 				)
 			} else {
-				ctx.params[param] = uuidParsed.String()
+				ctx.params[param] = data.ToUUID().String()
 			}
 		}
 
