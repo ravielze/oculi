@@ -91,5 +91,20 @@ func NewRandomize() encoding.BasicEncoding {
 }
 
 func (r *radix36) String() string {
-	return base36.EncodeBytes(r.data)
+	if r.data == nil {
+		return ""
+	}
+	if len(r.data) == 0 {
+		return ""
+	}
+
+	zeroPrefix := 0
+	for i := range r.data {
+		if r.data[i] == byte(0) {
+			zeroPrefix++
+		} else {
+			break
+		}
+	}
+	return base36.EncodeBytes(r.data[zeroPrefix:])
 }

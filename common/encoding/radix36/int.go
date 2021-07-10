@@ -15,7 +15,7 @@ func (r *radix36) ToInt() int64 {
 	case bytes, t_uuid:
 		b := len(r.data)
 		if b >= 8 {
-			return int64(binary.BigEndian.Uint64(r.data[:8]))
+			return int64(binary.BigEndian.Uint64(r.data[len(r.data)-8:]))
 		} else {
 			zero := make([]byte, 8-b)
 			zero = append(zero, r.data...)

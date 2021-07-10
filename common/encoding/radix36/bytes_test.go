@@ -60,7 +60,7 @@ func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 		data.FromBytes([]byte{12, 13, 14, 15, 11, 11, 11, 11, 11, 11, 128})
 
 		assert.Equal(t, bytes, data.lastType)
-		assert.Equal(t, int64(868365760924945163), data.ToInt())
+		assert.Equal(t, int64(1083972277370555264), data.ToInt())
 		assert.Equal(t, []byte{12, 13, 14, 15, 11, 11, 11, 11, 11, 11, 128}, data.ToBytes())
 		assert.Equal(t, createUUID("00000000-000c-0d0e-0f0b-0b0b0b0b0b80"), data.ToUUID())
 	})
@@ -69,7 +69,7 @@ func TestRadix36_EncodeDecodeBytes(t *testing.T) {
 		data.FromBytes([]byte{176, 202, 111, 156, 203, 132, 12, 13, 14, 15, 11, 11, 11, 11, 11, 11, 128})
 
 		assert.Equal(t, bytes, data.lastType)
-		assert.Equal(t, int64(-5707626858518672371), data.ToInt())
+		assert.Equal(t, int64(1083972277370555264), data.ToInt())
 		assert.Equal(t, []byte{176, 202, 111, 156, 203, 132, 12, 13, 14, 15, 11, 11, 11, 11, 11, 11, 128}, data.ToBytes())
 		assert.Equal(t, createUUID("b0ca6f9c-cb84-0c0d-0e0f-0b0b0b0b0b0b"), data.ToUUID())
 	})
