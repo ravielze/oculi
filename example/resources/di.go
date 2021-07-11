@@ -1,0 +1,13 @@
+package resources
+
+import (
+	"github.com/ravielze/oculi/di"
+	"github.com/ravielze/oculi/example/resources/external"
+	"go.uber.org/dig"
+)
+
+func Register(c *dig.Container) error {
+	return di.NewRegistrant(c).
+		Provide(external.NewGin).
+		End()
+}
