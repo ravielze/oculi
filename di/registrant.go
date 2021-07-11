@@ -19,6 +19,10 @@ func NewRegistrant(container *dig.Container) *Registrant {
 	}
 }
 
+func SimpleRegistrant(container *dig.Container, constructor interface{}, opts ...dig.ProvideOption) error {
+	return NewRegistrant(container).Provide(constructor, opts...).End()
+}
+
 func (r *Registrant) Provide(constructor interface{}, opts ...dig.ProvideOption) *Registrant {
 	if r.err == nil {
 		if err := r.container.Provide(constructor, opts...); err != nil {
