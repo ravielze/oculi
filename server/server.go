@@ -1,8 +1,6 @@
 package server
 
 import (
-	"time"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,7 +18,6 @@ type (
 		Gin() *gin.Engine
 		ServiceName() string
 		ServerPort() int
-		ServerGracefullyDuration() time.Duration
 		Close() error
 	}
 

@@ -13,7 +13,6 @@
 *.out
 
 test
-rest
 *.txt
 !**/template/**/**/*.txt
 !**/template/**/*.txt
