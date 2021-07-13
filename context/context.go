@@ -2,45 +2,31 @@ package context
 
 import (
 	"context"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
 )
 
 type (
-	Parameters map[string]string
-	Queries    map[string]interface{}
-	Context    struct {
-		ginCtx *gin.Context
+	Context struct {
+		ec  echo.Context
+		ctx context.Context
 
-		err      error
-		params   Parameters
-		code     string
+		result   interface{}
+		errors   []error
 		httpCode int
-		query    Queries
-		isError  bool
 	}
 )
 
-func New(ctx *gin.Context) *Context {
+func New(ec echo.Context) *Context {
 	return &Context{
-		ginCtx:   ctx,
-		isError:  false,
-		err:      nil,
-		params:   Parameters{},
-		code:     "",
-		httpCode: -1,
-		query:    Queries{},
+		ctx:      context.Background(),
+		ec:       ec,
+		errors:   make([]error, 0),
+		httpCode: http.StatusOK,
 	}
 }
 
-func (ctx *Context) ClientIP() string {
-	return ctx.ginCtx.ClientIP()
-}
-
-func (ctx *Context) Gin() *gin.Context {
-	return ctx.ginCtx
-}
-
 func (ctx *Context) Context() context.Context {
-	return ctx.ginCtx.Request.Context()
+	return ctx.ctx
 }
