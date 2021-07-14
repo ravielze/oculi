@@ -10,7 +10,6 @@ import (
 	v10 "github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 	"github.com/ravielze/oculi/constant/errors"
-	stderr "github.com/ravielze/oculi/standard/errors"
 	"github.com/ravielze/oculi/validator"
 )
 
@@ -111,15 +110,16 @@ func (i *impl) AddTranslation(tag string, errorMsg string) error {
 }
 
 func (i *impl) TranslateError(err error) error {
-	if err == nil {
-		return nil
-	}
-	validatorErrs := err.(v10.ValidationErrors)
-	translatedErrs := make([]error, len(validatorErrs))
-	for x, e := range validatorErrs {
-		translatedErrs[x] = stderr.NewSpecific(e.Field(), e.Translate(*i.trans))
-	}
-	return stderr.NewMultipleError(translatedErrs...)
+	panic("todo")
+	// if err == nil {
+	// 	return nil
+	// }
+	//validatorErrs := err.(v10.ValidationErrors)
+	//translatedErrs := make([]error, len(validatorErrs))
+	// for x, e := range validatorErrs {
+	// 	translatedErrs[x] = stderr.NewSpecific(e.Field(), e.Translate(*i.trans))
+	// }
+	// return stderr.NewMultipleError(translatedErrs...)
 }
 
 func (i *impl) InstallDefault() {
