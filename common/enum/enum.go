@@ -3,9 +3,8 @@ package enum
 import (
 	"database/sql/driver"
 	"encoding/json"
+	"errors"
 	"reflect"
-
-	"github.com/ravielze/oculi/constant/errors"
 )
 
 type (
@@ -26,27 +25,38 @@ type (
 	}
 )
 
+var (
+	ErrEnumKeyRegistered       = errors.New("enum's key already registered")
+	ErrEnumNotInt              = errors.New("enum is not int")
+	ErrEnumNotIntPointer       = errors.New("enum is not int pointer")
+	ErrEnumImplRegisterable    = errors.New("enum need implement registerable")
+	ErrEnumImplRegisterablePtr = errors.New("enum need implement registerable pointer")
+	ErrEnumNotSlice            = errors.New("enum data is not slice")
+	ErrEnumNotFound            = errors.New("enum not found")
+	ErrEnumParsing             = errors.New("failed to parse enum")
+)
+
 var enumArrayMap = map[string][]IEnum{}
 
 func Register(key string, slice interface{}, objStruct interface{}, objStructPtr interface{}) error {
 	if enumArrayMap[key] != nil {
-		return errors.ErrEnumKeyRegistered
+		return ErrEnumKeyRegistered
 	}
 
 	val := reflect.ValueOf(objStruct)
 	if val.Kind() != reflect.Int {
-		return errors.ErrEnumNotInt
+		return ErrEnumNotInt
 	}
 	if _, ok := objStruct.(EnumRegisterable); !ok {
-		return errors.ErrEnumImplRegisterable
+		return ErrEnumImplRegisterable
 	}
 
 	valPtr := reflect.ValueOf(objStructPtr)
 	if valPtr.Kind() != reflect.Ptr {
-		return errors.ErrEnumNotIntPointer
+		return ErrEnumNotIntPointer
 	}
 	if _, ok := objStructPtr.(EnumRegisterablePtr); !ok {
-		return errors.ErrEnumImplRegisterablePtr
+		return ErrEnumImplRegisterablePtr
 	}
 	register(key, slice)
 	return nil
@@ -55,7 +65,7 @@ func Register(key string, slice interface{}, objStruct interface{}, objStructPtr
 func register(key string, data interface{}) {
 	val := reflect.ValueOf(data)
 	if val.Kind() != reflect.Slice {
-		panic(errors.ErrEnumNotSlice)
+		panic(ErrEnumNotSlice)
 	}
 	if val.IsNil() {
 		return
@@ -70,12 +80,12 @@ func register(key string, data interface{}) {
 func Scan(val interface{}, key string) (int, error) {
 	rawValue, ok := val.([]byte)
 	if !ok {
-		return 0, errors.ErrEnumParsing
+		return 0, ErrEnumParsing
 	}
 	dbValue := string(rawValue)
 	idx := findIndex(dbValue, key, func(e IEnum) string { return e.Code() })
 	if idx == 0 {
-		return 0, errors.ErrEnumNotFound
+		return 0, ErrEnumNotFound
 	}
 	return idx, nil
 }
@@ -88,7 +98,7 @@ func UnmarshalJSON(val []byte, key string) (int, error) {
 
 	idx := findIndex(rawValue, key, func(e IEnum) string { return e.Name() })
 	if idx == 0 {
-		return 0, errors.ErrEnumNotFound
+		return 0, ErrEnumNotFound
 	}
 	return idx, nil
 }

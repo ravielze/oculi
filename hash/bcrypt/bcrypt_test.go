@@ -3,7 +3,6 @@ package bcrypt
 import (
 	"testing"
 
-	"github.com/ravielze/oculi/constant/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -23,7 +22,7 @@ func TestNewHashWithCost(t *testing.T) {
 	t.Run("when higher than max cost", func(t *testing.T) {
 		result, err := NewHashWithCost(MaxCost + 1)
 		assert.Error(t, err)
-		assert.Equal(t, errors.ErrBcryptInvalidCost, err)
+		assert.Equal(t, ErrBcryptInvalidCost, err)
 		assert.Nil(t, result)
 	})
 }
@@ -57,7 +56,7 @@ func Test_bcrypt_Verify(t *testing.T) {
 	t.Run("password mismatch", func(t *testing.T) {
 		result, err := b.Verify(wrongPassword, hashedPassword)
 		assert.Error(t, err)
-		assert.Equal(t, err, errors.ErrPasswordMismatch)
+		assert.Equal(t, err, ErrPasswordMismatch)
 		assert.False(t, result)
 	})
 }
