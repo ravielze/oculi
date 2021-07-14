@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/gofrs/uuid"
+	"github.com/martinlindhe/base36"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -161,6 +162,13 @@ func Test_radix36_String(t *testing.T) {
 		assert.NotNil(t, data.Bytes())
 		assert.Equal(t, "3W5E11264SGPO", data.String())
 		assert.Equal(t, int64(-100), data.ToInt())
+	})
+	t.Run("when not empty (6)", func(t *testing.T) {
+		uuid := uuid.Must(uuid.NewV4())
+		data := NewFromUUID(uuid)
+		assert.NotNil(t, data.Bytes())
+		assert.Equal(t, uuid.Bytes(), data.Bytes())
+		assert.Equal(t, base36.EncodeBytes(uuid.Bytes()), data.String())
 	})
 
 	t.Run("when empty", func(t *testing.T) {
