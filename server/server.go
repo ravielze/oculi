@@ -1,7 +1,9 @@
 package server
 
 import (
-	"github.com/gin-gonic/gin"
+	"time"
+
+	"github.com/labstack/echo/v4"
 )
 
 type (
@@ -15,15 +17,19 @@ type (
 	}
 
 	Resource interface {
-		Gin() *gin.Engine
+		Echo() *echo.Echo
 		ServiceName() string
 		ServerPort() int
+		ServerGracefullyDuration() time.Duration
+		Logger() interface{}    //TODO
+		Validator() interface{} //TODO
 		Close() error
 	}
 
 	Infrastructure interface {
-		Register(gin *gin.Engine) error
-		Health() gin.HandlerFunc
+		Register(ec *echo.Echo) error
+		Health() echo.HandlerFunc
+		HealthRoutes() echo.HandlerFunc
 	}
 
 	HookFunction func(res Resource) error
