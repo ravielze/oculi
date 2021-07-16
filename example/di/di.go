@@ -21,5 +21,5 @@ func Container() (*dig.Container, error) {
 		resources.Register,
 		domain.Register,
 	}
-	return di.GenerateContainerFunction(items)(&once, container)
+	return di.Container(items)(&once, container)
 }

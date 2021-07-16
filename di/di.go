@@ -12,7 +12,7 @@ type (
 	ContainerFunction func(once *sync.Once, container *dig.Container) (*dig.Container, error)
 )
 
-func GenerateContainerFunction(items []Registerable) ContainerFunction {
+func Container(items []Registerable) ContainerFunction {
 	return func(once *sync.Once, container *dig.Container) (*dig.Container, error) {
 		var outer error
 		once.Do(func() {
