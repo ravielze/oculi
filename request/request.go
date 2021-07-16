@@ -42,6 +42,11 @@ type (
 		Identifier() uint64
 	}
 
+	//TODO
+	NonEchoContext interface {
+		BindValidate(obj interface{})
+	}
+
 	EchoContext interface {
 		Context
 

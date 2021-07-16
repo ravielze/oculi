@@ -12,6 +12,9 @@ var (
 )
 
 func (ctx *Context) BindValidate(obj interface{}) {
+	if ctx.HasError() {
+		return
+	}
 	if err := ctx.Bind(obj); err != nil {
 		ctx.AddError(http.StatusUnprocessableEntity, err)
 		return
@@ -24,6 +27,9 @@ func (ctx *Context) BindValidate(obj interface{}) {
 }
 
 func (ctx *Context) Process(usecaseResult ...interface{}) {
+	if ctx.HasError() {
+		return
+	}
 	resultLength := len(usecaseResult)
 	if resultLength > 0 {
 		last := reflect.ValueOf(usecaseResult[resultLength-1])
@@ -40,6 +46,9 @@ func (ctx *Context) Process(usecaseResult ...interface{}) {
 }
 
 func (ctx *Context) Merge(req request.Context) {
+	if ctx.HasError() {
+		return
+	}
 	if req.HasError() {
 		ctx.AddError(req.ResponseCode(), req.Error())
 	}
