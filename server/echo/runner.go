@@ -15,10 +15,16 @@ import (
 	oculiContext "github.com/ravielze/oculi/context"
 )
 
-type ServiceInfo struct {
-	Name       string `json:"service_name"`
-	Identifier string `json:"identifier"`
-}
+type (
+	ServiceInfo struct {
+		Name       string `json:"service_name"`
+		Identifier string `json:"identifier"`
+	}
+	NotFoundStruct struct {
+		Code    int    `json:"code"`
+		Message string `json:"error"`
+	}
+)
 
 func (w *WebServer) Run() error {
 	if err := w.start(); err != nil {
@@ -74,8 +80,7 @@ func (w *WebServer) start() error {
 	echo.NotFoundHandler = func(c echo.Context) error {
 		ctx := oculiContext.New(c)
 		ctx.AddError(http.StatusNotFound, errors.New("not found"))
-		//TODO return response
-		return nil
+		return ctx.JSON(ctx.ResponseCode(), NotFoundStruct{Code: ctx.ResponseCode(), Message: ctx.Errors()[0].Error()})
 	}
 
 	w.resource.Echo().GET("/", func(c echo.Context) error {

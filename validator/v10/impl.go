@@ -34,6 +34,26 @@ func New() (validator.Validator, error) {
 	return instance, nil
 }
 
+func (i *impl) AddTranslation(tag string, format string, extraParams ...string) error {
+	registerFn := func(ut ut.Translator) error {
+		return ut.Add(tag, format, false)
+	}
+	transFn := func(ut ut.Translator, fe v10.FieldError) string {
+		x := []string{fe.Field(), fe.Param()}
+		x = append(x, extraParams...)
+		t, err := ut.T(fe.Tag(), x...)
+		if err != nil {
+			return fe.(error).Error()
+		}
+		return t
+	}
+	return i.instance.RegisterTranslation(tag, i.trans, registerFn, transFn)
+}
+
+func (i *impl) Translator() ut.Translator {
+	return i.trans
+}
+
 func (i *impl) installDefaultValidator() error {
 	return nil
 }
