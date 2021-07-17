@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/ravielze/oculi/logs"
+	"github.com/ravielze/oculi/validator"
 )
 
 type (
@@ -20,16 +22,16 @@ type (
 		Echo() *echo.Echo
 		ServiceName() string
 		ServerPort() int
+		Identifier() string
 		ServerGracefullyDuration() time.Duration
-		Logger() interface{}    //TODO
-		Validator() interface{} //TODO
+		Logger() logs.Logger
+		Validator() validator.Validator
 		Close() error
 	}
 
 	Infrastructure interface {
 		Register(ec *echo.Echo) error
 		Health() echo.HandlerFunc
-		HealthRoutes() echo.HandlerFunc
 	}
 
 	HookFunction func(res Resource) error

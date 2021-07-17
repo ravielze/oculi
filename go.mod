@@ -14,20 +14,22 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/labstack/echo/v4 v4.4.0 // indirect
+	github.com/labstack/echo/v4 v4.4.0
+	github.com/labstack/gommon v0.3.0
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/martinlindhe/base36 v1.1.0
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pkg/errors v0.8.1
+	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
+	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/yangxikun/gin-limit-by-key v0.0.0-20190512072151-520697354d5f
-	go.uber.org/dig v1.11.0 // indirect
+	go.uber.org/dig v1.11.0
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
-	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
