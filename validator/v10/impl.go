@@ -18,14 +18,14 @@ type (
 		trans    ut.Translator
 	}
 
-	pair struct {
+	RegisterValidator struct {
 		tag string
 		vr  validator.ValidatorRegisterable
 	}
 )
 
 var (
-	defaultValidator = []pair{
+	defaultValidator = []RegisterValidator{
 		{"after_now", custom.AfterNow},
 		{"before_now", custom.BeforeNow},
 		{"base36", custom.Base36},
