@@ -15,7 +15,7 @@ type (
 		RegisterCustomTypeFunc(fn CustomTypeFunc, types ...interface{})
 		RegisterStructValidation(fn interface{}, types ...interface{})
 
-		Translator() ut.Translator
+		Translator() *ut.Translator
 
 		//Translate error into custom error message for the provided tag with the provided format.
 		//{0} will be the field name.

@@ -50,8 +50,8 @@ func (i *impl) AddTranslation(tag string, format string, extraParams ...string) 
 	return i.instance.RegisterTranslation(tag, i.trans, registerFn, transFn)
 }
 
-func (i *impl) Translator() ut.Translator {
-	return i.trans
+func (i *impl) Translator() *ut.Translator {
+	return &i.trans
 }
 
 func (i *impl) installDefaultValidator() error {

@@ -89,7 +89,7 @@ func (r *Responder) buildErrors(responseCode int, data []error) (string, []error
 			errors[i] = errorField{
 				Field:   err[i].StructNamespace(),
 				Reason:  err[i].Tag(),
-				Message: err[i].Translate(r.validator.Translator()),
+				Message: err[i].Translate(*r.validator.Translator()),
 			}
 		}
 	}
