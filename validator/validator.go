@@ -22,7 +22,24 @@ type (
 		//{1} will be the validator param.
 		//{2}, {3}, ... will extraParams[0], extraParams[1] and so on.
 		AddTranslation(tag string, format string, extraParams ...string) error
+
+		Register(tag string, vr ValidatorRegisterable) error
 	}
+
+	FormatOnError         string
+	ExtraParamsOnFormat   []string
+	ValidatorRegisterable func() (interface{}, FormatOnError, ExtraParamsOnFormat)
 
 	CustomTypeFunc func(field reflect.Value) interface{}
 )
+
+func NewFormat(val string) FormatOnError {
+	return FormatOnError(val)
+}
+
+func NewExtraParams(val ...string) ExtraParamsOnFormat {
+	if len(val) == 0 {
+		return ExtraParamsOnFormat([]string{})
+	}
+	return ExtraParamsOnFormat(val)
+}
