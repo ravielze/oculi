@@ -36,6 +36,7 @@ type (
 		Panic(i ...interface{})
 		Panicj(j log.JSON)
 		Panicf(format string, args ...interface{})
+		Instance() interface{}
 	}
 )
 
