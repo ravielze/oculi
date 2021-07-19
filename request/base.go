@@ -62,6 +62,9 @@ func (r *Base) HasTransaction() bool {
 }
 
 func (r *Base) Transaction() sql.API {
+	if r.tx == nil {
+		return r.db
+	}
 	return r.tx
 }
 
@@ -72,7 +75,7 @@ func (r *Base) NewTransaction() sql.API {
 
 func (r *Base) CommitTransaction() sql.API {
 	if r.tx == nil {
-		return nil
+		return r.db
 	}
 
 	r.tx.Commit()
@@ -81,7 +84,7 @@ func (r *Base) CommitTransaction() sql.API {
 
 func (r *Base) RollbackTransaction() sql.API {
 	if r.tx == nil {
-		return nil
+		return r.db
 	}
 
 	r.tx.Rollback()
