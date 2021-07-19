@@ -1,7 +1,7 @@
 package infrastructures
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
 	"github.com/ravielze/oculi/example/infrastructures/rest"
 	"go.uber.org/dig"
 )
@@ -14,10 +14,10 @@ type (
 	}
 )
 
-func (c Component) Register(gin *gin.Engine) error {
+func (c Component) Register(ec *echo.Echo) error {
 	return nil
 }
 
-func (c Component) Health() gin.HandlerFunc {
+func (c Component) Health() echo.HandlerFunc {
 	return nil
 }

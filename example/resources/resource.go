@@ -1,22 +1,38 @@
 package resources
 
 import (
-	"github.com/gin-gonic/gin"
+	"errors"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/labstack/echo/v4"
 	"github.com/ravielze/oculi/example/config"
+	"github.com/ravielze/oculi/logs"
+	"github.com/ravielze/oculi/response"
+	"github.com/ravielze/oculi/validator"
 	"go.uber.org/dig"
+)
+
+var (
+	once       sync.Once
+	identifier string
 )
 
 type (
 	Resource struct {
 		dig.In
 
-		GinEngine *gin.Engine
-		Config    *config.Env
+		EchoData      *echo.Echo
+		Log           logs.Logger
+		Responder     *response.Responder
+		Config        *config.Env
+		ValidatorData validator.Validator
 	}
 )
 
-func (r Resource) Gin() *gin.Engine {
-	return r.GinEngine
+func (r Resource) Echo() *echo.Echo {
+	return r.EchoData
 }
 func (r Resource) ServiceName() string {
 	return r.Config.ServiceName
@@ -24,6 +40,37 @@ func (r Resource) ServiceName() string {
 func (r Resource) ServerPort() int {
 	return r.Config.ServerPort
 }
+
+func (r Resource) Identifier() string {
+	once.Do(func() {
+		if identifier == "" {
+			identifier = r.Config.ServiceName + " " + time.Now().String()
+		}
+	})
+	return identifier
+}
+
+func (r Resource) ServerGracefullyDuration() time.Duration {
+	return r.Config.GracefullyDuration
+}
+
+func (r Resource) Logger() logs.Logger {
+	return r.Log
+}
+
+func (r Resource) Validator() validator.Validator {
+	return r.ValidatorData
+}
+
 func (r Resource) Close() error {
+	var errMessage = make([]string, 0)
+
+	if err := r.EchoData.Close(); err != nil {
+		errMessage = append(errMessage, err.Error())
+	}
+
+	if len(errMessage) > 0 {
+		return errors.New(strings.Join(errMessage, "\n"))
+	}
 	return nil
 }

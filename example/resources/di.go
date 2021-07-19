@@ -8,6 +8,9 @@ import (
 
 func Register(c *dig.Container) error {
 	return di.NewRegistrant(c).
-		Provide(external.NewGin).
+		Provide(external.NewEcho).
+		Provide(external.NewValidator).
+		Provide(external.NewResponder).
+		Provide(external.NewLogger).
 		End()
 }
