@@ -26,23 +26,24 @@ func (ctx *Context) BindValidate(obj interface{}) {
 	}
 }
 
-func (ctx *Context) Process(usecaseResult ...interface{}) {
+func (ctx *Context) Process(usecaseResult ...interface{}) interface{} {
 	if ctx.HasError() {
-		return
+		return nil
 	}
 	resultLength := len(usecaseResult)
 	if resultLength > 0 {
 		last := reflect.ValueOf(usecaseResult[resultLength-1])
 		if usecaseResult[resultLength-1] == nil {
-			return
+			return nil
 		}
 		if last.Type().Implements(_errType) {
 			if err, _ := last.Interface().(error); err != nil {
 				ctx.AddError(http.StatusBadRequest, err)
-				return
+				return nil
 			}
 		}
 	}
+	return usecaseResult[:len(usecaseResult)-1]
 }
 
 func (ctx *Context) Merge(req request.Context) {
