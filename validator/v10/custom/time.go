@@ -7,28 +7,35 @@ import (
 	"github.com/ravielze/oculi/validator"
 )
 
-func AfterNow() (interface{}, validator.FormatOnError, validator.ExtraParamsOnFormat) {
-	v := func(fl v10.FieldLevel) bool {
-		date, ok := fl.Field().Interface().(time.Time)
-		if ok {
-			return date.After(time.Now())
-		}
-		return true
+type (
+	AfterNowValidator struct {
+		*validator.CustomValidator
 	}
-	extraParams := validator.NewExtraParams()
-	format := validator.NewFormat("{0} must be after current time.")
-	return v, format, extraParams
+)
+
+func AfterNow(tag string) AfterNowValidator {
+	return AfterNowValidator{
+		CustomValidator: validator.NewCustomValidator(tag, "{0} must be after current time."),
+	}
 }
 
-func BeforeNow() (interface{}, validator.FormatOnError, validator.ExtraParamsOnFormat) {
-	v := func(fl v10.FieldLevel) bool {
-		date, ok := fl.Field().Interface().(time.Time)
-		if ok {
-			return date.Before(time.Now())
-		}
-		return true
+func (AfterNowValidator) Validate(fl v10.FieldLevel) bool {
+	date, ok := fl.Field().Interface().(time.Time)
+	if ok {
+		return date.After(time.Now())
 	}
-	extraParams := validator.NewExtraParams()
-	format := validator.NewFormat("{0} must be before current time.")
-	return v, format, extraParams
+	return true
 }
+
+// func BeforeNow() (interface{}, validator.FormatOnError, validator.ExtraParamsOnFormat) {
+// 	v := func(fl v10.FieldLevel) bool {
+// 		date, ok := fl.Field().Interface().(time.Time)
+// 		if ok {
+// 			return date.Before(time.Now())
+// 		}
+// 		return true
+// 	}
+// 	extraParams := validator.NewExtraParams()
+// 	format := validator.NewFormat("{0} must be before current time.")
+// 	return v, format, extraParams
+// }

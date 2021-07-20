@@ -18,17 +18,15 @@ type (
 		trans    ut.Translator
 	}
 
-	RegisterValidator struct {
-		tag string
-		vr  validator.ValidatorRegisterable
+	Registerable interface {
+		validator.Registerable
+		Validate(v10.FieldLevel) bool
 	}
 )
 
 var (
-	defaultValidator = []RegisterValidator{
-		{"after_now", custom.AfterNow},
-		{"before_now", custom.BeforeNow},
-		{"base36", custom.Base36},
+	defaultValidator = []Registerable{
+		custom.AfterNow("after_now"),
 	}
 )
 
@@ -72,7 +70,7 @@ func (i *impl) Translator() *ut.Translator {
 
 func (i *impl) installDefaultValidator() error {
 	for _, v := range defaultValidator {
-		if err := i.Register(v.tag, v.vr); err != nil {
+		if err := i.Register(v.Tag(), v); err != nil {
 			return err
 		}
 	}
@@ -107,14 +105,14 @@ func (i *impl) RegisterStructValidation(fn interface{}, types ...interface{}) {
 	}
 }
 
-func (i *impl) Register(tag string, vr validator.ValidatorRegisterable) error {
-	fn, format, extraParams := vr()
-	fnConv, ok := fn.(v10.Func)
+func (i *impl) Register(tag string, cv interface{}) error {
+	r, ok := cv.(Registerable)
 	if !ok {
-		return errors.New("fn is not v10.Func")
+		return errors.New("tried to register non supported v10 validator (tag: " + tag + ")")
 	}
+	format, extraParams := r.FormatOnError(), r.ExtraParamsOnFormat()
 
-	if err := i.instance.RegisterValidation(tag, fnConv); err != nil {
+	if err := i.instance.RegisterValidation(tag, r.Validate); err != nil {
 		return err
 	}
 	return i.AddTranslation(tag, string(format), extraParams...)

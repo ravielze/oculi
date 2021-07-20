@@ -23,23 +23,45 @@ type (
 		//{2}, {3}, ... will extraParams[0], extraParams[1] and so on.
 		AddTranslation(tag string, format string, extraParams ...string) error
 
-		Register(tag string, vr ValidatorRegisterable) error
+		Register(tag string, cv interface{}) error
 	}
 
-	FormatOnError         string
-	ExtraParamsOnFormat   []string
-	ValidatorRegisterable func() (interface{}, FormatOnError, ExtraParamsOnFormat)
+	Registerable interface {
+		Tag() string
+		FormatOnError() string
+		ExtraParamsOnFormat() []string
+	}
+	CustomValidator struct {
+		tag                 string
+		formatOnError       string
+		extraParamsOnFormat []string
+	}
 
 	CustomTypeFunc func(field reflect.Value) interface{}
 )
 
-func NewFormat(val string) FormatOnError {
-	return FormatOnError(val)
+func NewCustomValidator(tag, formatOnError string, extraParams ...string) *CustomValidator {
+	var ep []string
+	if extraParams == nil || len(extraParams) == 0 {
+		ep = []string{}
+	} else {
+		ep = extraParams
+	}
+	return &CustomValidator{
+		tag:                 tag,
+		formatOnError:       formatOnError,
+		extraParamsOnFormat: ep,
+	}
 }
 
-func NewExtraParams(val ...string) ExtraParamsOnFormat {
-	if len(val) == 0 {
-		return ExtraParamsOnFormat([]string{})
-	}
-	return ExtraParamsOnFormat(val)
+func (c *CustomValidator) Tag() string {
+	return c.tag
+}
+
+func (c *CustomValidator) FormatOnError() string {
+	return c.formatOnError
+}
+
+func (c *CustomValidator) ExtraParamsOnFormat() []string {
+	return c.extraParamsOnFormat
 }
