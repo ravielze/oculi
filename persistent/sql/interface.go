@@ -238,5 +238,7 @@ type (
 		AutoMigrate(dst ...interface{}) error
 		Association(column string) *gorm.Association
 		Statement() *gorm.Statement
+
+		Ping(ctx context.Context) error
 	}
 )

@@ -9,6 +9,14 @@ import (
 	"gorm.io/gorm"
 )
 
+func (i *Impl) Ping(ctx context.Context) error {
+	db, err := i.Database.WithContext(ctx).DB()
+	if err != nil {
+		return err
+	}
+	return db.Ping()
+}
+
 func (i *Impl) Gorm() *gorm.DB {
 	return i.Database
 }
