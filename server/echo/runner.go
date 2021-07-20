@@ -112,11 +112,11 @@ func (w *WebServer) stop() {
 	defer cancel()
 
 	if err := w.resource.Echo().Shutdown(ctx); err != nil {
-		w.resource.Logger().Error("failed to shutdown http server %s", err)
+		w.resource.Logger().Errorf("failed to shutdown http server %s", err)
 	}
 
 	w.resource.Logger().Info("closing resource")
 	if err := w.resource.Close(); err != nil {
-		w.resource.Logger().Error("failed to close resource %s", err)
+		w.resource.Logger().Errorf("failed to close resource %s", err)
 	}
 }
