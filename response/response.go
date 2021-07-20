@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	oculiContext "github.com/ravielze/oculi/context"
+	"github.com/ravielze/oculi/request"
 	oculiValidator "github.com/ravielze/oculi/validator"
 )
 
@@ -37,8 +38,12 @@ func New(validator oculiValidator.Validator) *Responder {
 		validator: validator,
 	}
 }
+func (r *Responder) NewJSONResponse(ctx *oculiContext.Context, req request.Context, data interface{}) error {
+	ctx.Merge(req)
+	return r.newJSON(ctx, data)
+}
 
-func (r *Responder) NewJSON(ctx *oculiContext.Context, data interface{}) error {
+func (r *Responder) newJSON(ctx *oculiContext.Context, data interface{}) error {
 	var resp Response
 	if ctx.ResponseCode() >= 400 || ctx.HasError() {
 		resp = r.handleError(ctx.ResponseCode(), ctx.Errors())
@@ -54,27 +59,16 @@ func (r *Responder) NewJSON(ctx *oculiContext.Context, data interface{}) error {
 }
 
 func (r *Responder) handleError(responseCode int, data []error) errorResponse {
-	if l := len(data); l == 1 {
+	msg, errfields := r.buildErrors(responseCode, data)
+	if errfields == nil {
 		return errorResponse{
 			Code:   responseCode,
-			Errors: data[0].Error(),
-		}
-	} else if l > 1 {
-		msg, errfields := r.buildErrors(responseCode, data)
-		if errfields == nil {
-			return errorResponse{
-				Code:   responseCode,
-				Errors: msg,
-			}
-		}
-		return errorResponse{
-			Code:   responseCode,
-			Errors: errfields,
+			Errors: msg,
 		}
 	}
 	return errorResponse{
 		Code:   responseCode,
-		Errors: "unknown error has occured",
+		Errors: errfields,
 	}
 }
 
