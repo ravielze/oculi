@@ -28,8 +28,9 @@ func formatRequest(ec echo.Context, start time.Time) string {
 	if ec.QueryString() != "" {
 		path = path + "?" + ec.QueryString()
 	}
-	return fmt.Sprintf("%v |%s %3d %s| %13v | %15s |%s %-7s %s %#v",
-		now.Format("2006/01/02 - 15:04:05"),
+	return fmt.Sprintf("[%s Oculi %s] %v |%s %3d %s| %13v | %15s |%s %-7s %s %#v",
+		magenta, reset,
+		now.Format("15:04:05 02 Jan 2006"),
 		statusCodeColor(statusCode), statusCode, reset,
 		latency,
 		ec.RealIP(),
