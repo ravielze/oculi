@@ -6,7 +6,7 @@ type (
 	CheckResponseDTO struct {
 		Ts     time.Time      `json:"ts"`
 		Pid    int            `json:"pid"`
-		Uptime time.Duration  `json:"uptime"`
+		Uptime string         `json:"uptime"`
 		Memory MemoryUsageDTO `json:"memory"`
 		Status string         `json:"status"`
 	}

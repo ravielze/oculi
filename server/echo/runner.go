@@ -66,14 +66,13 @@ func (w *WebServer) start() error {
 		AllowOrigins: []string{"*"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAcceptEncoding},
 	}))
-	w.resource.Echo().Pre(func(next echo.HandlerFunc) echo.HandlerFunc {
+	w.resource.Echo().Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			ctx, ok := c.(*oculiContext.Context)
 			if !ok {
 				ctx = oculiContext.New(c)
 			}
-			c = ctx
-			return nil
+			return next(ctx)
 		}
 	})
 
@@ -94,6 +93,7 @@ func (w *WebServer) start() error {
 		return err
 	}
 
+	w.resource.Identifier()
 	w.resource.Echo().GET("/health", w.infrastructure.Health())
 	return nil
 }

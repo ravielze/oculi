@@ -43,7 +43,7 @@ func (ctx *Context) Process(usecaseResult ...interface{}) interface{} {
 			}
 		}
 	}
-	return usecaseResult[:len(usecaseResult)-1]
+	return usecaseResult[0]
 }
 
 func (ctx *Context) Merge(req request.Context) {

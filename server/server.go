@@ -23,6 +23,7 @@ type (
 		ServiceName() string
 		ServerPort() int
 		Identifier() string
+		Uptime() time.Time
 		ServerGracefullyDuration() time.Duration
 		Logger() logs.Logger
 		Validator() validator.Validator
