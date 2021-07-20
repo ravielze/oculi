@@ -13,7 +13,11 @@ import (
 func Run() {
 	invoker := func(container *dig.Container) error {
 		return container.Invoke(func(i infrastructures.Component, r resources.Resource) error {
-			return webserver.New(i, r).Run()
+			s := webserver.New(i, r)
+			if r.Config.ServiceState == 0 {
+				s.DevelopmentMode()
+			}
+			return s.Run()
 		})
 	}
 

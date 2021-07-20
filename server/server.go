@@ -11,6 +11,7 @@ import (
 type (
 	Server interface {
 		Run() error
+		DevelopmentMode()
 
 		BeforeRun(hf HookFunction) Server
 		AfterRun(hf HookFunction) Server

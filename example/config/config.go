@@ -8,8 +8,9 @@ import (
 
 type (
 	Env struct {
+		ServiceState       int           `envconfig:"SERVICE_STATE" required:"true" default:"1"`
 		ServiceName        string        `envconfig:"SERVICE_NAME" required:"true"`
-		ServerPort         int           `envconfig:"SERVER_PORT" default:"8000" required:"true"`
+		ServerPort         int           `envconfig:"SERVICE_PORT" default:"8000" required:"true"`
 		GracefullyDuration time.Duration `envconfig:"GRACEFULLY_DURATION" default:"5s"`
 
 		LogLevel string `envconfig:"LOG_LEVEL" default:"INFO" required:"true"`

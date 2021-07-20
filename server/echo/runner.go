@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -25,6 +26,17 @@ type (
 		Message string `json:"error"`
 	}
 )
+
+func (w *WebServer) DevelopmentMode() {
+	w.resource.Echo().Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			start := time.Now()
+			err := next(c)
+			fmt.Println(formatRequest(c, start))
+			return err
+		}
+	})
+}
 
 func (w *WebServer) Run() error {
 	if err := w.start(); err != nil {
