@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"github.com/ravielze/oculi/example/infrastructures/rest/health"
 	"github.com/ravielze/oculi/example/resources"
 	"go.uber.org/dig"
 )
@@ -16,6 +17,6 @@ type (
 	Controller struct {
 		dig.In
 
-		//Controllers
+		Health health.Controller
 	}
 )

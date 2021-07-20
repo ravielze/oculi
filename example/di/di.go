@@ -6,6 +6,7 @@ import (
 	"github.com/ravielze/oculi/di"
 	"github.com/ravielze/oculi/example/config"
 	"github.com/ravielze/oculi/example/domain"
+	"github.com/ravielze/oculi/example/handlers"
 	"github.com/ravielze/oculi/example/resources"
 	"go.uber.org/dig"
 )
@@ -20,6 +21,7 @@ func Container() (*dig.Container, error) {
 		config.Register,
 		resources.Register,
 		domain.Register,
+		handlers.Register,
 	}
 	return di.Container(items)(&once, container)
 }

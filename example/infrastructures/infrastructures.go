@@ -2,7 +2,9 @@ package infrastructures
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/ravielze/oculi/example/infrastructures/rest"
+	oculiRest "github.com/ravielze/oculi/infrastructures/rest"
 	"go.uber.org/dig"
 )
 
@@ -15,9 +17,11 @@ type (
 )
 
 func (c Component) Register(ec *echo.Echo) error {
-	return nil
+	ec.Pre(middleware.RemoveTrailingSlash())
+	v1 := ec.Group("/v1")
+	return oculiRest.Register(v1, &c.Rest)
 }
 
 func (c Component) Health() echo.HandlerFunc {
-	return nil
+	return c.Rest.Controller.Health.Check
 }

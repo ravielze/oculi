@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/ravielze/oculi/example/config"
 	"github.com/ravielze/oculi/logs"
+	"github.com/ravielze/oculi/persistent/sql"
 	"github.com/ravielze/oculi/response"
 	"github.com/ravielze/oculi/validator"
 	"go.uber.org/dig"
@@ -17,6 +18,7 @@ import (
 var (
 	once       sync.Once
 	identifier string
+	uptime     time.Time
 )
 
 type (
@@ -28,6 +30,7 @@ type (
 		Responder     *response.Responder
 		Config        *config.Env
 		ValidatorData validator.Validator
+		Database      sql.API
 	}
 )
 
@@ -43,11 +46,22 @@ func (r Resource) ServerPort() int {
 
 func (r Resource) Identifier() string {
 	once.Do(func() {
+		uptime = time.Now()
 		if identifier == "" {
-			identifier = r.Config.ServiceName + " " + time.Now().String()
+			identifier = r.Config.ServiceName + " " + uptime.String()
 		}
 	})
 	return identifier
+}
+
+func (r Resource) Uptime() time.Time {
+	once.Do(func() {
+		uptime = time.Now()
+		if identifier == "" {
+			identifier = r.Config.ServiceName + " " + uptime.String()
+		}
+	})
+	return uptime
 }
 
 func (r Resource) ServerGracefullyDuration() time.Duration {
