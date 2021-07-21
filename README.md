@@ -6,9 +6,12 @@ Backend utilities
 1. Echo
 2. Gorm
 3. Postgresql / Mariadb / Mysql
-4. Zap/logrus
+4. Zap & logrus
 5. Swagger
-6. etc.
+6. Uberdig
+7. Bcrypt
+8. Mockgen
+9. etc.
 
 
 # Mocks Command
