@@ -22,3 +22,13 @@ Backend utilities
 
 - Run command
 `mockgen --source=input.go -package=packageName --destination=mocks/output.go`
+
+# Example Project
+
+A simple backend using this tools: [LINK](https://github.com/ravielze/oculi/tree/v3/example)
+
+# Todo
+
+1. Add domain layer to example project
+2. Add websocket tools
+3. Add more custom validator
