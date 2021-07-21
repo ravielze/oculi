@@ -12,7 +12,7 @@ import (
 var swaggerJSON string
 
 func NewDocs(ec *echo.Echo, config *config.Env) docs.Documentation {
-	if config.ServiceState == 1 {
+	if config.IsProduction() {
 		return nil
 	}
 	docs.SetData(swaggerJSON)

@@ -14,7 +14,7 @@ func Run() {
 	invoker := func(container *dig.Container) error {
 		return container.Invoke(func(i infrastructures.Component, r resources.Resource) error {
 			s := webserver.New(i, r)
-			if r.Config.ServiceState == 0 {
+			if r.Config.IsDevelopment() {
 				s.DevelopmentMode()
 			}
 			return s.Run()

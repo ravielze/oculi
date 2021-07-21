@@ -33,3 +33,11 @@ func NewConfig() (*Env, error) {
 	}
 	return &conf, nil
 }
+
+func (e *Env) IsDevelopment() bool {
+	return e.ServiceState == 0
+}
+
+func (e *Env) IsProduction() bool {
+	return e.ServiceState == 1
+}

@@ -7,5 +7,5 @@ import (
 )
 
 func NewResponder(v validator.Validator, config *config.Env) response.Responder {
-	return response.New(v, (config.ServiceState == 0))
+	return response.New(v, config.IsDevelopment())
 }
