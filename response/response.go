@@ -1,7 +1,6 @@
 package response
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -55,21 +54,15 @@ func (r *responder) newJSON(ctx *oculiContext.Context, data interface{}) error {
 	if ctx.ResponseCode() >= 400 || ctx.HasError() {
 		resp = r.handleError(ctx.ResponseCode(), ctx.Errors())
 	} else if data == nil {
-		return ctx.JSON(ctx.ResponseCode(), nil)
+		return ctx.JSONPretty(ctx.ResponseCode(), nil, "\t")
 	} else {
 		resp = standardResponse{
 			Code: ctx.ResponseCode(),
 			Data: data,
 		}
 	}
-
 	if r.isDevelopment {
-		d, err := json.MarshalIndent(resp, "", "\t")
-		if err != nil {
-			return err
-		}
-		ctx.String(ctx.ResponseCode(), string(d))
-		return nil
+		return ctx.JSONPretty(ctx.ResponseCode(), resp, "\t")
 	}
 	return ctx.JSON(ctx.ResponseCode(), resp)
 }

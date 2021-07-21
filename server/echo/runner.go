@@ -91,14 +91,24 @@ func (w *WebServer) start() error {
 	echo.NotFoundHandler = func(c echo.Context) error {
 		ctx := oculiContext.New(c)
 		ctx.AddError(http.StatusNotFound, errors.New("not found"))
-		return ctx.JSON(ctx.ResponseCode(), NotFoundStruct{Code: ctx.ResponseCode(), Message: ctx.Errors()[0].Error()})
+		return ctx.JSONPretty(
+			ctx.ResponseCode(),
+			NotFoundStruct{
+				Code:    ctx.ResponseCode(),
+				Message: ctx.Errors()[0].Error(),
+			},
+			"\t",
+		)
 	}
 
 	w.resource.Echo().GET("/", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, ServiceInfo{
-			Name:       w.resource.ServiceName(),
-			Identifier: w.resource.Identifier(),
-		})
+		return c.JSONPretty(
+			http.StatusOK,
+			ServiceInfo{
+				Name:       w.resource.ServiceName(),
+				Identifier: w.resource.Identifier(),
+			}, "\t",
+		)
 	})
 	if err := w.infrastructure.Register(w.resource.Echo()); err != nil {
 		w.resource.Logger().Error("error on register http")
