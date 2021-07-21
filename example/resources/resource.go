@@ -27,7 +27,7 @@ type (
 
 		EchoData      *echo.Echo
 		Log           logs.Logger
-		Responder     *response.Responder
+		Responder     response.Responder
 		Config        *config.Env
 		ValidatorData validator.Validator
 		Database      sql.API

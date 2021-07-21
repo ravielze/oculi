@@ -1,6 +1,7 @@
 package response
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -10,8 +11,6 @@ import (
 )
 
 type (
-	Response interface{}
-
 	standardResponse struct {
 		Code int         `json:"code"`
 		Data interface{} `json:"data"`
@@ -28,22 +27,30 @@ type (
 		Message string `json:"message"`
 	}
 
-	Responder struct {
-		validator oculiValidator.Validator
+	responder struct {
+		validator     oculiValidator.Validator
+		isDevelopment bool
 	}
+
+	Responder interface {
+		NewJSONResponse(ctx *oculiContext.Context, req request.Context, data interface{}) error
+	}
+
+	Response interface{}
 )
 
-func New(validator oculiValidator.Validator) *Responder {
-	return &Responder{
-		validator: validator,
+func New(validator oculiValidator.Validator, isDevelopment bool) Responder {
+	return &responder{
+		validator:     validator,
+		isDevelopment: isDevelopment,
 	}
 }
-func (r *Responder) NewJSONResponse(ctx *oculiContext.Context, req request.Context, data interface{}) error {
+func (r *responder) NewJSONResponse(ctx *oculiContext.Context, req request.Context, data interface{}) error {
 	ctx.Merge(req)
 	return r.newJSON(ctx, data)
 }
 
-func (r *Responder) newJSON(ctx *oculiContext.Context, data interface{}) error {
+func (r *responder) newJSON(ctx *oculiContext.Context, data interface{}) error {
 	var resp Response
 	if ctx.ResponseCode() >= 400 || ctx.HasError() {
 		resp = r.handleError(ctx.ResponseCode(), ctx.Errors())
@@ -55,10 +62,19 @@ func (r *Responder) newJSON(ctx *oculiContext.Context, data interface{}) error {
 			Data: data,
 		}
 	}
+
+	if r.isDevelopment {
+		d, err := json.MarshalIndent(resp, "", "\t")
+		if err != nil {
+			return err
+		}
+		ctx.String(ctx.ResponseCode(), string(d))
+		return nil
+	}
 	return ctx.JSON(ctx.ResponseCode(), resp)
 }
 
-func (r *Responder) handleError(responseCode int, data []error) errorResponse {
+func (r *responder) handleError(responseCode int, data []error) errorResponse {
 	msg, errfields := r.buildErrors(responseCode, data)
 	if errfields == nil {
 		return errorResponse{
@@ -72,7 +88,7 @@ func (r *Responder) handleError(responseCode int, data []error) errorResponse {
 	}
 }
 
-func (r *Responder) buildErrors(responseCode int, data []error) (string, []errorField) {
+func (r *responder) buildErrors(responseCode int, data []error) (string, []errorField) {
 	if responseCode != http.StatusBadRequest {
 		return data[0].Error(), nil
 	}
