@@ -12,6 +12,7 @@ func Register(c *dig.Container) error {
 		Provide(external.NewValidator).
 		Provide(external.NewResponder).
 		Provide(external.NewLogger).
+		Provide(external.NewDocs).
 		Provide(external.NewPostgreSQL).
 		End()
 }
