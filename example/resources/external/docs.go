@@ -12,6 +12,9 @@ import (
 var swaggerJSON string
 
 func NewDocs(ec *echo.Echo, config *config.Env) docs.Documentation {
+	if config.ServiceState == 1 {
+		return nil
+	}
 	docs.SetData(swaggerJSON)
 	return docs.New(ec, config.ServiceName, "http://localhost", config.ServerPort)
 }
