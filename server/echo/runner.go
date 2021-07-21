@@ -97,7 +97,7 @@ func (w *WebServer) start() error {
 				Code:    ctx.ResponseCode(),
 				Message: ctx.Errors()[0].Error(),
 			},
-			"\t",
+			" ",
 		)
 	}
 
@@ -107,7 +107,8 @@ func (w *WebServer) start() error {
 			ServiceInfo{
 				Name:       w.resource.ServiceName(),
 				Identifier: w.resource.Identifier(),
-			}, "\t",
+			},
+			" ",
 		)
 	})
 	if err := w.infrastructure.Register(w.resource.Echo()); err != nil {

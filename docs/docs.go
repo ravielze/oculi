@@ -2,6 +2,7 @@ package docs
 
 import (
 	_ "embed"
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -15,6 +16,7 @@ var docsRaw string
 
 //go:embed example.json
 var Data string
+var ProcessedData map[string]interface{} = nil
 
 var l sync.Mutex
 
@@ -22,6 +24,9 @@ func SetData(data string) {
 	l.Lock()
 	defer l.Unlock()
 	Data = data
+	if err := json.Unmarshal([]byte(Data), &ProcessedData); err != nil {
+		panic(err.Error())
+	}
 }
 
 type (
@@ -54,5 +59,8 @@ func (d *documentation) Get(ec echo.Context) error {
 }
 
 func (d *documentation) Data(ec echo.Context) error {
-	return ec.String(http.StatusOK, Data)
+	if ProcessedData == nil {
+		SetData(Data)
+	}
+	return ec.JSONPretty(http.StatusOK, ProcessedData, " ")
 }

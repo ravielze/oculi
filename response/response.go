@@ -54,7 +54,7 @@ func (r *responder) newJSON(ctx *oculiContext.Context, data interface{}) error {
 	if ctx.ResponseCode() >= 400 || ctx.HasError() {
 		resp = r.handleError(ctx.ResponseCode(), ctx.Errors())
 	} else if data == nil {
-		return ctx.JSONPretty(ctx.ResponseCode(), nil, "\t")
+		return ctx.JSONPretty(ctx.ResponseCode(), nil, " ")
 	} else {
 		resp = standardResponse{
 			Code: ctx.ResponseCode(),
@@ -62,7 +62,7 @@ func (r *responder) newJSON(ctx *oculiContext.Context, data interface{}) error {
 		}
 	}
 	if r.isDevelopment {
-		return ctx.JSONPretty(ctx.ResponseCode(), resp, "\t")
+		return ctx.JSONPretty(ctx.ResponseCode(), resp, " ")
 	}
 	return ctx.JSON(ctx.ResponseCode(), resp)
 }
