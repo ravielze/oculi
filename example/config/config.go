@@ -8,6 +8,7 @@ import (
 
 type (
 	Env struct {
+		ServiceHost        string        `envconfig:"SERVICE_HOST" required:"true" default:"http://localhost"`
 		ServiceState       int           `envconfig:"SERVICE_STATE" required:"true" default:"1"`
 		ServiceName        string        `envconfig:"SERVICE_NAME" required:"true"`
 		ServerPort         int           `envconfig:"SERVICE_PORT" default:"8000" required:"true"`

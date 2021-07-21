@@ -4,7 +4,6 @@ import (
 	_ "embed"
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"strings"
 	"sync"
 
@@ -40,14 +39,10 @@ type (
 	}
 )
 
-func New(e *echo.Echo, serviceName, host string, port int) Documentation {
+func New(e *echo.Echo, serviceName, baselink string) Documentation {
 	d := &documentation{}
 	d.docsRendered = strings.ReplaceAll(docsRaw, "{{ serviceName }}", serviceName)
-	address := host
-	if port != 80 {
-		address = host + ":" + strconv.Itoa(port)
-	}
-	d.docsRendered = strings.ReplaceAll(d.docsRendered, "{{ source }}", address+"/docs/data")
+	d.docsRendered = strings.ReplaceAll(d.docsRendered, "{{ source }}", baselink+"/docs/data")
 
 	e.GET("/docs", d.Get)
 	e.GET("/docs/data", d.Data)

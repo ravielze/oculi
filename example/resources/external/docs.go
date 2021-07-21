@@ -16,5 +16,5 @@ func NewDocs(ec *echo.Echo, config *config.Env) docs.Documentation {
 		return nil
 	}
 	docs.SetData(swaggerJSON)
-	return docs.New(ec, config.ServiceName, "http://localhost", config.ServerPort)
+	return docs.New(ec, config.ServiceName, config.ServiceHost)
 }
