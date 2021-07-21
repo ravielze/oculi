@@ -11,6 +11,10 @@ type (
 	AfterNowValidator struct {
 		*validator.CustomValidator
 	}
+
+	BeforeNowValidator struct {
+		*validator.CustomValidator
+	}
 )
 
 func AfterNow(tag string) AfterNowValidator {
@@ -27,15 +31,16 @@ func (AfterNowValidator) Validate(fl v10.FieldLevel) bool {
 	return true
 }
 
-// func BeforeNow() (interface{}, validator.FormatOnError, validator.ExtraParamsOnFormat) {
-// 	v := func(fl v10.FieldLevel) bool {
-// 		date, ok := fl.Field().Interface().(time.Time)
-// 		if ok {
-// 			return date.Before(time.Now())
-// 		}
-// 		return true
-// 	}
-// 	extraParams := validator.NewExtraParams()
-// 	format := validator.NewFormat("{0} must be before current time.")
-// 	return v, format, extraParams
-// }
+func BeforeNow(tag string) BeforeNowValidator {
+	return BeforeNowValidator{
+		CustomValidator: validator.NewCustomValidator(tag, "{0} must be before current time."),
+	}
+}
+
+func (BeforeNowValidator) Validate(fl v10.FieldLevel) bool {
+	date, ok := fl.Field().Interface().(time.Time)
+	if ok {
+		return date.Before(time.Now())
+	}
+	return true
+}

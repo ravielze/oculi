@@ -27,6 +27,8 @@ type (
 var (
 	defaultValidator = []Registerable{
 		custom.AfterNow("after_now"),
+		custom.BeforeNow("before_now"),
+		custom.Base36("base36"),
 	}
 )
 
