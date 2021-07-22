@@ -19,8 +19,7 @@ func NewEncoder(key string, alg string) token.Encoder {
 }
 
 func (e *encImpl) Encode(claims token.Claims) (string, error) {
-	newToken := jwt.New(jwt.GetSigningMethod(e.alg))
-	newToken.Claims = claims
+	newToken := jwt.NewWithClaims(jwt.GetSigningMethod(e.alg), claims)
 
 	signedToken, err := newToken.SignedString(e.key)
 	if err != nil {
@@ -36,4 +35,9 @@ func (e *encImpl) CreateClaims(credentials user.CredentialsDTO, exp int64) token
 		},
 		credentials,
 	}
+}
+
+func (e *encImpl) CreateAndEncode(credentials user.CredentialsDTO, exp int64) (string, error) {
+	tokenClaims := e.CreateClaims(credentials, exp)
+	return e.Encode(tokenClaims)
 }

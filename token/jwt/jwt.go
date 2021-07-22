@@ -4,16 +4,17 @@ import "github.com/ravielze/oculi/token"
 
 type (
 	jwtImpl struct {
-		Encoder token.Encoder
-		Decoder token.Decoder
-	}
-
-	JWT interface {
 		token.Encoder
 		token.Decoder
 	}
 )
 
-func NewJWT(key string, alg string) (JWT, error) {
-	return nil, nil
+func New(key string, alg string) (token.Tokenizer, error) {
+	encoder := NewEncoder(key, alg)
+	decoder := NewDecoder(key)
+
+	return &jwtImpl{
+		Encoder: encoder,
+		Decoder: decoder,
+	}, nil
 }

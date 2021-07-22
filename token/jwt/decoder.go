@@ -2,6 +2,8 @@ package jwt
 
 import (
 	"errors"
+	"net/http"
+	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/ravielze/oculi/token"
@@ -9,6 +11,7 @@ import (
 
 var (
 	ErrUnclaimedToken = errors.New("unclaimed token")
+	ErrNoBearerToken  = errors.New("bearer token not found")
 )
 
 type (
@@ -30,11 +33,37 @@ func (d *decImpl) Decode(token string) (token.Claims, error) {
 			return d.key, nil
 		},
 	)
+	if err != nil {
+		return nil, err
+	}
 
-	if err != nil || tokenClaims == nil || tokenClaims.Claims == nil {
+	if tokenClaims == nil || tokenClaims.Claims == nil {
 		return nil, ErrUnclaimedToken
 	}
 
 	c := tokenClaims.Claims.(*claims)
 	return c, nil
+}
+
+func extractToken(req *http.Request) string {
+	bearToken := req.Header.Get("Authorization")
+	if len(bearToken) == 0 {
+		bearTokenQuery, ok := req.URL.Query()["Authorization"]
+		if ok && len(bearTokenQuery) == 1 {
+			return bearTokenQuery[0]
+		}
+		return ""
+	}
+	keys := strings.Split(bearToken, " ")
+	if len(keys) == 2 {
+		return keys[1]
+	}
+	return ""
+}
+
+func (d *decImpl) DecodeHttpRequest(req *http.Request) (token.Claims, error) {
+	if ex := extractToken(req); ex != "" && len(ex) > 0 {
+		return d.Decode(ex)
+	}
+	return nil, ErrNoBearerToken
 }
