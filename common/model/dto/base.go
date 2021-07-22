@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/ravielze/oculi/common/model/dao"
-	"github.com/ravielze/oculi/constant/format"
+	"github.com/ravielze/oculi/constant/time"
 )
 
 type (
@@ -19,8 +19,8 @@ type (
 
 func NewBaseModel(item dao.BaseModel) BaseModel {
 	return BaseModel{
-		CreatedAt: item.CreatedAt.Format(format.DATETIME),
-		UpdatedAt: item.UpdatedAt.Format(format.DATETIME),
+		CreatedAt: item.CreatedAt.Format(time.DATETIME_LAYOUT),
+		UpdatedAt: item.UpdatedAt.Format(time.DATETIME_LAYOUT),
 	}
 }
 
@@ -30,7 +30,7 @@ func NewBaseModelSoftDelete(item dao.BaseModelSoftDelete) BaseModelSoftDelete {
 		DeletedAt: "",
 	}
 	if item.DeletedAt.Valid {
-		result.DeletedAt = item.DeletedAt.Time.Format(format.DATETIME)
+		result.DeletedAt = item.DeletedAt.Time.Format(time.DATETIME_LAYOUT)
 	}
 	return result
 }
