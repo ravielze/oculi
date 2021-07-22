@@ -9,12 +9,12 @@ type (
 	}
 )
 
-func New(key string, alg string) (token.Tokenizer, error) {
+func New(key string, alg string) token.Tokenizer {
 	encoder := NewEncoder(key, alg)
 	decoder := NewDecoder(key)
 
 	return &jwtImpl{
 		Encoder: encoder,
 		Decoder: decoder,
-	}, nil
+	}
 }
