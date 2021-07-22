@@ -43,6 +43,8 @@ func New() (validator.Validator, error) {
 		return nil, err
 	}
 
+	validate.SetTagName("binding")
+
 	instance := &impl{instance: validate, trans: trans}
 	if err := instance.installDefaultValidator(); err != nil {
 		return nil, err
