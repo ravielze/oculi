@@ -49,12 +49,11 @@ func (mr *MockHashMockRecorder) Hash(raw interface{}) *gomock.Call {
 }
 
 // Verify mocks base method.
-func (m *MockHash) Verify(raw, hashed string) (bool, error) {
+func (m *MockHash) Verify(raw, hashed string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Verify", raw, hashed)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Verify indicates an expected call of Verify.

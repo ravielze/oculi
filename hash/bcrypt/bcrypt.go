@@ -51,15 +51,15 @@ func (b *bcrypt) Hash(raw string) (string, error) {
 	return string(hash), nil
 }
 
-func (b *bcrypt) Verify(raw string, hashed string) (bool, error) {
+func (b *bcrypt) Verify(raw string, hashed string) error {
 	buffHash := []byte(hashed)
 	buffRaw := []byte(raw)
 
 	err := bcryptLib.CompareHashAndPassword(buffHash, buffRaw)
 	if err != nil {
 		//Todo convert error
-		return false, ErrPasswordMismatch
+		return ErrPasswordMismatch
 	}
 
-	return true, nil
+	return nil
 }

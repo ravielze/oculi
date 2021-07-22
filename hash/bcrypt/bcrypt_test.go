@@ -48,15 +48,13 @@ func Test_bcrypt_Verify(t *testing.T) {
 		b              = &bcrypt{cost: MinCost + 3}
 	)
 	t.Run("password match", func(t *testing.T) {
-		result, err := b.Verify(password, hashedPassword)
+		err := b.Verify(password, hashedPassword)
 		assert.Nil(t, err)
-		assert.True(t, result)
 	})
 
 	t.Run("password mismatch", func(t *testing.T) {
-		result, err := b.Verify(wrongPassword, hashedPassword)
+		err := b.Verify(wrongPassword, hashedPassword)
 		assert.Error(t, err)
 		assert.Equal(t, err, ErrPasswordMismatch)
-		assert.False(t, result)
 	})
 }
