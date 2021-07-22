@@ -45,7 +45,9 @@ func New(validator oculiValidator.Validator, isDevelopment bool) Responder {
 	}
 }
 func (r *responder) NewJSONResponse(ctx *oculiContext.Context, req request.Context, data interface{}) error {
-	ctx.Merge(req)
+	if req != nil {
+		ctx.Merge(req)
+	}
 	return r.newJSON(ctx, data)
 }
 
