@@ -9,9 +9,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/ravielze/oculi/docs"
 	"github.com/ravielze/oculi/example/config"
+	"github.com/ravielze/oculi/hash"
 	"github.com/ravielze/oculi/logs"
 	"github.com/ravielze/oculi/persistent/sql"
 	"github.com/ravielze/oculi/response"
+	"github.com/ravielze/oculi/token"
 	"github.com/ravielze/oculi/validator"
 	"go.uber.org/dig"
 )
@@ -32,7 +34,9 @@ type (
 		Config        *config.Env
 		ValidatorData validator.Validator
 		Database      sql.API
+		Tokenizer     token.Tokenizer
 		Documentation docs.Documentation
+		Hash          hash.Hash
 	}
 )
 

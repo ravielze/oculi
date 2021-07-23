@@ -16,6 +16,9 @@ type (
 
 		LogLevel string `envconfig:"LOG_LEVEL" default:"INFO" required:"true"`
 
+		JWTKey string `envconfig:"JWT_KEY" default:"DEFAULT_JWT_KEY" required:"true"`
+		JWTExp int64  `envconfig:"JWT_EXP" default:"300" required:"true"`
+
 		DatabaseAddress           string        `envconfig:"DB_ADDRESS" required:"true"`
 		DatabaseUsername          string        `envconfig:"DB_USERNAME" required:"true"`
 		DatabasePassword          string        `envconfig:"DB_PASSWORD" required:"true"`

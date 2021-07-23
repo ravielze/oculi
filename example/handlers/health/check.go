@@ -11,7 +11,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (h *handler) Check(ctx request.EchoContext) health.CheckResponseDTO {
+func (h *handler) Check(ctx request.Context) health.CheckResponseDTO {
 	var (
 		response health.CheckResponseDTO
 		m        runtime.MemStats

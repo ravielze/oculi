@@ -8,7 +8,7 @@ import (
 
 type (
 	Handler interface {
-		Check(ctx request.EchoContext) health.CheckResponseDTO
+		Check(ctx request.Context) health.CheckResponseDTO
 	}
 
 	handler struct {
