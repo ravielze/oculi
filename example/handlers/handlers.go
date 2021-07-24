@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/ravielze/oculi/example/handlers/health"
+	"github.com/ravielze/oculi/example/handlers/todo"
 	"github.com/ravielze/oculi/example/handlers/user"
 	"go.uber.org/dig"
 )
@@ -12,5 +13,6 @@ type (
 
 		Health health.Handler
 		User   user.Handler
+		Todo   todo.Handler
 	}
 )

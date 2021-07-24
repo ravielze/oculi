@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/ravielze/oculi/example/infrastructures/rest"
 	oculiRest "github.com/ravielze/oculi/infrastructures/rest"
+	ws "github.com/ravielze/oculi/server/echo"
 	"go.uber.org/dig"
 )
 
@@ -19,6 +20,9 @@ type (
 func (c Component) Register(ec *echo.Echo) error {
 	ec.Pre(middleware.RemoveTrailingSlash())
 	v1 := ec.Group("/v1")
+	if c.Rest.Resource.Config.IsDevelopment() {
+		defer ws.InfoRoutes(ec)()
+	}
 	return oculiRest.Register(v1, &c.Rest.Controller)
 }
 
