@@ -19,6 +19,20 @@ const (
 	reset   = "\033[0m"
 )
 
+func InfoRoutes(ec *echo.Echo) func() {
+	return func() {
+		fmt.Printf("[%s Oculi %s] %v | Showing registered routes:\n",
+			magenta, reset, time.Now().Format("15:04:05 02 Jan 2006"))
+		for _, r := range ec.Routes() {
+			fmt.Printf("[%s Oculi %s] %v | %s %-7s %s %#v\n",
+				magenta, reset, time.Now().Format("15:04:05 02 Jan 2006"),
+				methodColor(r.Method), r.Method, reset,
+				r.Path,
+			)
+		}
+	}
+}
+
 func formatRequest(ec echo.Context, start time.Time) string {
 	now := time.Now()
 	statusCode := ec.Response().Status
