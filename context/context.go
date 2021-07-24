@@ -12,7 +12,6 @@ type (
 		ec  echo.Context
 		ctx context.Context
 
-		result   interface{}
 		errors   []error
 		httpCode int
 	}
