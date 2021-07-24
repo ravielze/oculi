@@ -13,8 +13,7 @@ func (s *service) Login(req request.Context, item userDto.LoginRequest) (dao.Use
 		return dao.User{}, "", err
 	}
 
-	errPassword := s.resource.Hash.Verify(item.Password, user.Password)
-	if errPassword != nil {
+	if errPassword := s.hash.Verify(item.Password, user.Password); errPassword != nil {
 		return dao.User{}, "", errPassword
 	}
 

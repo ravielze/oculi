@@ -19,7 +19,7 @@ type (
 func (c Component) Register(ec *echo.Echo) error {
 	ec.Pre(middleware.RemoveTrailingSlash())
 	v1 := ec.Group("/v1")
-	return oculiRest.Register(v1, &c.Rest)
+	return oculiRest.Register(v1, &c.Rest.Controller)
 }
 
 func (c Component) Health() echo.HandlerFunc {

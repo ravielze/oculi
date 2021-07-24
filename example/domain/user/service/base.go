@@ -5,6 +5,7 @@ import (
 	"github.com/ravielze/oculi/example/model/dao"
 	userDto "github.com/ravielze/oculi/example/model/dto/user"
 	"github.com/ravielze/oculi/example/resources"
+	"github.com/ravielze/oculi/hash"
 	"github.com/ravielze/oculi/request"
 )
 
@@ -17,6 +18,7 @@ type (
 	service struct {
 		resource   resources.Resource
 		repository repository.Repository
+		hash       hash.Hash
 	}
 )
 

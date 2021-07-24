@@ -2,6 +2,7 @@ package rest
 
 import (
 	"github.com/ravielze/oculi/example/infrastructures/rest/health"
+	"github.com/ravielze/oculi/example/infrastructures/rest/user"
 	"github.com/ravielze/oculi/example/resources"
 	"go.uber.org/dig"
 )
@@ -18,5 +19,6 @@ type (
 		dig.In
 
 		Health health.Controller
+		User   user.Controller
 	}
 )
