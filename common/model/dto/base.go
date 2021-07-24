@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/ravielze/oculi/common/model/dao"
-	"github.com/ravielze/oculi/constant/time"
+	time "github.com/ravielze/oculi/constant/time"
 )
 
 type (
@@ -15,6 +15,8 @@ type (
 		BaseModel
 		DeletedAt string `json:"deleted_at"`
 	}
+
+	Map map[string]interface{}
 )
 
 func NewBaseModel(item dao.BaseModel) BaseModel {

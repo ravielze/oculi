@@ -16,4 +16,6 @@ type (
 		BaseModel
 		DeletedAt gorm.DeletedAt
 	}
+
+	Map map[string]interface{}
 )
