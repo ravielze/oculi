@@ -16,7 +16,7 @@ func NewPostgreSQL(config *config.Env, log logs.Logger) (sql.API, error) {
 			Username: config.DatabaseUsername,
 			Password: config.DatabasePassword,
 			DbName:   config.DatabaseName,
-		}),
+		}), false,
 		sql.WithMaxIdleConnection(config.DatabaseMaxIdleConnection),
 		sql.WithMaxOpenConnection(config.DatabaseMaxOpenConnection),
 		sql.WithConnMaxLifetime(config.DatabaseConnMaxLifetime),
@@ -26,6 +26,6 @@ func NewPostgreSQL(config *config.Env, log logs.Logger) (sql.API, error) {
 		return nil, err
 	}
 
-	api.AutoMigrate(dao.User{})
+	api.AutoMigrate(dao.User{}, dao.Todo{})
 	return api, nil
 }

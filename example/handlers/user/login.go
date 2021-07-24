@@ -11,5 +11,6 @@ func (h *handler) Login(req request.Context, item userDto.LoginRequest) (userDto
 		return userDto.CredentialResponse{}, err
 	}
 
-	return userDto.NewCredentialResponse(user, token), nil
+	result := userDto.NewCredentialResponse(user, token)
+	return result, nil
 }

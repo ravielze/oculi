@@ -22,9 +22,10 @@ type (
 	}
 )
 
-func New(r resources.Resource, repo repository.Repository) Service {
+func New(r resources.Resource, repo repository.Repository, h hash.Hash) Service {
 	return &service{
 		resource:   r,
 		repository: repo,
+		hash:       h,
 	}
 }

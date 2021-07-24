@@ -8,7 +8,7 @@ import (
 )
 
 func NewLogger(config *config.Env) (logs.Logger, error) {
-	return zap.New(zap.Option{
+	return zap.New(config.IsDevelopment(), zap.Option{
 		Level:  logs.GetLoggerLevel(config.LogLevel),
 		Prefix: "",
 	}, z.AddStacktrace(z.ErrorLevel), z.AddCallerSkip(1))

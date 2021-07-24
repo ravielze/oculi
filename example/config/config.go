@@ -16,8 +16,8 @@ type (
 
 		LogLevel string `envconfig:"LOG_LEVEL" default:"INFO" required:"true"`
 
-		JWTKey string `envconfig:"JWT_KEY" default:"DEFAULT_JWT_KEY" required:"true"`
-		JWTExp int64  `envconfig:"JWT_EXP" default:"300" required:"true"`
+		JWTKey string        `envconfig:"JWT_KEY" default:"SECRET_KEY" required:"true"`
+		JWTExp time.Duration `envconfig:"JWT_EXP" default:"300s" required:"true"`
 
 		DatabaseAddress           string        `envconfig:"DB_ADDRESS" required:"true"`
 		DatabaseUsername          string        `envconfig:"DB_USERNAME" required:"true"`
@@ -26,7 +26,7 @@ type (
 		DatabaseMaxIdleConnection int           `envconfig:"DB_MAX_IDLE_CONNECTION" default:"10"`
 		DatabaseMaxOpenConnection int           `envconfig:"DB_MAX_OPEN_CONNECTION" default:"25"`
 		DatabaseConnMaxLifetime   time.Duration `envconfig:"DB_CONNECTION_MAX_LIFE_TIME" default:"60s"`
-		DatabaseLogMode           bool          `envconfig:"DB_LOG_MODE" default:"false"`
+		DatabaseLogMode           bool          `envconfig:"DB_LOG_MODE" default:"true"`
 	}
 )
 

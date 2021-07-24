@@ -11,5 +11,5 @@ import (
 
 func NewTokenizer(config *config.Env) token.Tokenizer {
 	identifier := config.ServiceName + "/" + time.Now().String()
-	return oculiJWT.New(config.JWTKey, jwt.SigningMethodES256.Name, identifier)
+	return oculiJWT.New(config.JWTKey, jwt.SigningMethodHS256.Name, identifier)
 }
