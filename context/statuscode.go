@@ -1,5 +1,7 @@
 package context
 
+import "net/http"
+
 func (ctx *Context) SetHttpCode(httpCode int) {
 	ctx.httpCode = httpCode
 }
@@ -13,6 +15,11 @@ func (ctx *Context) AddError(httpCode int, err ...error) {
 		ctx.httpCode = httpCode
 	}
 	ctx.errors = append(ctx.errors, err...)
+}
+
+func (ctx *Context) ClearErrors() {
+	ctx.errors = make([]error, 0)
+	ctx.httpCode = http.StatusOK
 }
 
 func (ctx *Context) HasError() bool {

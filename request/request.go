@@ -7,12 +7,6 @@ import (
 	"github.com/ravielze/oculi/persistent/sql"
 )
 
-var (
-	ErrMissingValue   = "required value is missing on key "
-	ErrValueNotUUID   = "required value is not uuid on key "
-	ErrValueNotBase36 = "required value is not base36 on key "
-)
-
 type (
 	Context interface {
 		SetContext(ctx context.Context) Context
@@ -40,6 +34,7 @@ type (
 		Data() *map[string]string
 
 		Identifier() uint64
+		SetIdentifier(id uint64)
 	}
 
 	//TODO

@@ -9,6 +9,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/ravielze/oculi/common/encoding/radix36"
+	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/ravielze/oculi/persistent/sql"
 )
 
@@ -23,6 +24,10 @@ type (
 		requestIdentifier uint64
 	}
 )
+
+func (r *Base) SetIdentifier(id uint64) {
+	r.requestIdentifier = id
+}
 
 func (r *Base) Identifier() uint64 {
 	return r.requestIdentifier
@@ -139,13 +144,13 @@ func (r *Base) ParseStringOrDefault(key, value, def string) Context {
 func (r *Base) ParseUUID(key, value string) Context {
 	if !r.HasError() {
 		if len(value) == 0 || len(strings.TrimSpace(value)) == 0 {
-			r.AddError(http.StatusBadRequest, errors.New(ErrMissingValue+key))
+			r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestMissingValue+key))
 		} else {
 			uuidParsed := uuid.FromStringOrNil(value)
 			if strings.EqualFold(value, "default") {
 				r.data[key] = "default"
 			} else if uuidParsed == uuid.Nil {
-				r.AddError(http.StatusBadRequest, errors.New(ErrValueNotUUID+key))
+				r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestValueNotUUID+key))
 			} else {
 				r.data[key] = uuidParsed.String()
 			}
@@ -160,10 +165,10 @@ func (r *Base) Parse36(key, value string) Context {
 		if strings.EqualFold(p, "default") {
 			r.data[key] = "default"
 		} else if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
-			r.AddError(http.StatusBadRequest, errors.New(ErrMissingValue+key))
+			r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestMissingValue+key))
 		} else {
 			if data, err := radix36.NewRadix36(p); err != nil {
-				r.AddError(http.StatusBadRequest, errors.New(ErrValueNotBase36+key))
+				r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestValueNotBase36+key))
 			} else {
 				r.data[key] = data.String()
 			}
@@ -178,11 +183,11 @@ func (r *Base) ParseUUID36(key, value string) Context {
 		if strings.EqualFold(p, "default") {
 			r.data[key] = "default"
 		} else if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
-			r.AddError(http.StatusBadRequest, errors.New(ErrMissingValue+key))
+			r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestMissingValue+key))
 		} else {
 			data, err := radix36.NewFromUUIDString(p)
 			if err != nil {
-				r.AddError(http.StatusBadRequest, errors.New(ErrValueNotUUID+key))
+				r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestValueNotUUID+key))
 			} else {
 				r.data[key] = data.String()
 			}
@@ -198,10 +203,10 @@ func (r *Base) Parse36UUID(key, value string) Context {
 		if strings.EqualFold(p, "default") {
 			r.data[key] = "default"
 		} else if len(p) == 0 || len(strings.TrimSpace(p)) == 0 {
-			r.AddError(http.StatusBadRequest, errors.New(ErrMissingValue+key))
+			r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestMissingValue+key))
 		} else {
 			if data, err := radix36.NewRadix36(p); err != nil {
-				r.AddError(http.StatusBadRequest, errors.New(ErrValueNotBase36+key))
+				r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestValueNotBase36+key))
 			} else {
 				r.data[key] = data.ToUUID().String()
 			}
