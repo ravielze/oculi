@@ -1,6 +1,8 @@
 package jwt
 
 import (
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/ravielze/oculi/common/model/dto/user"
 	"github.com/ravielze/oculi/token"
@@ -30,17 +32,17 @@ func (e *encImpl) Encode(claims token.Claims) (string, error) {
 	return signedToken, nil
 }
 
-func (e *encImpl) CreateClaims(credentials user.CredentialsDTO, exp int64) token.Claims {
+func (e *encImpl) CreateClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
 	return &claims{
 		&jwt.StandardClaims{
-			ExpiresAt: exp,
+			ExpiresAt: time.Now().Add(exp).Unix(),
 		},
 		credentials,
 		e.serverId,
 	}
 }
 
-func (e *encImpl) CreateAndEncode(credentials user.CredentialsDTO, exp int64) (string, error) {
+func (e *encImpl) CreateAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
 	tokenClaims := e.CreateClaims(credentials, exp)
 	return e.Encode(tokenClaims)
 }
