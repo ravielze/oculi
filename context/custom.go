@@ -16,12 +16,12 @@ func (ctx *Context) BindValidate(obj interface{}) {
 		return
 	}
 	if err := ctx.Bind(obj); err != nil {
-		ctx.AddError(http.StatusUnprocessableEntity, err)
+		ctx.AddError(http.StatusBadRequest, err)
 		return
 	}
 
 	if err := ctx.Validate(obj); err != nil {
-		ctx.AddError(http.StatusUnprocessableEntity, err)
+		ctx.AddError(http.StatusBadRequest, err)
 		return
 	}
 }

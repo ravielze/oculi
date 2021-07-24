@@ -13,7 +13,10 @@ import (
 func EchoMiddleware(token token.Tokenizer) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			ctx := c.(*context.Context)
+			ctx, ok := c.(*context.Context)
+			if !ok {
+				ctx = context.New(c)
+			}
 			claims, err := token.DecodeHttpRequest(ctx.Request())
 			if err != nil {
 				ctx.AddError(http.StatusUnauthorized, fmt.Errorf("unauthorized: %s", err.Error()))

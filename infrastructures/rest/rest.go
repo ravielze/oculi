@@ -19,6 +19,9 @@ func Register(ec *echo.Group, obj interface{}) error {
 	}
 	for i := 0; i < v.NumField(); i++ {
 		f := v.Field(i)
+		if f.Type().Name() == "In" {
+			continue
+		}
 		if r, ok := f.Interface().(Registerable); ok {
 			if err := r.Register(ec); err != nil {
 				return err

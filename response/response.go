@@ -16,7 +16,7 @@ type (
 	}
 
 	errorResponse struct {
-		Code   int         `json:"Code"`
+		Code   int         `json:"code"`
 		Errors interface{} `json:"error"`
 	}
 
@@ -92,11 +92,12 @@ func (r *responder) buildErrors(responseCode int, data []error) (string, []error
 		errors := make([]errorField, len(err))
 		for i := range errors {
 			errors[i] = errorField{
-				Field:   err[i].StructNamespace(),
+				Field:   err[i].Namespace(),
 				Reason:  err[i].Tag(),
 				Message: err[i].Translate(*r.validator.Translator()),
 			}
 		}
+		return "", errors
 	}
 	return data[0].Error(), nil
 }
