@@ -51,7 +51,6 @@ func (b *bcrypt) Verify(raw string, hashed string) error {
 
 	err := bcryptLib.CompareHashAndPassword(buffHash, buffRaw)
 	if err != nil {
-		//Todo convert error
 		return consts.ErrPasswordMismatch
 	}
 

@@ -3,6 +3,7 @@ package sqlv2
 import (
 	"database/sql"
 
+	"github.com/ravielze/oculi/errors"
 	sqlOculi "github.com/ravielze/oculi/persistent/sql"
 	"gorm.io/gorm"
 )
@@ -101,8 +102,7 @@ func (i *Impl) Row() *sql.Row {
 
 func (i *Impl) Rows() (*sql.Rows, error) {
 	sqlRows, err := i.Database.Rows()
-	//TODO convert error
-	return sqlRows, err
+	return sqlRows, errors.Convert(err)
 }
 
 // Scan scan value to a struct
@@ -120,8 +120,7 @@ func (i *Impl) Pluck(column string, dest interface{}) sqlOculi.API {
 }
 
 func (i *Impl) ScanRows(rows *sql.Rows, dest interface{}) error {
-	//TODO convert error
-	return i.Database.ScanRows(rows, dest)
+	return errors.Convert(i.Database.ScanRows(rows, dest))
 }
 
 // Transaction start a transaction as a block, return error will rollback, otherwise to commit.
@@ -129,8 +128,7 @@ func (i *Impl) Transaction(fc func(sqlOculi.API) error, opts ...*sql.TxOptions) 
 	nfc := func(db *gorm.DB) error {
 		return fc(i)
 	}
-	//TODO convert error
-	return i.Database.Transaction(nfc, opts...)
+	return errors.Convert(i.Database.Transaction(nfc, opts...))
 }
 
 // Begin begins a transaction

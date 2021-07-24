@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/ravielze/oculi/errors"
 	sqlOculi "github.com/ravielze/oculi/persistent/sql"
 
 	"gorm.io/gorm"
@@ -30,16 +31,14 @@ func (i *Impl) Migrator() gorm.Migrator {
 }
 
 func (i *Impl) Error() error {
-	//TODO convert error
-	return i.Database.Error
+	return errors.Convert(i.Database.Error)
 }
 func (i *Impl) RowsAffected() int64 {
 	return i.Database.RowsAffected
 }
 
 func (i *Impl) AutoMigrate(dst ...interface{}) error {
-	//TODO convert error
-	return i.Database.AutoMigrate(dst...)
+	return errors.Convert(i.Database.AutoMigrate(dst...))
 }
 
 func (i *Impl) Association(column string) *gorm.Association {
@@ -92,23 +91,19 @@ func (i *Impl) InstanceGet(key string) (interface{}, bool) {
 
 // AddError add error to db
 func (i *Impl) AddError(err error) error {
-	//TODO convert error
-	return i.Database.AddError(err)
+	return errors.Convert(i.Database.AddError(err))
 }
 
 // DB returns `*sql.Database`
 func (i *Impl) DB() (*sql.DB, error) {
 	db, err := i.Database.DB()
-	//TODO convert error
-	return db, err
+	return db, errors.Convert(err)
 }
 
 func (i *Impl) SetupJoinTable(model interface{}, field string, joinTable interface{}) error {
-	//TODO convert error
-	return i.Database.SetupJoinTable(model, field, joinTable)
+	return errors.Convert(i.Database.SetupJoinTable(model, field, joinTable))
 }
 
 func (i *Impl) Use(plugin gorm.Plugin) error {
-	//TODO convert error
-	return i.Database.Use(plugin)
+	return errors.Convert(i.Database.Use(plugin))
 }

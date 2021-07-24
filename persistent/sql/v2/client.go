@@ -42,7 +42,7 @@ func NewClient(dl gorm.Dialector, advancedLogger bool, options ...sql.Connection
 			Logger: logger.New(option.Logger(), logger.Config{
 				SlowThreshold: 200 * time.Millisecond,
 				LogLevel:      logLevel,
-				Colorful:      true,
+				Colorful:      false,
 			}),
 		}
 	}
