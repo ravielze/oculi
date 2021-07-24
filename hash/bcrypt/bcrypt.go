@@ -1,8 +1,7 @@
 package bcrypt
 
 import (
-	"errors"
-
+	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/ravielze/oculi/hash"
 	bcryptLib "golang.org/x/crypto/bcrypt"
 )
@@ -11,11 +10,6 @@ type (
 	bcrypt struct {
 		cost int
 	}
-)
-
-var (
-	ErrBcryptInvalidCost = errors.New("bcrypt invalid cost")
-	ErrPasswordMismatch  = errors.New("password mismatch")
 )
 
 const (
@@ -34,7 +28,7 @@ func NewHashWithCost(cost int) (hash.Hash, error) {
 	}
 
 	if cost > MaxCost {
-		return nil, ErrBcryptInvalidCost
+		return nil, consts.ErrBcryptInvalidCost
 	}
 
 	return &bcrypt{cost: cost}, nil
@@ -58,7 +52,7 @@ func (b *bcrypt) Verify(raw string, hashed string) error {
 	err := bcryptLib.CompareHashAndPassword(buffHash, buffRaw)
 	if err != nil {
 		//Todo convert error
-		return ErrPasswordMismatch
+		return consts.ErrPasswordMismatch
 	}
 
 	return nil

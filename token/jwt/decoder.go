@@ -1,17 +1,12 @@
 package jwt
 
 import (
-	"errors"
 	"net/http"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
+	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/ravielze/oculi/token"
-)
-
-var (
-	ErrUnclaimedToken = errors.New("unclaimed token")
-	ErrNoBearerToken  = errors.New("bearer token not found")
 )
 
 type (
@@ -38,7 +33,7 @@ func (d *decImpl) Decode(token string) (token.Claims, error) {
 	}
 
 	if tokenClaims == nil || tokenClaims.Claims == nil {
-		return nil, ErrUnclaimedToken
+		return nil, consts.ErrUnclaimedToken
 	}
 
 	c := tokenClaims.Claims.(*claims)
@@ -65,5 +60,5 @@ func (d *decImpl) DecodeHttpRequest(req *http.Request) (token.Claims, error) {
 	if ex := extractToken(req); ex != "" && len(ex) > 0 {
 		return d.Decode(ex)
 	}
-	return nil, ErrNoBearerToken
+	return nil, consts.ErrNoBearerToken
 }

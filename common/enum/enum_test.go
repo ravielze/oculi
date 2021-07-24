@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"testing"
 
+	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -90,30 +91,30 @@ func TestRegister(t *testing.T) {
 		Register("test_enum", enumData, enum, &enum)
 		err := Register("test_enum", enumData, enum, &enum)
 		assert.Error(t, err)
-		assert.Equal(t, ErrEnumKeyRegistered, err)
+		assert.Equal(t, consts.ErrEnumKeyRegistered, err)
 	})
 
 	t.Run("when register non-integer enum", func(t *testing.T) {
 		wrongEnum := "a"
 		err := Register("wrong_enum_type", enumData, wrongEnum, &wrongEnum)
-		assert.Equal(t, ErrEnumNotInt, err)
+		assert.Equal(t, consts.ErrEnumNotInt, err)
 	})
 
 	t.Run("when register not-fully-implemented RegisterableEnum", func(t *testing.T) {
 		wrongEnum := WrongEnum(0)
 		err := Register("wrong_enum_type", enumData, wrongEnum, &wrongEnum)
-		assert.Equal(t, ErrEnumImplRegisterable, err)
+		assert.Equal(t, consts.ErrEnumImplRegisterable, err)
 	})
 
 	t.Run("when wrong param", func(t *testing.T) {
 		enum := TestEnum(0)
 		err := Register("wrong_test_enum_param", enumData, enum, enum)
-		assert.Equal(t, ErrEnumNotIntPointer, err)
+		assert.Equal(t, consts.ErrEnumNotIntPointer, err)
 	})
 	t.Run("when wrong param", func(t *testing.T) {
 		enum := TestEnum(0)
 		enum2 := WrongEnum(0)
 		err := Register("wrong_test_enum_param", enumData, enum, &enum2)
-		assert.Equal(t, ErrEnumImplRegisterablePtr, err)
+		assert.Equal(t, consts.ErrEnumImplRegisterablePtr, err)
 	})
 }
