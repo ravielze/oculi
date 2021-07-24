@@ -101,6 +101,19 @@ func (w *WebServer) start() error {
 		)
 	}
 
+	echo.MethodNotAllowedHandler = func(c echo.Context) error {
+		ctx := oculiContext.New(c)
+		ctx.AddError(http.StatusMethodNotAllowed, errors.New("method not allowed"))
+		return ctx.JSONPretty(
+			ctx.ResponseCode(),
+			NotFoundStruct{
+				Code:    ctx.ResponseCode(),
+				Message: ctx.Errors()[0].Error(),
+			},
+			" ",
+		)
+	}
+
 	w.resource.Echo().GET("/", func(c echo.Context) error {
 		return c.JSONPretty(
 			http.StatusOK,
