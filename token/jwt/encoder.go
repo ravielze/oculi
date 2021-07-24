@@ -7,14 +7,16 @@ import (
 )
 
 type encImpl struct {
-	key []byte
-	alg string
+	key      []byte
+	alg      string
+	serverId string
 }
 
-func NewEncoder(key string, alg string) token.Encoder {
+func NewEncoder(key string, alg string, serverId string) token.Encoder {
 	return &encImpl{
-		key: []byte(key),
-		alg: alg,
+		key:      []byte(key),
+		alg:      alg,
+		serverId: serverId,
 	}
 }
 
@@ -34,6 +36,7 @@ func (e *encImpl) CreateClaims(credentials user.CredentialsDTO, exp int64) token
 			ExpiresAt: exp,
 		},
 		credentials,
+		e.serverId,
 	}
 }
 
