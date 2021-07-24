@@ -34,7 +34,7 @@ func (ctx *Context) Process(usecaseResult ...interface{}) interface{} {
 	if resultLength > 0 {
 		last := reflect.ValueOf(usecaseResult[resultLength-1])
 		if usecaseResult[resultLength-1] == nil {
-			return nil
+			return usecaseResult[0]
 		}
 		if last.Type().Implements(_errType) {
 			if err, _ := last.Interface().(error); err != nil {
