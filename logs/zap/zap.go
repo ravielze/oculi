@@ -213,12 +213,21 @@ func (l logger) Log(msg string) {
 }
 
 func DefaultLog() logs.Logger {
-	logger, _ := New(Option{Level: log.INFO})
+	logger, _ := New(true, Option{Level: log.INFO})
 	return logger
 }
 
-func New(logOption Option, options ...zap.Option) (logs.Logger, error) {
-	instance, err := zap.NewProduction(options...)
+func New(isDevelopment bool, logOption Option, options ...zap.Option) (logs.Logger, error) {
+	var (
+		instance *zap.Logger
+		err      error
+	)
+
+	if isDevelopment {
+		instance, err = zap.NewDevelopment(options...)
+	} else {
+		instance, err = zap.NewProduction(options...)
+	}
 	if err != nil {
 		return nil, err
 	}
