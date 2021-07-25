@@ -1,7 +1,7 @@
 package todo
 
 import (
-	"github.com/ravielze/oculi/common/functions/getOrDefault"
+	"github.com/ravielze/oculi/common/functions/typeutils"
 	"github.com/ravielze/oculi/common/model/dto"
 	"github.com/ravielze/oculi/example/model/dao"
 )
@@ -24,7 +24,7 @@ func NewTodoResponse(t dao.Todo) TodoResponse {
 		ID:                  t.ID,
 		Title:               t.Title,
 		IsDone:              t.IsDone,
-		Description:         getOrDefault.String(t.Description, ""),
+		Description:         typeutils.String(t.Description, ""),
 	}
 }
 

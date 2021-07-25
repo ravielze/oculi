@@ -1,8 +1,7 @@
 package service
 
 import (
-	"errors"
-
+	"github.com/ravielze/oculi/example/constants"
 	"github.com/ravielze/oculi/example/model/dao"
 	userDto "github.com/ravielze/oculi/example/model/dto/user"
 	"github.com/ravielze/oculi/request"
@@ -16,7 +15,7 @@ func (s *service) Register(req request.Context, item userDto.RegisterRequest) er
 	register := item.ToDAO()
 	if user, _ := s.repository.
 		GetByUsername(req, register.Username); user != emptyUser {
-		return errors.New("account with that username already exist")
+		return constants.ErrUserRegistered
 	}
 
 	hashed, err := s.hash.Hash(register.Password)

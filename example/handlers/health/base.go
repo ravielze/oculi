@@ -9,6 +9,7 @@ import (
 type (
 	Handler interface {
 		Check(ctx request.Context) health.CheckResponseDTO
+		Reset(ctx request.Context) error
 	}
 
 	handler struct {

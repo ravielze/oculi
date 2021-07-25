@@ -22,6 +22,6 @@ func (c Controller) Register(ec *echo.Group) error {
 	public := token.PublicEndpoint()
 	g.POST("/login", c.Login, public)
 	g.POST("/register", c.RegisterUser, public)
-	g.GET("/check", c.Check)
+	g.GET("/check", c.Check, public)
 	return nil
 }

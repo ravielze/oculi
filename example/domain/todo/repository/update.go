@@ -7,10 +7,10 @@ import (
 )
 
 func (r *repository) Update(req request.Context, todoId uint64, request dto.Map) error {
-	if err := req.Transaction().Model(dao.User{}).
+	if err := req.Transaction().Model(dao.Todo{}).
 		Where("owner_id = ?", req.Identifier()).
 		Where("id = ?", todoId).
-		Updates(request).Error(); err != nil {
+		Updates(request.ToMap()).Error(); err != nil {
 		return err
 	}
 	return nil

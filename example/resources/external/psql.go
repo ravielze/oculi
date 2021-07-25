@@ -9,8 +9,15 @@ import (
 	sqlv2 "github.com/ravielze/oculi/persistent/sql/v2"
 )
 
+type (
+	DBManager struct {
+		Install func()
+		Reset   func()
+	}
+)
+
 func NewPostgreSQL(config *config.Env, log logs.Logger) (sql.API, error) {
-	api, err := sqlv2.NewClient(
+	return sqlv2.NewClient(
 		postgre.New(sql.ConnectionInfo{
 			Address:  config.DatabaseAddress,
 			Username: config.DatabaseUsername,
@@ -22,10 +29,14 @@ func NewPostgreSQL(config *config.Env, log logs.Logger) (sql.API, error) {
 		sql.WithConnMaxLifetime(config.DatabaseConnMaxLifetime),
 		sql.WithLogMode(config.DatabaseLogMode),
 		sql.WithLogger(log))
-	if err != nil {
-		return nil, err
-	}
+}
 
-	api.AutoMigrate(dao.User{}, dao.Todo{})
-	return api, nil
+func NewDBManager(api sql.API) *DBManager {
+	api.RegisterObject(dao.User{}, dao.Todo{})
+	i, r := api.ObjectFunction()
+	i()
+	return &DBManager{
+		Install: i,
+		Reset:   r,
+	}
 }

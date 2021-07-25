@@ -5,8 +5,9 @@ import (
 	"github.com/ravielze/oculi/example/di"
 	"github.com/ravielze/oculi/example/infrastructures"
 	"github.com/ravielze/oculi/example/resources"
-
 	mw "github.com/ravielze/oculi/middleware/token"
+	"github.com/ravielze/oculi/server"
+
 	webserver "github.com/ravielze/oculi/server/echo"
 	"go.uber.org/dig"
 )
@@ -18,7 +19,11 @@ func Run() {
 			if r.Config.IsDevelopment() {
 				s.DevelopmentMode()
 			}
-			r.Echo().Use(mw.EchoMiddleware(r.Tokenizer))
+			s.BeforeRun(func(res server.Resource) error {
+				r := res.(resources.Resource)
+				res.Echo().Use(mw.EchoMiddleware(r.Tokenizer))
+				return nil
+			})
 			return s.Run()
 		})
 	}

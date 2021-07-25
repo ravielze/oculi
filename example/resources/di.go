@@ -16,5 +16,6 @@ func Register(c *dig.Container) error {
 		Provide(external.NewPostgreSQL).
 		Provide(external.NewTokenizer).
 		Provide(external.NewHash).
+		Provide(external.NewDBManager).
 		End()
 }

@@ -27,6 +27,7 @@ type (
 		DatabaseMaxOpenConnection int           `envconfig:"DB_MAX_OPEN_CONNECTION" default:"25"`
 		DatabaseConnMaxLifetime   time.Duration `envconfig:"DB_CONNECTION_MAX_LIFE_TIME" default:"60s"`
 		DatabaseLogMode           bool          `envconfig:"DB_LOG_MODE" default:"true"`
+		DatabaseResetKey          string        `envconfig:"DB_RESET_KEY" required:"true"`
 	}
 )
 

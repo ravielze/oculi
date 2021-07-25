@@ -2,6 +2,7 @@ package service
 
 import (
 	commonUserDto "github.com/ravielze/oculi/common/model/dto/user"
+	"github.com/ravielze/oculi/example/constants"
 	"github.com/ravielze/oculi/example/model/dao"
 	userDto "github.com/ravielze/oculi/example/model/dto/user"
 	"github.com/ravielze/oculi/request"
@@ -14,9 +15,8 @@ func (s *service) Login(req request.Context, item userDto.LoginRequest) (dao.Use
 	}
 
 	if errPassword := s.hash.Verify(item.Password, user.Password); errPassword != nil {
-		return dao.User{}, "", errPassword
+		return dao.User{}, "", constants.ErrWrongPassword
 	}
-
 	token, err := s.resource.Tokenizer.
 		CreateAndEncode(
 			commonUserDto.CredentialsDTO{
