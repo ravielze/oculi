@@ -19,6 +19,10 @@ type (
 	Map map[string]interface{}
 )
 
+func (m Map) ToMap() map[string]interface{} {
+	return m
+}
+
 func NewBaseModel(item dao.BaseModel) BaseModel {
 	return BaseModel{
 		CreatedAt: item.CreatedAt.Format(time.DATETIME_LAYOUT),

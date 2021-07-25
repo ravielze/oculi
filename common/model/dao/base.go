@@ -19,3 +19,7 @@ type (
 
 	Map map[string]interface{}
 )
+
+func (m Map) ToMap() map[string]interface{} {
+	return m
+}
