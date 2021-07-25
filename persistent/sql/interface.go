@@ -193,10 +193,19 @@ type (
 		Exec(sql string, values ...interface{}) API
 	}
 
+	ModelerAPI interface {
+		// Register Object
+		RegisterObject(obj ...interface{}) API
+
+		// Create migration function, the first return will be install function, the second one will be reset function
+		ObjectFunction() (install func(), reset func())
+	}
+
 	API interface {
 		Config
 		ChainableAPI
 		FinisherAPI
+		ModelerAPI
 
 		// Session create new db session
 		Session(config *gorm.Session) API

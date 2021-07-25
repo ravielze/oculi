@@ -62,5 +62,6 @@ func NewClient(dl gorm.Dialector, advancedLogger bool, options ...sql.Connection
 
 	return &Impl{
 		Database: db,
+		Object:   make([]interface{}, 0),
 	}, nil
 }
