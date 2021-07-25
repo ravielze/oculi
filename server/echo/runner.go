@@ -14,6 +14,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	oculiContext "github.com/ravielze/oculi/context"
+	"github.com/ravielze/oculi/middleware/token"
 )
 
 type (
@@ -130,7 +131,7 @@ func (w *WebServer) start() error {
 	}
 
 	w.resource.Identifier()
-	w.resource.Echo().GET("/health", w.infrastructure.Health())
+	w.resource.Echo().GET("/health", w.infrastructure.Health(), token.PublicEndpoint())
 	return nil
 }
 
