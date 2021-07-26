@@ -198,7 +198,7 @@ type (
 		RegisterObject(obj ...interface{}) API
 
 		// Create migration function, the first return will be install function, the second one will be reset function
-		ObjectFunction() (install func(), reset func())
+		ObjectFunction(onInstall func(), onReset func()) (install func(), reset func())
 	}
 
 	API interface {
