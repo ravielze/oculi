@@ -30,6 +30,6 @@ A simple backend using this tools: [LINK](https://github.com/ravielze/oculi/tree
 
 # Todo
 
-1. Add domain layer to example project
+1. Add redis, rabbitmq, kafka support
 2. Add websocket tools
 3. Add more custom validator
