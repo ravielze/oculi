@@ -6,12 +6,13 @@ Backend utilities
 1. Echo
 2. Gorm
 3. Postgresql / Mariadb / Mysql
-4. Zap & logrus
+4. Zap
 5. Swagger
-6. Uberdig
+6. Uber dig
 7. Bcrypt
 8. Mockgen
-9. etc.
+9. JWT
+10. etc.
 
 
 # Mocks Command
@@ -25,7 +26,7 @@ Backend utilities
 
 # Example Project
 
-A simple backend using this tools: [LINK](https://github.com/ravielze/oculi/tree/v3/example)
+A simple backend using this tools: [LINK](https://github.com/ravielze/oculi/tree/master/example)
 
 # Todo
 
