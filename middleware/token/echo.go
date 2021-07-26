@@ -10,7 +10,12 @@ import (
 	"github.com/ravielze/oculi/token"
 )
 
+var (
+	tokenMiddlewareActivated = false
+)
+
 func EchoMiddleware(token token.Tokenizer) echo.MiddlewareFunc {
+	tokenMiddlewareActivated = true
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			ctx, ok := c.(*context.Context)

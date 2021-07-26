@@ -10,6 +10,11 @@ import (
 
 func PublicEndpoint() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		if !tokenMiddlewareActivated {
+			return func(c echo.Context) error {
+				return next(c)
+			}
+		}
 		return func(c echo.Context) error {
 			ctx := c.(*context.Context)
 			if len(ctx.Errors()) == 1 && ctx.ResponseCode() == http.StatusUnauthorized {
@@ -22,6 +27,11 @@ func PublicEndpoint() echo.MiddlewareFunc {
 
 func PrivateEndpoint(r response.Responder) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		if !tokenMiddlewareActivated {
+			return func(c echo.Context) error {
+				return next(c)
+			}
+		}
 		return func(c echo.Context) error {
 			ctx := c.(*context.Context)
 			if ctx.HasError() && ctx.ResponseCode() == http.StatusUnauthorized {
