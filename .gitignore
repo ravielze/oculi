@@ -13,7 +13,6 @@
 *.out
 
 test
-rest
 *.txt
 !**/template/**/**/*.txt
 !**/template/**/*.txt
@@ -22,3 +21,4 @@ rest
 storage
 data
 old
+*.http
