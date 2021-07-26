@@ -37,6 +37,14 @@ type (
 		Panicj(j log.JSON)
 		Panicf(format string, args ...interface{})
 		Instance() interface{}
+
+		StandardPrint(info Info)
+		StandardDebug(info Info)
+		StandardInfo(info Info)
+		StandardWarn(info Info)
+		StandardError(info Info)
+		StandardFatal(info Info)
+		StandardPanic(info Info)
 	}
 )
 

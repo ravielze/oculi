@@ -238,3 +238,53 @@ func New(isDevelopment bool, logOption Option, options ...zap.Option) (logs.Logg
 		prefix:   logOption.Prefix,
 	}, nil
 }
+
+func (l *logger) logWithField(info logs.Info) *zap.SugaredLogger {
+	logging := l.instance
+	for key, message := range info.Data() {
+		logging = logging.With(key, message)
+	}
+	return logging
+}
+
+func (l *logger) StandardPrint(info logs.Info) {
+	if l.level != log.OFF {
+		l.logWithField(info).Info(info.Message())
+	}
+}
+
+func (l *logger) StandardDebug(info logs.Info) {
+	if l.level != log.OFF {
+		l.logWithField(info).Debug(info.Message())
+	}
+}
+
+func (l *logger) StandardInfo(info logs.Info) {
+	if l.level != log.OFF {
+		l.logWithField(info).Info(info.Message())
+	}
+}
+
+func (l *logger) StandardWarn(info logs.Info) {
+	if l.level != log.OFF {
+		l.logWithField(info).Warn(info.Message())
+	}
+}
+
+func (l *logger) StandardError(info logs.Info) {
+	if l.level != log.OFF {
+		l.logWithField(info).Error(info.Message())
+	}
+}
+
+func (l *logger) StandardFatal(info logs.Info) {
+	if l.level != log.OFF {
+		l.logWithField(info).Fatal(info.Message())
+	}
+}
+
+func (l *logger) StandardPanic(info logs.Info) {
+	if l.level != log.OFF {
+		l.logWithField(info).Panic(info.Message())
+	}
+}
