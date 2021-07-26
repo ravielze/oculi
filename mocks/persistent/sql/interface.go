@@ -1060,6 +1060,62 @@ func (mr *MockFinisherAPIMockRecorder) Updates(values interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Updates", reflect.TypeOf((*MockFinisherAPI)(nil).Updates), values)
 }
 
+// MockModelerAPI is a mock of ModelerAPI interface.
+type MockModelerAPI struct {
+	ctrl     *gomock.Controller
+	recorder *MockModelerAPIMockRecorder
+}
+
+// MockModelerAPIMockRecorder is the mock recorder for MockModelerAPI.
+type MockModelerAPIMockRecorder struct {
+	mock *MockModelerAPI
+}
+
+// NewMockModelerAPI creates a new mock instance.
+func NewMockModelerAPI(ctrl *gomock.Controller) *MockModelerAPI {
+	mock := &MockModelerAPI{ctrl: ctrl}
+	mock.recorder = &MockModelerAPIMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockModelerAPI) EXPECT() *MockModelerAPIMockRecorder {
+	return m.recorder
+}
+
+// ObjectFunction mocks base method.
+func (m *MockModelerAPI) ObjectFunction(onInstall, onReset func()) (func(), func()) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ObjectFunction", onInstall, onReset)
+	ret0, _ := ret[0].(func())
+	ret1, _ := ret[1].(func())
+	return ret0, ret1
+}
+
+// ObjectFunction indicates an expected call of ObjectFunction.
+func (mr *MockModelerAPIMockRecorder) ObjectFunction(onInstall, onReset interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ObjectFunction", reflect.TypeOf((*MockModelerAPI)(nil).ObjectFunction), onInstall, onReset)
+}
+
+// RegisterObject mocks base method.
+func (m *MockModelerAPI) RegisterObject(obj ...interface{}) sql0.API {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range obj {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RegisterObject", varargs...)
+	ret0, _ := ret[0].(sql0.API)
+	return ret0
+}
+
+// RegisterObject indicates an expected call of RegisterObject.
+func (mr *MockModelerAPIMockRecorder) RegisterObject(obj ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterObject", reflect.TypeOf((*MockModelerAPI)(nil).RegisterObject), obj...)
+}
+
 // MockAPI is a mock of API interface.
 type MockAPI struct {
 	ctrl     *gomock.Controller
@@ -1776,6 +1832,21 @@ func (mr *MockAPIMockRecorder) NowFunc() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NowFunc", reflect.TypeOf((*MockAPI)(nil).NowFunc))
 }
 
+// ObjectFunction mocks base method.
+func (m *MockAPI) ObjectFunction(onInstall, onReset func()) (func(), func()) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ObjectFunction", onInstall, onReset)
+	ret0, _ := ret[0].(func())
+	ret1, _ := ret[1].(func())
+	return ret0, ret1
+}
+
+// ObjectFunction indicates an expected call of ObjectFunction.
+func (mr *MockAPIMockRecorder) ObjectFunction(onInstall, onReset interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ObjectFunction", reflect.TypeOf((*MockAPI)(nil).ObjectFunction), onInstall, onReset)
+}
+
 // Offset mocks base method.
 func (m *MockAPI) Offset(offset int) sql0.API {
 	m.ctrl.T.Helper()
@@ -1933,6 +2004,24 @@ func (mr *MockAPIMockRecorder) Raw(sql interface{}, values ...interface{}) *gomo
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{sql}, values...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Raw", reflect.TypeOf((*MockAPI)(nil).Raw), varargs...)
+}
+
+// RegisterObject mocks base method.
+func (m *MockAPI) RegisterObject(obj ...interface{}) sql0.API {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range obj {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RegisterObject", varargs...)
+	ret0, _ := ret[0].(sql0.API)
+	return ret0
+}
+
+// RegisterObject indicates an expected call of RegisterObject.
+func (mr *MockAPIMockRecorder) RegisterObject(obj ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterObject", reflect.TypeOf((*MockAPI)(nil).RegisterObject), obj...)
 }
 
 // Rollback mocks base method.

@@ -15,7 +15,7 @@ type (
 	}
 
 	Decoder interface {
-		Decode(token string) (Claims, error)
+		Decode(tkn string) (Claims, error)
 		DecodeHttpRequest(req *http.Request) (Claims, error)
 	}
 

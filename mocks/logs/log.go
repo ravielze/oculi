@@ -10,6 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	log "github.com/labstack/gommon/log"
+	logs "github.com/ravielze/oculi/logs"
 )
 
 // MockLogger is a mock of Logger interface.
@@ -407,6 +408,90 @@ func (m *MockLogger) SetPrefix(p string) {
 func (mr *MockLoggerMockRecorder) SetPrefix(p interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetPrefix", reflect.TypeOf((*MockLogger)(nil).SetPrefix), p)
+}
+
+// StandardDebug mocks base method.
+func (m *MockLogger) StandardDebug(info logs.Info) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "StandardDebug", info)
+}
+
+// StandardDebug indicates an expected call of StandardDebug.
+func (mr *MockLoggerMockRecorder) StandardDebug(info interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StandardDebug", reflect.TypeOf((*MockLogger)(nil).StandardDebug), info)
+}
+
+// StandardError mocks base method.
+func (m *MockLogger) StandardError(info logs.Info) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "StandardError", info)
+}
+
+// StandardError indicates an expected call of StandardError.
+func (mr *MockLoggerMockRecorder) StandardError(info interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StandardError", reflect.TypeOf((*MockLogger)(nil).StandardError), info)
+}
+
+// StandardFatal mocks base method.
+func (m *MockLogger) StandardFatal(info logs.Info) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "StandardFatal", info)
+}
+
+// StandardFatal indicates an expected call of StandardFatal.
+func (mr *MockLoggerMockRecorder) StandardFatal(info interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StandardFatal", reflect.TypeOf((*MockLogger)(nil).StandardFatal), info)
+}
+
+// StandardInfo mocks base method.
+func (m *MockLogger) StandardInfo(info logs.Info) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "StandardInfo", info)
+}
+
+// StandardInfo indicates an expected call of StandardInfo.
+func (mr *MockLoggerMockRecorder) StandardInfo(info interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StandardInfo", reflect.TypeOf((*MockLogger)(nil).StandardInfo), info)
+}
+
+// StandardPanic mocks base method.
+func (m *MockLogger) StandardPanic(info logs.Info) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "StandardPanic", info)
+}
+
+// StandardPanic indicates an expected call of StandardPanic.
+func (mr *MockLoggerMockRecorder) StandardPanic(info interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StandardPanic", reflect.TypeOf((*MockLogger)(nil).StandardPanic), info)
+}
+
+// StandardPrint mocks base method.
+func (m *MockLogger) StandardPrint(info logs.Info) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "StandardPrint", info)
+}
+
+// StandardPrint indicates an expected call of StandardPrint.
+func (mr *MockLoggerMockRecorder) StandardPrint(info interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StandardPrint", reflect.TypeOf((*MockLogger)(nil).StandardPrint), info)
+}
+
+// StandardWarn mocks base method.
+func (m *MockLogger) StandardWarn(info logs.Info) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "StandardWarn", info)
+}
+
+// StandardWarn indicates an expected call of StandardWarn.
+func (mr *MockLoggerMockRecorder) StandardWarn(info interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StandardWarn", reflect.TypeOf((*MockLogger)(nil).StandardWarn), info)
 }
 
 // Warn mocks base method.

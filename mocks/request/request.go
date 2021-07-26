@@ -306,6 +306,18 @@ func (mr *MockContextMockRecorder) SetContext(ctx interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetContext", reflect.TypeOf((*MockContext)(nil).SetContext), ctx)
 }
 
+// SetIdentifier mocks base method.
+func (m *MockContext) SetIdentifier(id uint64) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SetIdentifier", id)
+}
+
+// SetIdentifier indicates an expected call of SetIdentifier.
+func (mr *MockContextMockRecorder) SetIdentifier(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetIdentifier", reflect.TypeOf((*MockContext)(nil).SetIdentifier), id)
+}
+
 // SetResponseCode mocks base method.
 func (m *MockContext) SetResponseCode(code int) {
 	m.ctrl.T.Helper()
@@ -769,6 +781,18 @@ func (m *MockEchoContext) SetContext(ctx context.Context) request.Context {
 func (mr *MockEchoContextMockRecorder) SetContext(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetContext", reflect.TypeOf((*MockEchoContext)(nil).SetContext), ctx)
+}
+
+// SetIdentifier mocks base method.
+func (m *MockEchoContext) SetIdentifier(id uint64) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SetIdentifier", id)
+}
+
+// SetIdentifier indicates an expected call of SetIdentifier.
+func (mr *MockEchoContextMockRecorder) SetIdentifier(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetIdentifier", reflect.TypeOf((*MockEchoContext)(nil).SetIdentifier), id)
 }
 
 // SetResponseCode mocks base method.

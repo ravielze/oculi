@@ -12,10 +12,10 @@ type (
 	}
 
 	ApplicableInfo interface {
-		Apply(si *subinfo)
+		Apply(si *Subinfo)
 	}
 
-	subinfo struct {
+	Subinfo struct {
 		data map[string]interface{}
 	}
 
@@ -28,7 +28,7 @@ type (
 )
 
 func NewInfo(msg string, subinfos ...ApplicableInfo) Info {
-	s := &subinfo{
+	s := &Subinfo{
 		data: make(map[string]interface{}),
 	}
 
@@ -49,13 +49,13 @@ func (i *info) Data() map[string]interface{} {
 	return i.data
 }
 
-func (s subinfoMap) Apply(si *subinfo) {
+func (s subinfoMap) Apply(si *Subinfo) {
 	for key, value := range s {
 		si.data[key] = value
 	}
 }
 
-func (s subinfoKV) Apply(si *subinfo) {
+func (s subinfoKV) Apply(si *Subinfo) {
 	si.data[s.key] = s.value
 }
 
