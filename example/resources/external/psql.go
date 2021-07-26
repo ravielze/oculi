@@ -33,7 +33,7 @@ func NewPostgreSQL(config *config.Env, log logs.Logger) (sql.API, error) {
 
 func NewDBManager(api sql.API) *DBManager {
 	api.RegisterObject(dao.User{}, dao.Todo{})
-	i, r := api.ObjectFunction()
+	i, r := api.ObjectFunction(nil, nil)
 	i()
 	return &DBManager{
 		Install: i,

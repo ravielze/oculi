@@ -4,7 +4,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/ravielze/oculi/example/handlers"
 	"github.com/ravielze/oculi/example/resources"
-	"github.com/ravielze/oculi/middleware/token"
 	"go.uber.org/dig"
 )
 
@@ -19,9 +18,8 @@ type (
 
 func (c Controller) Register(ec *echo.Group) error {
 	g := ec.Group("/user")
-	public := token.PublicEndpoint()
-	g.POST("/login", c.Login, public)
-	g.POST("/register", c.RegisterUser, public)
-	g.GET("/check", c.Check, public)
+	g.POST("/login", c.Login)
+	g.POST("/register", c.RegisterUser)
+	g.GET("/check", c.Check)
 	return nil
 }

@@ -18,8 +18,6 @@ require (
 	github.com/martinlindhe/base36 v1.1.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1
-	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
-	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
 	github.com/yangxikun/gin-limit-by-key v0.0.0-20190512072151-520697354d5f
 	go.uber.org/dig v1.11.0

@@ -17,6 +17,9 @@ func (h *handler) Check(req request.EchoContext) (user.UserResponse, error) {
 		return user.UserResponse{}, constants.ErrNotLoggedIn
 	}
 	credentialsData := k.(userCommonDto.CredentialsDTO)
+	if credentialsData.ID == 0 {
+		return user.UserResponse{}, constants.ErrNotLoggedIn
+	}
 	userDataBuff, _ := json.Marshal(credentialsData.Metadata)
 	var userData dao.User
 	json.Unmarshal(userDataBuff, &userData)
