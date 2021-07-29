@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/labstack/echo/v4"
 	oculiContext "github.com/ravielze/oculi/context"
 	"github.com/ravielze/oculi/request"
 	oculiValidator "github.com/ravielze/oculi/validator"
@@ -87,7 +88,7 @@ func (r *responder) handleError(responseCode int, data []error) errorResponse {
 }
 
 func (r *responder) buildErrors(responseCode int, data []error) (string, []errorField) {
-	if responseCode != http.StatusBadRequest {
+	if responseCode != http.StatusUnprocessableEntity {
 		return data[0].Error(), nil
 	}
 	err, ok := data[0].(validator.ValidationErrors)
@@ -101,6 +102,11 @@ func (r *responder) buildErrors(responseCode int, data []error) (string, []error
 			}
 		}
 		return "", errors
+	}
+
+	_, ok = data[0].(*echo.HTTPError)
+	if ok {
+		return "failed to parse body", nil
 	}
 	return data[0].Error(), nil
 }

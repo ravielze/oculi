@@ -55,11 +55,9 @@ func (mr *MockContextMockRecorder) AddError(responseCode interface{}, err ...int
 }
 
 // CommitTransaction mocks base method.
-func (m *MockContext) CommitTransaction() sql.API {
+func (m *MockContext) CommitTransaction() {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CommitTransaction")
-	ret0, _ := ret[0].(sql.API)
-	return ret0
+	m.ctrl.Call(m, "CommitTransaction")
 }
 
 // CommitTransaction indicates an expected call of CommitTransaction.
@@ -153,17 +151,39 @@ func (mr *MockContextMockRecorder) Identifier() *gomock.Call {
 }
 
 // NewTransaction mocks base method.
-func (m *MockContext) NewTransaction() sql.API {
+func (m *MockContext) NewTransaction() {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NewTransaction")
-	ret0, _ := ret[0].(sql.API)
-	return ret0
+	m.ctrl.Call(m, "NewTransaction")
 }
 
 // NewTransaction indicates an expected call of NewTransaction.
 func (mr *MockContextMockRecorder) NewTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTransaction", reflect.TypeOf((*MockContext)(nil).NewTransaction))
+}
+
+// OnCommitDo mocks base method.
+func (m *MockContext) OnCommitDo(f func()) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "OnCommitDo", f)
+}
+
+// OnCommitDo indicates an expected call of OnCommitDo.
+func (mr *MockContextMockRecorder) OnCommitDo(f interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnCommitDo", reflect.TypeOf((*MockContext)(nil).OnCommitDo), f)
+}
+
+// OnRollbackDo mocks base method.
+func (m *MockContext) OnRollbackDo(f func()) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "OnRollbackDo", f)
+}
+
+// OnRollbackDo indicates an expected call of OnRollbackDo.
+func (mr *MockContextMockRecorder) OnRollbackDo(f interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnRollbackDo", reflect.TypeOf((*MockContext)(nil).OnRollbackDo), f)
 }
 
 // Parse36 mocks base method.
@@ -279,11 +299,9 @@ func (mr *MockContextMockRecorder) ResponseCode() *gomock.Call {
 }
 
 // RollbackTransaction mocks base method.
-func (m *MockContext) RollbackTransaction() sql.API {
+func (m *MockContext) RollbackTransaction() {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RollbackTransaction")
-	ret0, _ := ret[0].(sql.API)
-	return ret0
+	m.ctrl.Call(m, "RollbackTransaction")
 }
 
 // RollbackTransaction indicates an expected call of RollbackTransaction.
@@ -420,11 +438,9 @@ func (mr *MockEchoContextMockRecorder) AddError(responseCode interface{}, err ..
 }
 
 // CommitTransaction mocks base method.
-func (m *MockEchoContext) CommitTransaction() sql.API {
+func (m *MockEchoContext) CommitTransaction() {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CommitTransaction")
-	ret0, _ := ret[0].(sql.API)
-	return ret0
+	m.ctrl.Call(m, "CommitTransaction")
 }
 
 // CommitTransaction indicates an expected call of CommitTransaction.
@@ -532,17 +548,39 @@ func (mr *MockEchoContextMockRecorder) Identifier() *gomock.Call {
 }
 
 // NewTransaction mocks base method.
-func (m *MockEchoContext) NewTransaction() sql.API {
+func (m *MockEchoContext) NewTransaction() {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NewTransaction")
-	ret0, _ := ret[0].(sql.API)
-	return ret0
+	m.ctrl.Call(m, "NewTransaction")
 }
 
 // NewTransaction indicates an expected call of NewTransaction.
 func (mr *MockEchoContextMockRecorder) NewTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTransaction", reflect.TypeOf((*MockEchoContext)(nil).NewTransaction))
+}
+
+// OnCommitDo mocks base method.
+func (m *MockEchoContext) OnCommitDo(f func()) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "OnCommitDo", f)
+}
+
+// OnCommitDo indicates an expected call of OnCommitDo.
+func (mr *MockEchoContextMockRecorder) OnCommitDo(f interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnCommitDo", reflect.TypeOf((*MockEchoContext)(nil).OnCommitDo), f)
+}
+
+// OnRollbackDo mocks base method.
+func (m *MockEchoContext) OnRollbackDo(f func()) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "OnRollbackDo", f)
+}
+
+// OnRollbackDo indicates an expected call of OnRollbackDo.
+func (mr *MockEchoContextMockRecorder) OnRollbackDo(f interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnRollbackDo", reflect.TypeOf((*MockEchoContext)(nil).OnRollbackDo), f)
 }
 
 // Param mocks base method.
@@ -756,11 +794,9 @@ func (mr *MockEchoContextMockRecorder) ResponseCode() *gomock.Call {
 }
 
 // RollbackTransaction mocks base method.
-func (m *MockEchoContext) RollbackTransaction() sql.API {
+func (m *MockEchoContext) RollbackTransaction() {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RollbackTransaction")
-	ret0, _ := ret[0].(sql.API)
-	return ret0
+	m.ctrl.Call(m, "RollbackTransaction")
 }
 
 // RollbackTransaction indicates an expected call of RollbackTransaction.

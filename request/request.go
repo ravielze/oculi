@@ -20,9 +20,11 @@ type (
 
 		HasTransaction() bool
 		Transaction() sql.API
-		NewTransaction() sql.API
-		CommitTransaction() sql.API
-		RollbackTransaction() sql.API
+		NewTransaction()
+		CommitTransaction()
+		RollbackTransaction()
+		OnRollbackDo(f func())
+		OnCommitDo(f func())
 
 		ParseString(key, value string) Context
 		ParseStringOrDefault(key, value, def string) Context

@@ -22,6 +22,8 @@ type (
 		responseCode      int
 		data              map[string]string
 		requestIdentifier uint64
+		onRollback        func()
+		onCommit          func()
 	}
 )
 
@@ -73,27 +75,38 @@ func (r *Base) Transaction() sql.API {
 	return r.tx
 }
 
-func (r *Base) NewTransaction() sql.API {
+func (r *Base) NewTransaction() {
 	r.tx = r.db.Begin()
-	return r.tx
 }
 
-func (r *Base) CommitTransaction() sql.API {
+func (r *Base) CommitTransaction() {
 	if r.tx == nil {
-		return r.db
+		return
 	}
 
 	r.tx.Commit()
-	return r.tx
+	if r.onCommit != nil {
+		r.onCommit()
+	}
 }
 
-func (r *Base) RollbackTransaction() sql.API {
+func (r *Base) RollbackTransaction() {
 	if r.tx == nil {
-		return r.db
+		return
 	}
 
 	r.tx.Rollback()
-	return r.tx
+	if r.onRollback != nil {
+		r.onRollback()
+	}
+}
+
+func (r *Base) OnCommitDo(f func()) {
+	r.onCommit = f
+}
+
+func (r *Base) OnRollbackDo(f func()) {
+	r.onRollback = f
 }
 
 func NewBaseWithIdentifier(identifier uint64, db sql.API) Context {
@@ -105,6 +118,8 @@ func NewBaseWithIdentifier(identifier uint64, db sql.API) Context {
 		responseCode:      200,
 		data:              make(map[string]string, 5),
 		requestIdentifier: identifier,
+		onRollback:        nil,
+		onCommit:          nil,
 	}
 }
 
@@ -117,6 +132,8 @@ func NewBase(db sql.API) Context {
 		responseCode:      200,
 		data:              make(map[string]string, 5),
 		requestIdentifier: 0,
+		onRollback:        nil,
+		onCommit:          nil,
 	}
 }
 
