@@ -94,7 +94,11 @@ func (r *responder) handleError(responseCode int, data []error) errorResponse {
 func (r *responder) buildErrors(responseCode int, data []error) (string, interface{}) {
 	derr, ok := data[0].(errors.DetailedErrors)
 	if ok {
-		return "something went wrong, see details", derr
+		details := errors.Details(derr)
+		if len(details) == 1 {
+			return derr.Error(), errors.Details(derr)[0]
+		}
+		return derr.Error(), errors.Details(derr)
 	}
 
 	if responseCode != http.StatusUnprocessableEntity {

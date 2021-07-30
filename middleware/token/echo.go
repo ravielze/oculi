@@ -1,14 +1,14 @@
 package token
 
 import (
-	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/ravielze/oculi/common/model/dto/user"
+	errConsts "github.com/ravielze/oculi/constant/errors"
 	consts "github.com/ravielze/oculi/constant/key"
 	"github.com/ravielze/oculi/context"
+	errorUtil "github.com/ravielze/oculi/errors"
 	"github.com/ravielze/oculi/response"
 	"github.com/ravielze/oculi/token"
 )
@@ -29,7 +29,7 @@ func EchoMiddleware(token token.Tokenizer) echo.MiddlewareFunc {
 			if err != nil {
 				ctx.Set(consts.KeyCredentials, user.CredentialsDTO{
 					ID:       0,
-					Metadata: fmt.Errorf("unauthorized: %s", err.Error()),
+					Metadata: errorUtil.InjectDetails(errConsts.ErrUnauthorized, err.Error()),
 				})
 			} else {
 				ctx.Set(consts.KeyCredentials, claims.Credentials())
@@ -50,7 +50,13 @@ func PrivateEndpoint(r response.Responder) echo.MiddlewareFunc {
 			ctx := c.(*context.Context)
 			credentials := ctx.Get(consts.KeyCredentials)
 			if credentials == nil {
-				ctx.AddError(http.StatusUnauthorized, errors.New("unauthorized: credentials not found"))
+				ctx.AddError(
+					http.StatusUnauthorized,
+					errorUtil.InjectDetails(
+						errConsts.ErrUnauthorized,
+						"unauthorized: credentials not found",
+					),
+				)
 				return r.NewJSONResponse(ctx, nil, nil)
 			} else {
 				cdto := credentials.(user.CredentialsDTO)

@@ -2,8 +2,8 @@ package errors
 
 type (
 	DetailedErrors struct {
-		ErrorMessage string      `json:"error"`
-		Details      interface{} `json:"details"`
+		ErrorMessage string
+		Details      interface{}
 	}
 )
 
