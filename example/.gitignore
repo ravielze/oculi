@@ -1,0 +1,5 @@
+*.http
+.vscode
+*.out
+*.exe
+.env
