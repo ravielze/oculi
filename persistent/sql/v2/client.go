@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func NewClient(dl gorm.Dialector, advancedLogger bool, options ...sql.ConnectionOption) (sql.API, error) {
+func NewClient(dl gorm.Dialector, IsProduction bool, options ...sql.ConnectionOption) (sql.API, error) {
 	option := sql.ConnectionOptions{
 		MaxIdleConnection: 10,
 		MaxOpenConnection: 200,
@@ -36,8 +36,10 @@ func NewClient(dl gorm.Dialector, advancedLogger bool, options ...sql.Connection
 	if !option.LogMode {
 		logLevel = logger.Silent
 	}
-	config := &gorm.Config{}
-	if advancedLogger {
+	config := &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}
+	if IsProduction {
 		config = &gorm.Config{
 			Logger: logger.New(option.Logger(), logger.Config{
 				SlowThreshold: 200 * time.Millisecond,

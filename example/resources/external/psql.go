@@ -23,7 +23,7 @@ func NewPostgreSQL(config *config.Env, log logs.Logger) (sql.API, error) {
 			Username: config.DatabaseUsername,
 			Password: config.DatabasePassword,
 			DbName:   config.DatabaseName,
-		}), false,
+		}), config.IsProduction(),
 		sql.WithMaxIdleConnection(config.DatabaseMaxIdleConnection),
 		sql.WithMaxOpenConnection(config.DatabaseMaxOpenConnection),
 		sql.WithConnMaxLifetime(config.DatabaseConnMaxLifetime),
