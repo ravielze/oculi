@@ -1,7 +1,7 @@
 package external
 
 import (
-	"time"
+	"fmt"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/ravielze/oculi/example/config"
@@ -10,6 +10,7 @@ import (
 )
 
 func NewTokenizer(config *config.Env) token.Tokenizer {
-	identifier := config.ServiceName + "/" + time.Now().String()
+	identifier := oculiJWT.GenerateIdentifier(config.ServiceState, 5, config.ServiceName)
+	fmt.Println(identifier)
 	return oculiJWT.New(config.JWTKey, jwt.SigningMethodHS256.Name, identifier)
 }
