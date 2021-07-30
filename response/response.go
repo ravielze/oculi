@@ -6,6 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	oculiContext "github.com/ravielze/oculi/context"
+	"github.com/ravielze/oculi/errors"
 	"github.com/ravielze/oculi/request"
 	oculiValidator "github.com/ravielze/oculi/validator"
 )
@@ -17,8 +18,8 @@ type (
 	}
 
 	errorResponse struct {
-		Code   int         `json:"code"`
-		Errors interface{} `json:"error"`
+		Error   string      `json:"error"`
+		Details interface{} `json:"details"`
 	}
 
 	errorField struct {
@@ -55,7 +56,10 @@ func (r *responder) NewJSONResponse(ctx *oculiContext.Context, req request.Conte
 func (r *responder) newJSON(ctx *oculiContext.Context, data interface{}) error {
 	var resp Response
 	if ctx.ResponseCode() >= 400 || ctx.HasError() {
-		resp = r.handleError(ctx.ResponseCode(), ctx.Errors())
+		resp = standardResponse{
+			Code: ctx.ResponseCode(),
+			Data: r.handleError(ctx.ResponseCode(), ctx.Errors()),
+		}
 	} else if data == nil {
 		resp = standardResponse{
 			Code: ctx.ResponseCode(),
@@ -77,17 +81,22 @@ func (r *responder) handleError(responseCode int, data []error) errorResponse {
 	msg, errfields := r.buildErrors(responseCode, data)
 	if errfields == nil {
 		return errorResponse{
-			Code:   responseCode,
-			Errors: msg,
+			Error:   msg,
+			Details: []interface{}{},
 		}
 	}
 	return errorResponse{
-		Code:   responseCode,
-		Errors: errfields,
+		Error:   msg,
+		Details: errfields,
 	}
 }
 
-func (r *responder) buildErrors(responseCode int, data []error) (string, []errorField) {
+func (r *responder) buildErrors(responseCode int, data []error) (string, interface{}) {
+	derr, ok := data[0].(errors.DetailedErrors)
+	if ok {
+		return "something went wrong, see details", derr
+	}
+
 	if responseCode != http.StatusUnprocessableEntity {
 		return data[0].Error(), nil
 	}
@@ -101,12 +110,13 @@ func (r *responder) buildErrors(responseCode int, data []error) (string, []error
 				Message: err[i].Translate(*r.validator.Translator()),
 			}
 		}
-		return "", errors
+		return "validation error", errors
 	}
 
 	_, ok = data[0].(*echo.HTTPError)
 	if ok {
-		return "failed to parse body", nil
+		return "json body is unparseable", nil
 	}
+
 	return data[0].Error(), nil
 }
