@@ -21,7 +21,7 @@ func (ctx *Context) BindValidate(obj interface{}) {
 	}
 }
 
-func (ctx *Context) Merge(req request.Context) {
+func (ctx *Context) Merge(req request.ReqContext) {
 	if ctx.HasError() {
 		return
 	}

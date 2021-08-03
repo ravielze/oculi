@@ -8,9 +8,9 @@ import (
 )
 
 type (
-	Context interface {
-		SetContext(ctx context.Context) Context
-		GetContext() context.Context
+	ReqContext interface {
+		WithContext(ctx context.Context) ReqContext
+		Context() context.Context
 		HasError() bool
 		AddError(responseCode int, err ...error)
 
@@ -26,17 +26,17 @@ type (
 		OnRollbackDo(f func())
 		OnCommitDo(f func())
 
-		ParseString(key, value string) Context
-		ParseStringOrDefault(key, value, def string) Context
-		ParseUUID(key, value string) Context
-		Parse36(key, value string) Context
-		ParseUUID36(key, value string) Context
-		Parse36UUID(key, value string) Context
-		ParseBoolean(key, value string, def bool) Context
-		Data() *map[string]string
+		ParseString(key, value string) ReqContext
+		ParseStringOrDefault(key, value, def string) ReqContext
+		ParseUUID(key, value string) ReqContext
+		Parse36(key, value string) ReqContext
+		ParseUUID36(key, value string) ReqContext
+		Parse36UUID(key, value string) ReqContext
+		ParseBoolean(key, value string, def bool) ReqContext
+		Data() *map[string]interface{}
 
 		Identifier() uint64
-		SetIdentifier(id uint64)
+		WithIdentifier(id uint64) ReqContext
 	}
 
 	//TODO
@@ -44,21 +44,23 @@ type (
 		BindValidate(obj interface{})
 	}
 
-	EchoContext interface {
-		Context
+	EchoReqContext interface {
+		ReqContext
 
 		Echo() echo.Context
 
-		Param(param string) EchoContext
-		ParamUUID(param string) EchoContext
-		Param36(param string) EchoContext
-		ParamUUID36(param string) EchoContext
-		Param36UUID(param string) EchoContext
+		Param(param string) EchoReqContext
+		ParamUUID(param string) EchoReqContext
+		Param36(param string) EchoReqContext
+		ParamUUID36(param string) EchoReqContext
+		Param36UUID(param string) EchoReqContext
 
 		// Get query with string value and set it to default if it's empty
-		Query(query, def string) EchoContext
+		Query(query, def string) EchoReqContext
 
 		// Get query with boolean value
-		QueryBoolean(query string, def bool) EchoContext
+		QueryBoolean(query string, def bool) EchoReqContext
+
+		Transform() ReqContext
 	}
 )

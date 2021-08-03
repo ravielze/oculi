@@ -17,6 +17,8 @@ type (
 	}
 )
 
+// NOTE: Do not change the field name in Context struct unless Method ReqContext.Transform() customized to do so.
+
 func New(ec echo.Context) *Context {
 	return &Context{
 		ctx:      context.Background(),

@@ -14,72 +14,73 @@ import (
 )
 
 type (
-	Base struct {
+	base struct {
 		ctx               context.Context
 		db                sql.API
 		tx                sql.API
 		errors            []error
 		responseCode      int
-		data              map[string]string
+		data              map[string]interface{}
 		requestIdentifier uint64
 		onRollback        func()
 		onCommit          func()
 	}
 )
 
-func (r *Base) SetIdentifier(id uint64) {
+func (r *base) WithIdentifier(id uint64) ReqContext {
 	r.requestIdentifier = id
+	return r
 }
 
-func (r *Base) Identifier() uint64 {
+func (r *base) Identifier() uint64 {
 	return r.requestIdentifier
 }
 
-func (r *Base) GetContext() context.Context {
+func (r *base) Context() context.Context {
 	return r.ctx
 }
 
-func (r *Base) HasError() bool {
+func (r *base) HasError() bool {
 	return len(r.errors) > 0
 }
 
-func (r *Base) AddError(responseCode int, err ...error) {
+func (r *base) AddError(responseCode int, err ...error) {
 	if r.responseCode < 400 {
 		r.responseCode = responseCode
 	}
 	r.errors = append(r.errors, err...)
 }
 
-func (r *Base) SetResponseCode(code int) {
+func (r *base) SetResponseCode(code int) {
 	r.responseCode = code
 }
 
-func (r *Base) ResponseCode() int {
+func (r *base) ResponseCode() int {
 	return r.responseCode
 }
-func (r *Base) Error() error {
+func (r *base) Error() error {
 	if len(r.errors) > 0 {
 		return r.errors[0]
 	}
 	return nil
 }
 
-func (r *Base) HasTransaction() bool {
+func (r *base) HasTransaction() bool {
 	return r.tx != nil
 }
 
-func (r *Base) Transaction() sql.API {
+func (r *base) Transaction() sql.API {
 	if r.tx == nil {
 		return r.db
 	}
 	return r.tx
 }
 
-func (r *Base) NewTransaction() {
+func (r *base) NewTransaction() {
 	r.tx = r.db.Begin()
 }
 
-func (r *Base) CommitTransaction() {
+func (r *base) CommitTransaction() {
 	if r.tx == nil {
 		return
 	}
@@ -90,7 +91,7 @@ func (r *Base) CommitTransaction() {
 	}
 }
 
-func (r *Base) RollbackTransaction() {
+func (r *base) RollbackTransaction() {
 	if r.tx == nil {
 		return
 	}
@@ -101,54 +102,40 @@ func (r *Base) RollbackTransaction() {
 	}
 }
 
-func (r *Base) OnCommitDo(f func()) {
+func (r *base) OnCommitDo(f func()) {
 	r.onCommit = f
 }
 
-func (r *Base) OnRollbackDo(f func()) {
+func (r *base) OnRollbackDo(f func()) {
 	r.onRollback = f
 }
 
-func NewBaseWithIdentifier(identifier uint64, db sql.API) Context {
-	return &Base{
+func NewBase(db sql.API) ReqContext {
+	return &base{
 		ctx:               context.Background(),
 		db:                db,
 		tx:                nil,
 		errors:            make([]error, 0),
 		responseCode:      200,
-		data:              make(map[string]string, 5),
-		requestIdentifier: identifier,
-		onRollback:        nil,
-		onCommit:          nil,
-	}
-}
-
-func NewBase(db sql.API) Context {
-	return &Base{
-		ctx:               context.Background(),
-		db:                db,
-		tx:                nil,
-		errors:            make([]error, 0),
-		responseCode:      200,
-		data:              make(map[string]string, 5),
+		data:              make(map[string]interface{}, 5),
 		requestIdentifier: 0,
 		onRollback:        nil,
 		onCommit:          nil,
 	}
 }
 
-func (r *Base) SetContext(ctx context.Context) Context {
+func (r *base) WithContext(ctx context.Context) ReqContext {
 	r.ctx = ctx
 	return r
 }
 
-func (r *Base) ParseString(key, value string) Context {
+func (r *base) ParseString(key, value string) ReqContext {
 	if !r.HasError() {
 		r.data[key] = value
 	}
 	return r
 }
-func (r *Base) ParseStringOrDefault(key, value, def string) Context {
+func (r *base) ParseStringOrDefault(key, value, def string) ReqContext {
 	if !r.HasError() {
 		if len(value) == 0 || len(strings.TrimSpace(value)) == 0 {
 			value = def
@@ -158,7 +145,7 @@ func (r *Base) ParseStringOrDefault(key, value, def string) Context {
 	return r
 }
 
-func (r *Base) ParseUUID(key, value string) Context {
+func (r *base) ParseUUID(key, value string) ReqContext {
 	if !r.HasError() {
 		if len(value) == 0 || len(strings.TrimSpace(value)) == 0 {
 			r.AddError(http.StatusBadRequest, errors.New(consts.ErrRequestMissingValue+key))
@@ -176,7 +163,7 @@ func (r *Base) ParseUUID(key, value string) Context {
 	return r
 }
 
-func (r *Base) Parse36(key, value string) Context {
+func (r *base) Parse36(key, value string) ReqContext {
 	if !r.HasError() {
 		p := strings.ToUpper(value)
 		if strings.EqualFold(p, "default") {
@@ -194,7 +181,7 @@ func (r *Base) Parse36(key, value string) Context {
 	return r
 }
 
-func (r *Base) ParseUUID36(key, value string) Context {
+func (r *base) ParseUUID36(key, value string) ReqContext {
 	if !r.HasError() {
 		p := value
 		if strings.EqualFold(p, "default") {
@@ -213,7 +200,7 @@ func (r *Base) ParseUUID36(key, value string) Context {
 	return r
 }
 
-func (r *Base) Parse36UUID(key, value string) Context {
+func (r *base) Parse36UUID(key, value string) ReqContext {
 	if !r.HasError() {
 
 		p := value
@@ -232,7 +219,7 @@ func (r *Base) Parse36UUID(key, value string) Context {
 	return r
 }
 
-func (r *Base) ParseBoolean(key, value string, def bool) Context {
+func (r *base) ParseBoolean(key, value string, def bool) ReqContext {
 	if !r.HasError() {
 
 		q := value
@@ -241,12 +228,13 @@ func (r *Base) ParseBoolean(key, value string, def bool) Context {
 			q = strconv.FormatBool(def)
 		}
 
-		r.data[key] = q
+		p := (q == "true")
+		r.data[key] = p
 	}
 	return r
 }
 
-func (r *Base) Data() *map[string]string {
+func (r *base) Data() *map[string]interface{} {
 	if r.HasError() {
 		return nil
 	}
