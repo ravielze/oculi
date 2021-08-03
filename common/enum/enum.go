@@ -28,25 +28,27 @@ type (
 
 var enumArrayMap = map[string][]IEnum{}
 
-func Register(key string, slice interface{}, objStruct interface{}, objStructPtr interface{}) error {
+func Register(key string, slice interface{}, objStructPtr interface{}) error {
 	if enumArrayMap[key] != nil {
 		return consts.ErrEnumKeyRegistered
-	}
-
-	val := reflect.ValueOf(objStruct)
-	if val.Kind() != reflect.Int {
-		return consts.ErrEnumNotInt
-	}
-	if _, ok := objStruct.(EnumRegisterable); !ok {
-		return consts.ErrEnumImplRegisterable
 	}
 
 	valPtr := reflect.ValueOf(objStructPtr)
 	if valPtr.Kind() != reflect.Ptr {
 		return consts.ErrEnumNotIntPointer
 	}
+
+	val := reflect.ValueOf(objStructPtr).Elem()
+	if val.Kind() != reflect.Int {
+		return consts.ErrEnumNotInt
+	}
+
 	if _, ok := objStructPtr.(EnumRegisterablePtr); !ok {
 		return consts.ErrEnumImplRegisterablePtr
+	}
+
+	if _, ok := val.Interface().(EnumRegisterable); !ok {
+		return consts.ErrEnumImplRegisterable
 	}
 	register(key, slice)
 	return nil
