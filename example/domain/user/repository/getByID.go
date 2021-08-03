@@ -6,7 +6,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (r *repository) GetByID(req request.Context, userId uint64) (dao.User, error) {
+func (r *repository) GetByID(req request.ReqContext, userId uint64) (dao.User, error) {
 	user := dao.User{ID: userId}
 	if err := req.Transaction().
 		Take(&user).Error(); err != nil {

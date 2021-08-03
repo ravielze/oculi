@@ -5,7 +5,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (h *handler) Login(req request.Context, item userDto.LoginRequest) (userDto.CredentialResponse, error) {
+func (h *handler) Login(req request.ReqContext, item userDto.LoginRequest) (userDto.CredentialResponse, error) {
 	user, token, err := h.domain.User.Login(req, item)
 	if err != nil {
 		return userDto.CredentialResponse{}, err

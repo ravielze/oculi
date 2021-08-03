@@ -5,7 +5,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (s *service) Undone(req request.Context, todoId uint64) error {
+func (s *service) Undone(req request.ReqContext, todoId uint64) error {
 	t, err := s.repository.GetByID(req, todoId)
 	if err != nil {
 		return err

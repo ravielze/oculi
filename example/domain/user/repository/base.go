@@ -9,10 +9,10 @@ import (
 
 type (
 	Repository interface {
-		Create(req request.Context, user dao.User) (dao.User, error)
-		GetByUsername(req request.Context, username string) (dao.User, error)
-		GetByID(req request.Context, userId uint64) (dao.User, error)
-		Update(req request.Context, userId uint64, request dto.Map) error
+		Create(req request.ReqContext, user dao.User) (dao.User, error)
+		GetByUsername(req request.ReqContext, username string) (dao.User, error)
+		GetByID(req request.ReqContext, userId uint64) (dao.User, error)
+		Update(req request.ReqContext, userId uint64, request dto.Map) error
 	}
 
 	repository struct {

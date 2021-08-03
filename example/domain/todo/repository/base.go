@@ -9,11 +9,11 @@ import (
 
 type (
 	Repository interface {
-		Create(req request.Context, item dao.Todo) (dao.Todo, error)
-		GetByID(req request.Context, todoId uint64) (dao.Todo, error)
-		Delete(req request.Context, todoId uint64) error
-		Update(req request.Context, todoId uint64, request dto.Map) error
-		GetAllByOwner(req request.Context) ([]dao.Todo, error)
+		Create(req request.ReqContext, item dao.Todo) (dao.Todo, error)
+		GetByID(req request.ReqContext, todoId uint64) (dao.Todo, error)
+		Delete(req request.ReqContext, todoId uint64) error
+		Update(req request.ReqContext, todoId uint64, request dto.Map) error
+		GetAllByOwner(req request.ReqContext) ([]dao.Todo, error)
 	}
 
 	repository struct {

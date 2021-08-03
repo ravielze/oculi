@@ -10,12 +10,12 @@ import (
 
 type (
 	Service interface {
-		Create(req request.Context, todo todoDto.CreateTodoRequest) (dao.Todo, error)
-		Done(req request.Context, todoId uint64) error
-		Undone(req request.Context, todoId uint64) error
-		Edit(req request.Context, todo todoDto.UpdateTodoRequest) error
-		Delete(req request.Context, todoId uint64) error
-		GetAllByOwner(req request.Context) ([]dao.Todo, error)
+		Create(req request.ReqContext, todo todoDto.CreateTodoRequest) (dao.Todo, error)
+		Done(req request.ReqContext, todoId uint64) error
+		Undone(req request.ReqContext, todoId uint64) error
+		Edit(req request.ReqContext, todo todoDto.UpdateTodoRequest) error
+		Delete(req request.ReqContext, todoId uint64) error
+		GetAllByOwner(req request.ReqContext) ([]dao.Todo, error)
 	}
 
 	service struct {

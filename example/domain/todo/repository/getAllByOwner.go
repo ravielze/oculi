@@ -6,7 +6,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (r *repository) GetAllByOwner(req request.Context) ([]dao.Todo, error) {
+func (r *repository) GetAllByOwner(req request.ReqContext) ([]dao.Todo, error) {
 	var todo []dao.Todo
 	if err := req.Transaction().
 		Where("owner_id = ?", req.Identifier()).

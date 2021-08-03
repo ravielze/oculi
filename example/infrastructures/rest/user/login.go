@@ -10,7 +10,7 @@ import (
 
 func (c *Controller) Login(ec echo.Context) error {
 	ctx := ec.(*oculiContext.Context)
-	req := request.New(ctx, c.Resource.Database)
+	req := request.New(ctx, c.Resource.Database).Transform()
 
 	var item dto.LoginRequest
 	ctx.BindValidate(&item)

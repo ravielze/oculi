@@ -14,9 +14,9 @@ type (
 	}
 
 	Handler interface {
-		Login(req request.Context, item userDto.LoginRequest) (userDto.CredentialResponse, error)
-		Register(req request.Context, item userDto.RegisterRequest) error
-		Check(req request.EchoContext) (userDto.UserResponse, error)
+		Login(req request.ReqContext, item userDto.LoginRequest) (userDto.CredentialResponse, error)
+		Register(req request.ReqContext, item userDto.RegisterRequest) error
+		Check(req request.ReqContext) (userDto.UserResponse, error)
 	}
 )
 

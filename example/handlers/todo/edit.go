@@ -5,6 +5,6 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (h *handler) Edit(req request.Context, item todoDto.UpdateTodoRequest) error {
+func (h *handler) Edit(req request.ReqContext, item todoDto.UpdateTodoRequest) error {
 	return h.domain.Todo.Edit(req, item)
 }

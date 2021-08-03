@@ -8,7 +8,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (s *service) Login(req request.Context, item userDto.LoginRequest) (dao.User, string, error) {
+func (s *service) Login(req request.ReqContext, item userDto.LoginRequest) (dao.User, string, error) {
 	user, err := s.repository.GetByUsername(req, item.Username)
 	if err != nil {
 		return dao.User{}, "", err

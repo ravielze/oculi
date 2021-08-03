@@ -11,5 +11,5 @@ func Register(c *dig.Container) error {
 	return di.NewRegistrant(c).
 		Register(user.Register).
 		Register(todo.Register).
-		End()
+		Proceed()
 }

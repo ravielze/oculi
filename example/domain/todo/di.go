@@ -11,5 +11,5 @@ func Register(c *dig.Container) error {
 	return di.NewRegistrant(c).
 		Provide(repository.New).
 		Provide(service.New).
-		End()
+		Proceed()
 }

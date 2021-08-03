@@ -20,7 +20,7 @@ type (
 	}
 )
 
-func (i CreateTodoRequest) ToDAO(req request.Context) dao.Todo {
+func (i CreateTodoRequest) ToDAO(req request.ReqContext) dao.Todo {
 	return dao.Todo{
 		OwnerID:     req.Identifier(),
 		Title:       i.Title,

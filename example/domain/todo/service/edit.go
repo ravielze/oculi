@@ -5,7 +5,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (s *service) Edit(req request.Context, item todoDto.UpdateTodoRequest) error {
+func (s *service) Edit(req request.ReqContext, item todoDto.UpdateTodoRequest) error {
 	_, err := s.repository.GetByID(req, item.ID)
 	if err != nil {
 		return err

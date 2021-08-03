@@ -7,7 +7,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (r *repository) Update(req request.Context, userId uint64, request dto.Map) error {
+func (r *repository) Update(req request.ReqContext, userId uint64, request dto.Map) error {
 	if err := req.Transaction().Model(dao.User{}).
 		Where("id = ?", userId).
 		Updates(request.ToMap()).Error(); err != nil {

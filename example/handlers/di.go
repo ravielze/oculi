@@ -13,5 +13,5 @@ func Register(container *dig.Container) error {
 		Provide(health.NewHandler).
 		Provide(user.NewHandler).
 		Provide(todo.NewHandler).
-		End()
+		Proceed()
 }

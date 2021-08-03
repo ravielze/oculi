@@ -6,7 +6,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (s *service) Create(req request.Context, item todoDto.CreateTodoRequest) (dao.Todo, error) {
+func (s *service) Create(req request.ReqContext, item todoDto.CreateTodoRequest) (dao.Todo, error) {
 	result, err := s.repository.Create(req, item.ToDAO(req))
 	if err != nil {
 		return dao.Todo{}, err

@@ -14,12 +14,12 @@ type (
 	}
 
 	Handler interface {
-		Create(req request.Context, item todoDto.CreateTodoRequest) (todoDto.TodoResponse, error)
-		Done(req request.Context) error
-		Undone(req request.Context) error
-		Edit(req request.Context, item todoDto.UpdateTodoRequest) error
-		Delete(req request.Context) error
-		GetAllByOwner(req request.Context) (todoDto.TodosResponse, error)
+		Create(req request.ReqContext, item todoDto.CreateTodoRequest) (todoDto.TodoResponse, error)
+		Done(req request.ReqContext) error
+		Undone(req request.ReqContext) error
+		Edit(req request.ReqContext, item todoDto.UpdateTodoRequest) error
+		Delete(req request.ReqContext) error
+		GetAllByOwner(req request.ReqContext) (todoDto.TodosResponse, error)
 	}
 )
 

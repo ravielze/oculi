@@ -11,7 +11,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (h *handler) Check(ctx request.Context) health.CheckResponseDTO {
+func (h *handler) Check(ctx request.ReqContext) health.CheckResponseDTO {
 	var (
 		response health.CheckResponseDTO
 		m        runtime.MemStats
@@ -30,7 +30,7 @@ func (h *handler) Check(ctx request.Context) health.CheckResponseDTO {
 	response.Memory.HeapSys = m.HeapSys
 
 	// NOTE: Add connection checking per service
-	if err := h.resource.Database.Ping(ctx.GetContext()); err != nil {
+	if err := h.resource.Database.Ping(ctx.Context()); err != nil {
 		ctx.AddError(http.StatusBadGateway, errors.Wrap(err, "db connection: "))
 	}
 	return response

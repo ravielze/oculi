@@ -6,7 +6,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (r *repository) GetByUsername(req request.Context, username string) (dao.User, error) {
+func (r *repository) GetByUsername(req request.ReqContext, username string) (dao.User, error) {
 	var result dao.User
 	if err := req.Transaction().
 		Model(dao.User{}).

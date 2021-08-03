@@ -11,7 +11,7 @@ var (
 	emptyUser = dao.User{}
 )
 
-func (s *service) Register(req request.Context, item userDto.RegisterRequest) error {
+func (s *service) Register(req request.ReqContext, item userDto.RegisterRequest) error {
 	register := item.ToDAO()
 	if user, _ := s.repository.
 		GetByUsername(req, register.Username); user != emptyUser {

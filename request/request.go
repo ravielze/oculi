@@ -39,7 +39,7 @@ type (
 		WithIdentifier(id uint64) ReqContext
 	}
 
-	//TODO
+	//TODO NotImplemented
 	NonEchoContext interface {
 		BindValidate(obj interface{})
 	}
@@ -61,6 +61,7 @@ type (
 		// Get query with boolean value
 		QueryBoolean(query string, def bool) EchoReqContext
 
+		// Transfer echo store data to request base data
 		Transform() ReqContext
 	}
 )

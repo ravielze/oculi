@@ -8,8 +8,8 @@ import (
 
 type (
 	Handler interface {
-		Check(ctx request.Context) health.CheckResponseDTO
-		Reset(ctx request.Context) error
+		Check(ctx request.ReqContext) health.CheckResponseDTO
+		Reset(ctx request.ReqContext) error
 	}
 
 	handler struct {

@@ -17,5 +17,5 @@ func Register(c *dig.Container) error {
 		Provide(external.NewTokenizer).
 		Provide(external.NewHash).
 		Provide(external.NewDBManager).
-		End()
+		Proceed()
 }

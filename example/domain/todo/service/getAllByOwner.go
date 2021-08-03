@@ -5,6 +5,6 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (s *service) GetAllByOwner(req request.Context) ([]dao.Todo, error) {
+func (s *service) GetAllByOwner(req request.ReqContext) ([]dao.Todo, error) {
 	return s.repository.GetAllByOwner(req)
 }

@@ -11,8 +11,8 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (h *handler) Check(req request.EchoContext) (user.UserResponse, error) {
-	k := req.Echo().Get(consts.KeyCredentials)
+func (h *handler) Check(req request.ReqContext) (user.UserResponse, error) {
+	k := (*req.Data())[consts.EchoPrefix(consts.KeyCredentials)]
 	if k == nil {
 		return user.UserResponse{}, constants.ErrNotLoggedIn
 	}

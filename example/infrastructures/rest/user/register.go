@@ -10,7 +10,7 @@ import (
 
 func (c *Controller) RegisterUser(ec echo.Context) error {
 	ctx := ec.(*oculiContext.Context)
-	req := request.New(ctx, c.Resource.Database)
+	req := request.New(ctx, c.Resource.Database).Transform()
 
 	var item dto.RegisterRequest
 	ctx.BindValidate(&item)
@@ -20,6 +20,5 @@ func (c *Controller) RegisterUser(ec echo.Context) error {
 		nil,
 		constants.UserMappers,
 	)
-
 	return c.Resource.Responder.NewJSONResponse(ctx, req, result)
 }

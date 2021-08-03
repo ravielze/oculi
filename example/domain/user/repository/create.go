@@ -6,7 +6,7 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (r *repository) Create(req request.Context, user dao.User) (dao.User, error) {
+func (r *repository) Create(req request.ReqContext, user dao.User) (dao.User, error) {
 	if err := req.Transaction().Create(&user).Error(); err != nil {
 		r.resource.Log.StandardError(logs.NewInfo(
 			"User.Repository.Create",

@@ -11,8 +11,8 @@ import (
 
 type (
 	Service interface {
-		Login(req request.Context, item userDto.LoginRequest) (user dao.User, token string, err error)
-		Register(req request.Context, user userDto.RegisterRequest) error
+		Login(req request.ReqContext, item userDto.LoginRequest) (user dao.User, token string, err error)
+		Register(req request.ReqContext, user userDto.RegisterRequest) error
 	}
 
 	service struct {

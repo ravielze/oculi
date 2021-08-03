@@ -5,6 +5,6 @@ import (
 	"github.com/ravielze/oculi/request"
 )
 
-func (h *handler) Register(req request.Context, item userDto.RegisterRequest) error {
+func (h *handler) Register(req request.ReqContext, item userDto.RegisterRequest) error {
 	return h.domain.User.Register(req, item)
 }
