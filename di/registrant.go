@@ -6,24 +6,30 @@ import (
 )
 
 type (
-	Registrant struct {
+	registrant struct {
 		container *dig.Container
 		err       error
 	}
+
+	Registrant interface {
+		Register(rf Registerable) Registrant
+		Provide(constructor interface{}, opts ...dig.ProvideOption) Registrant
+		Proceed() error
+	}
 )
 
-func NewRegistrant(container *dig.Container) *Registrant {
-	return &Registrant{
+func NewRegistrant(container *dig.Container) Registrant {
+	return &registrant{
 		container: container,
 		err:       nil,
 	}
 }
 
 func SimpleRegistrant(container *dig.Container, constructor interface{}, opts ...dig.ProvideOption) error {
-	return NewRegistrant(container).Provide(constructor, opts...).End()
+	return NewRegistrant(container).Provide(constructor, opts...).Proceed()
 }
 
-func (r *Registrant) Provide(constructor interface{}, opts ...dig.ProvideOption) *Registrant {
+func (r *registrant) Provide(constructor interface{}, opts ...dig.ProvideOption) Registrant {
 	if r.err == nil {
 		if err := r.container.Provide(constructor, opts...); err != nil {
 			r.err = errors.Wrap(err, "error on initialize")
@@ -32,7 +38,7 @@ func (r *Registrant) Provide(constructor interface{}, opts ...dig.ProvideOption)
 	return r
 }
 
-func (r *Registrant) Register(rf Registerable) *Registrant {
+func (r *registrant) Register(rf Registerable) Registrant {
 	if r.err == nil {
 		if err := rf(r.container); err != nil {
 			r.err = err
@@ -41,6 +47,6 @@ func (r *Registrant) Register(rf Registerable) *Registrant {
 	return r
 }
 
-func (r *Registrant) End() error {
+func (r *registrant) Proceed() error {
 	return r.err
 }
