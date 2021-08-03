@@ -14,31 +14,31 @@ import (
 	request "github.com/ravielze/oculi/request"
 )
 
-// MockContext is a mock of Context interface.
-type MockContext struct {
+// MockReqContext is a mock of ReqContext interface.
+type MockReqContext struct {
 	ctrl     *gomock.Controller
-	recorder *MockContextMockRecorder
+	recorder *MockReqContextMockRecorder
 }
 
-// MockContextMockRecorder is the mock recorder for MockContext.
-type MockContextMockRecorder struct {
-	mock *MockContext
+// MockReqContextMockRecorder is the mock recorder for MockReqContext.
+type MockReqContextMockRecorder struct {
+	mock *MockReqContext
 }
 
-// NewMockContext creates a new mock instance.
-func NewMockContext(ctrl *gomock.Controller) *MockContext {
-	mock := &MockContext{ctrl: ctrl}
-	mock.recorder = &MockContextMockRecorder{mock}
+// NewMockReqContext creates a new mock instance.
+func NewMockReqContext(ctrl *gomock.Controller) *MockReqContext {
+	mock := &MockReqContext{ctrl: ctrl}
+	mock.recorder = &MockReqContextMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockContext) EXPECT() *MockContextMockRecorder {
+func (m *MockReqContext) EXPECT() *MockReqContextMockRecorder {
 	return m.recorder
 }
 
 // AddError mocks base method.
-func (m *MockContext) AddError(responseCode int, err ...error) {
+func (m *MockReqContext) AddError(responseCode int, err ...error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{responseCode}
 	for _, a := range err {
@@ -48,40 +48,54 @@ func (m *MockContext) AddError(responseCode int, err ...error) {
 }
 
 // AddError indicates an expected call of AddError.
-func (mr *MockContextMockRecorder) AddError(responseCode interface{}, err ...interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) AddError(responseCode interface{}, err ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{responseCode}, err...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddError", reflect.TypeOf((*MockContext)(nil).AddError), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddError", reflect.TypeOf((*MockReqContext)(nil).AddError), varargs...)
 }
 
 // CommitTransaction mocks base method.
-func (m *MockContext) CommitTransaction() {
+func (m *MockReqContext) CommitTransaction() {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "CommitTransaction")
 }
 
 // CommitTransaction indicates an expected call of CommitTransaction.
-func (mr *MockContextMockRecorder) CommitTransaction() *gomock.Call {
+func (mr *MockReqContextMockRecorder) CommitTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CommitTransaction", reflect.TypeOf((*MockContext)(nil).CommitTransaction))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CommitTransaction", reflect.TypeOf((*MockReqContext)(nil).CommitTransaction))
+}
+
+// Context mocks base method.
+func (m *MockReqContext) Context() context.Context {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Context")
+	ret0, _ := ret[0].(context.Context)
+	return ret0
+}
+
+// Context indicates an expected call of Context.
+func (mr *MockReqContextMockRecorder) Context() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Context", reflect.TypeOf((*MockReqContext)(nil).Context))
 }
 
 // Data mocks base method.
-func (m *MockContext) Data() *map[string]string {
+func (m *MockReqContext) Data() *map[string]interface{} {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Data")
-	ret0, _ := ret[0].(*map[string]string)
+	ret0, _ := ret[0].(*map[string]interface{})
 	return ret0
 }
 
 // Data indicates an expected call of Data.
-func (mr *MockContextMockRecorder) Data() *gomock.Call {
+func (mr *MockReqContextMockRecorder) Data() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Data", reflect.TypeOf((*MockContext)(nil).Data))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Data", reflect.TypeOf((*MockReqContext)(nil).Data))
 }
 
 // Error mocks base method.
-func (m *MockContext) Error() error {
+func (m *MockReqContext) Error() error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Error")
 	ret0, _ := ret[0].(error)
@@ -89,27 +103,13 @@ func (m *MockContext) Error() error {
 }
 
 // Error indicates an expected call of Error.
-func (mr *MockContextMockRecorder) Error() *gomock.Call {
+func (mr *MockReqContextMockRecorder) Error() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockContext)(nil).Error))
-}
-
-// GetContext mocks base method.
-func (m *MockContext) GetContext() context.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetContext")
-	ret0, _ := ret[0].(context.Context)
-	return ret0
-}
-
-// GetContext indicates an expected call of GetContext.
-func (mr *MockContextMockRecorder) GetContext() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContext", reflect.TypeOf((*MockContext)(nil).GetContext))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockReqContext)(nil).Error))
 }
 
 // HasError mocks base method.
-func (m *MockContext) HasError() bool {
+func (m *MockReqContext) HasError() bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "HasError")
 	ret0, _ := ret[0].(bool)
@@ -117,13 +117,13 @@ func (m *MockContext) HasError() bool {
 }
 
 // HasError indicates an expected call of HasError.
-func (mr *MockContextMockRecorder) HasError() *gomock.Call {
+func (mr *MockReqContextMockRecorder) HasError() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasError", reflect.TypeOf((*MockContext)(nil).HasError))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasError", reflect.TypeOf((*MockReqContext)(nil).HasError))
 }
 
 // HasTransaction mocks base method.
-func (m *MockContext) HasTransaction() bool {
+func (m *MockReqContext) HasTransaction() bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "HasTransaction")
 	ret0, _ := ret[0].(bool)
@@ -131,13 +131,13 @@ func (m *MockContext) HasTransaction() bool {
 }
 
 // HasTransaction indicates an expected call of HasTransaction.
-func (mr *MockContextMockRecorder) HasTransaction() *gomock.Call {
+func (mr *MockReqContextMockRecorder) HasTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasTransaction", reflect.TypeOf((*MockContext)(nil).HasTransaction))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasTransaction", reflect.TypeOf((*MockReqContext)(nil).HasTransaction))
 }
 
 // Identifier mocks base method.
-func (m *MockContext) Identifier() uint64 {
+func (m *MockReqContext) Identifier() uint64 {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Identifier")
 	ret0, _ := ret[0].(uint64)
@@ -145,147 +145,147 @@ func (m *MockContext) Identifier() uint64 {
 }
 
 // Identifier indicates an expected call of Identifier.
-func (mr *MockContextMockRecorder) Identifier() *gomock.Call {
+func (mr *MockReqContextMockRecorder) Identifier() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Identifier", reflect.TypeOf((*MockContext)(nil).Identifier))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Identifier", reflect.TypeOf((*MockReqContext)(nil).Identifier))
 }
 
 // NewTransaction mocks base method.
-func (m *MockContext) NewTransaction() {
+func (m *MockReqContext) NewTransaction() {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "NewTransaction")
 }
 
 // NewTransaction indicates an expected call of NewTransaction.
-func (mr *MockContextMockRecorder) NewTransaction() *gomock.Call {
+func (mr *MockReqContextMockRecorder) NewTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTransaction", reflect.TypeOf((*MockContext)(nil).NewTransaction))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTransaction", reflect.TypeOf((*MockReqContext)(nil).NewTransaction))
 }
 
 // OnCommitDo mocks base method.
-func (m *MockContext) OnCommitDo(f func()) {
+func (m *MockReqContext) OnCommitDo(f func()) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "OnCommitDo", f)
 }
 
 // OnCommitDo indicates an expected call of OnCommitDo.
-func (mr *MockContextMockRecorder) OnCommitDo(f interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) OnCommitDo(f interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnCommitDo", reflect.TypeOf((*MockContext)(nil).OnCommitDo), f)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnCommitDo", reflect.TypeOf((*MockReqContext)(nil).OnCommitDo), f)
 }
 
 // OnRollbackDo mocks base method.
-func (m *MockContext) OnRollbackDo(f func()) {
+func (m *MockReqContext) OnRollbackDo(f func()) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "OnRollbackDo", f)
 }
 
 // OnRollbackDo indicates an expected call of OnRollbackDo.
-func (mr *MockContextMockRecorder) OnRollbackDo(f interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) OnRollbackDo(f interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnRollbackDo", reflect.TypeOf((*MockContext)(nil).OnRollbackDo), f)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnRollbackDo", reflect.TypeOf((*MockReqContext)(nil).OnRollbackDo), f)
 }
 
 // Parse36 mocks base method.
-func (m *MockContext) Parse36(key, value string) request.Context {
+func (m *MockReqContext) Parse36(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Parse36", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // Parse36 indicates an expected call of Parse36.
-func (mr *MockContextMockRecorder) Parse36(key, value interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) Parse36(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse36", reflect.TypeOf((*MockContext)(nil).Parse36), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse36", reflect.TypeOf((*MockReqContext)(nil).Parse36), key, value)
 }
 
 // Parse36UUID mocks base method.
-func (m *MockContext) Parse36UUID(key, value string) request.Context {
+func (m *MockReqContext) Parse36UUID(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Parse36UUID", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // Parse36UUID indicates an expected call of Parse36UUID.
-func (mr *MockContextMockRecorder) Parse36UUID(key, value interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) Parse36UUID(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse36UUID", reflect.TypeOf((*MockContext)(nil).Parse36UUID), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse36UUID", reflect.TypeOf((*MockReqContext)(nil).Parse36UUID), key, value)
 }
 
 // ParseBoolean mocks base method.
-func (m *MockContext) ParseBoolean(key, value string, def bool) request.Context {
+func (m *MockReqContext) ParseBoolean(key, value string, def bool) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseBoolean", key, value, def)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseBoolean indicates an expected call of ParseBoolean.
-func (mr *MockContextMockRecorder) ParseBoolean(key, value, def interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) ParseBoolean(key, value, def interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseBoolean", reflect.TypeOf((*MockContext)(nil).ParseBoolean), key, value, def)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseBoolean", reflect.TypeOf((*MockReqContext)(nil).ParseBoolean), key, value, def)
 }
 
 // ParseString mocks base method.
-func (m *MockContext) ParseString(key, value string) request.Context {
+func (m *MockReqContext) ParseString(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseString", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseString indicates an expected call of ParseString.
-func (mr *MockContextMockRecorder) ParseString(key, value interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) ParseString(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseString", reflect.TypeOf((*MockContext)(nil).ParseString), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseString", reflect.TypeOf((*MockReqContext)(nil).ParseString), key, value)
 }
 
 // ParseStringOrDefault mocks base method.
-func (m *MockContext) ParseStringOrDefault(key, value, def string) request.Context {
+func (m *MockReqContext) ParseStringOrDefault(key, value, def string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseStringOrDefault", key, value, def)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseStringOrDefault indicates an expected call of ParseStringOrDefault.
-func (mr *MockContextMockRecorder) ParseStringOrDefault(key, value, def interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) ParseStringOrDefault(key, value, def interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseStringOrDefault", reflect.TypeOf((*MockContext)(nil).ParseStringOrDefault), key, value, def)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseStringOrDefault", reflect.TypeOf((*MockReqContext)(nil).ParseStringOrDefault), key, value, def)
 }
 
 // ParseUUID mocks base method.
-func (m *MockContext) ParseUUID(key, value string) request.Context {
+func (m *MockReqContext) ParseUUID(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseUUID", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseUUID indicates an expected call of ParseUUID.
-func (mr *MockContextMockRecorder) ParseUUID(key, value interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) ParseUUID(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseUUID", reflect.TypeOf((*MockContext)(nil).ParseUUID), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseUUID", reflect.TypeOf((*MockReqContext)(nil).ParseUUID), key, value)
 }
 
 // ParseUUID36 mocks base method.
-func (m *MockContext) ParseUUID36(key, value string) request.Context {
+func (m *MockReqContext) ParseUUID36(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseUUID36", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseUUID36 indicates an expected call of ParseUUID36.
-func (mr *MockContextMockRecorder) ParseUUID36(key, value interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) ParseUUID36(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseUUID36", reflect.TypeOf((*MockContext)(nil).ParseUUID36), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseUUID36", reflect.TypeOf((*MockReqContext)(nil).ParseUUID36), key, value)
 }
 
 // ResponseCode mocks base method.
-func (m *MockContext) ResponseCode() int {
+func (m *MockReqContext) ResponseCode() int {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ResponseCode")
 	ret0, _ := ret[0].(int)
@@ -293,63 +293,37 @@ func (m *MockContext) ResponseCode() int {
 }
 
 // ResponseCode indicates an expected call of ResponseCode.
-func (mr *MockContextMockRecorder) ResponseCode() *gomock.Call {
+func (mr *MockReqContextMockRecorder) ResponseCode() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResponseCode", reflect.TypeOf((*MockContext)(nil).ResponseCode))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResponseCode", reflect.TypeOf((*MockReqContext)(nil).ResponseCode))
 }
 
 // RollbackTransaction mocks base method.
-func (m *MockContext) RollbackTransaction() {
+func (m *MockReqContext) RollbackTransaction() {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "RollbackTransaction")
 }
 
 // RollbackTransaction indicates an expected call of RollbackTransaction.
-func (mr *MockContextMockRecorder) RollbackTransaction() *gomock.Call {
+func (mr *MockReqContextMockRecorder) RollbackTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RollbackTransaction", reflect.TypeOf((*MockContext)(nil).RollbackTransaction))
-}
-
-// SetContext mocks base method.
-func (m *MockContext) SetContext(ctx context.Context) request.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetContext", ctx)
-	ret0, _ := ret[0].(request.Context)
-	return ret0
-}
-
-// SetContext indicates an expected call of SetContext.
-func (mr *MockContextMockRecorder) SetContext(ctx interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetContext", reflect.TypeOf((*MockContext)(nil).SetContext), ctx)
-}
-
-// SetIdentifier mocks base method.
-func (m *MockContext) SetIdentifier(id uint64) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetIdentifier", id)
-}
-
-// SetIdentifier indicates an expected call of SetIdentifier.
-func (mr *MockContextMockRecorder) SetIdentifier(id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetIdentifier", reflect.TypeOf((*MockContext)(nil).SetIdentifier), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RollbackTransaction", reflect.TypeOf((*MockReqContext)(nil).RollbackTransaction))
 }
 
 // SetResponseCode mocks base method.
-func (m *MockContext) SetResponseCode(code int) {
+func (m *MockReqContext) SetResponseCode(code int) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "SetResponseCode", code)
 }
 
 // SetResponseCode indicates an expected call of SetResponseCode.
-func (mr *MockContextMockRecorder) SetResponseCode(code interface{}) *gomock.Call {
+func (mr *MockReqContextMockRecorder) SetResponseCode(code interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetResponseCode", reflect.TypeOf((*MockContext)(nil).SetResponseCode), code)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetResponseCode", reflect.TypeOf((*MockReqContext)(nil).SetResponseCode), code)
 }
 
 // Transaction mocks base method.
-func (m *MockContext) Transaction() sql.API {
+func (m *MockReqContext) Transaction() sql.API {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Transaction")
 	ret0, _ := ret[0].(sql.API)
@@ -357,9 +331,37 @@ func (m *MockContext) Transaction() sql.API {
 }
 
 // Transaction indicates an expected call of Transaction.
-func (mr *MockContextMockRecorder) Transaction() *gomock.Call {
+func (mr *MockReqContextMockRecorder) Transaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Transaction", reflect.TypeOf((*MockContext)(nil).Transaction))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Transaction", reflect.TypeOf((*MockReqContext)(nil).Transaction))
+}
+
+// WithContext mocks base method.
+func (m *MockReqContext) WithContext(ctx context.Context) request.ReqContext {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WithContext", ctx)
+	ret0, _ := ret[0].(request.ReqContext)
+	return ret0
+}
+
+// WithContext indicates an expected call of WithContext.
+func (mr *MockReqContextMockRecorder) WithContext(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithContext", reflect.TypeOf((*MockReqContext)(nil).WithContext), ctx)
+}
+
+// WithIdentifier mocks base method.
+func (m *MockReqContext) WithIdentifier(id uint64) request.ReqContext {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WithIdentifier", id)
+	ret0, _ := ret[0].(request.ReqContext)
+	return ret0
+}
+
+// WithIdentifier indicates an expected call of WithIdentifier.
+func (mr *MockReqContextMockRecorder) WithIdentifier(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithIdentifier", reflect.TypeOf((*MockReqContext)(nil).WithIdentifier), id)
 }
 
 // MockNonEchoContext is a mock of NonEchoContext interface.
@@ -397,31 +399,31 @@ func (mr *MockNonEchoContextMockRecorder) BindValidate(obj interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BindValidate", reflect.TypeOf((*MockNonEchoContext)(nil).BindValidate), obj)
 }
 
-// MockEchoContext is a mock of EchoContext interface.
-type MockEchoContext struct {
+// MockEchoReqContext is a mock of EchoReqContext interface.
+type MockEchoReqContext struct {
 	ctrl     *gomock.Controller
-	recorder *MockEchoContextMockRecorder
+	recorder *MockEchoReqContextMockRecorder
 }
 
-// MockEchoContextMockRecorder is the mock recorder for MockEchoContext.
-type MockEchoContextMockRecorder struct {
-	mock *MockEchoContext
+// MockEchoReqContextMockRecorder is the mock recorder for MockEchoReqContext.
+type MockEchoReqContextMockRecorder struct {
+	mock *MockEchoReqContext
 }
 
-// NewMockEchoContext creates a new mock instance.
-func NewMockEchoContext(ctrl *gomock.Controller) *MockEchoContext {
-	mock := &MockEchoContext{ctrl: ctrl}
-	mock.recorder = &MockEchoContextMockRecorder{mock}
+// NewMockEchoReqContext creates a new mock instance.
+func NewMockEchoReqContext(ctrl *gomock.Controller) *MockEchoReqContext {
+	mock := &MockEchoReqContext{ctrl: ctrl}
+	mock.recorder = &MockEchoReqContextMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockEchoContext) EXPECT() *MockEchoContextMockRecorder {
+func (m *MockEchoReqContext) EXPECT() *MockEchoReqContextMockRecorder {
 	return m.recorder
 }
 
 // AddError mocks base method.
-func (m *MockEchoContext) AddError(responseCode int, err ...error) {
+func (m *MockEchoReqContext) AddError(responseCode int, err ...error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{responseCode}
 	for _, a := range err {
@@ -431,40 +433,54 @@ func (m *MockEchoContext) AddError(responseCode int, err ...error) {
 }
 
 // AddError indicates an expected call of AddError.
-func (mr *MockEchoContextMockRecorder) AddError(responseCode interface{}, err ...interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) AddError(responseCode interface{}, err ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{responseCode}, err...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddError", reflect.TypeOf((*MockEchoContext)(nil).AddError), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddError", reflect.TypeOf((*MockEchoReqContext)(nil).AddError), varargs...)
 }
 
 // CommitTransaction mocks base method.
-func (m *MockEchoContext) CommitTransaction() {
+func (m *MockEchoReqContext) CommitTransaction() {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "CommitTransaction")
 }
 
 // CommitTransaction indicates an expected call of CommitTransaction.
-func (mr *MockEchoContextMockRecorder) CommitTransaction() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) CommitTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CommitTransaction", reflect.TypeOf((*MockEchoContext)(nil).CommitTransaction))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CommitTransaction", reflect.TypeOf((*MockEchoReqContext)(nil).CommitTransaction))
+}
+
+// Context mocks base method.
+func (m *MockEchoReqContext) Context() context.Context {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Context")
+	ret0, _ := ret[0].(context.Context)
+	return ret0
+}
+
+// Context indicates an expected call of Context.
+func (mr *MockEchoReqContextMockRecorder) Context() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Context", reflect.TypeOf((*MockEchoReqContext)(nil).Context))
 }
 
 // Data mocks base method.
-func (m *MockEchoContext) Data() *map[string]string {
+func (m *MockEchoReqContext) Data() *map[string]interface{} {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Data")
-	ret0, _ := ret[0].(*map[string]string)
+	ret0, _ := ret[0].(*map[string]interface{})
 	return ret0
 }
 
 // Data indicates an expected call of Data.
-func (mr *MockEchoContextMockRecorder) Data() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Data() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Data", reflect.TypeOf((*MockEchoContext)(nil).Data))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Data", reflect.TypeOf((*MockEchoReqContext)(nil).Data))
 }
 
 // Echo mocks base method.
-func (m *MockEchoContext) Echo() echo.Context {
+func (m *MockEchoReqContext) Echo() echo.Context {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Echo")
 	ret0, _ := ret[0].(echo.Context)
@@ -472,13 +488,13 @@ func (m *MockEchoContext) Echo() echo.Context {
 }
 
 // Echo indicates an expected call of Echo.
-func (mr *MockEchoContextMockRecorder) Echo() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Echo() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Echo", reflect.TypeOf((*MockEchoContext)(nil).Echo))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Echo", reflect.TypeOf((*MockEchoReqContext)(nil).Echo))
 }
 
 // Error mocks base method.
-func (m *MockEchoContext) Error() error {
+func (m *MockEchoReqContext) Error() error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Error")
 	ret0, _ := ret[0].(error)
@@ -486,27 +502,13 @@ func (m *MockEchoContext) Error() error {
 }
 
 // Error indicates an expected call of Error.
-func (mr *MockEchoContextMockRecorder) Error() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Error() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockEchoContext)(nil).Error))
-}
-
-// GetContext mocks base method.
-func (m *MockEchoContext) GetContext() context.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetContext")
-	ret0, _ := ret[0].(context.Context)
-	return ret0
-}
-
-// GetContext indicates an expected call of GetContext.
-func (mr *MockEchoContextMockRecorder) GetContext() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContext", reflect.TypeOf((*MockEchoContext)(nil).GetContext))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockEchoReqContext)(nil).Error))
 }
 
 // HasError mocks base method.
-func (m *MockEchoContext) HasError() bool {
+func (m *MockEchoReqContext) HasError() bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "HasError")
 	ret0, _ := ret[0].(bool)
@@ -514,13 +516,13 @@ func (m *MockEchoContext) HasError() bool {
 }
 
 // HasError indicates an expected call of HasError.
-func (mr *MockEchoContextMockRecorder) HasError() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) HasError() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasError", reflect.TypeOf((*MockEchoContext)(nil).HasError))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasError", reflect.TypeOf((*MockEchoReqContext)(nil).HasError))
 }
 
 // HasTransaction mocks base method.
-func (m *MockEchoContext) HasTransaction() bool {
+func (m *MockEchoReqContext) HasTransaction() bool {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "HasTransaction")
 	ret0, _ := ret[0].(bool)
@@ -528,13 +530,13 @@ func (m *MockEchoContext) HasTransaction() bool {
 }
 
 // HasTransaction indicates an expected call of HasTransaction.
-func (mr *MockEchoContextMockRecorder) HasTransaction() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) HasTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasTransaction", reflect.TypeOf((*MockEchoContext)(nil).HasTransaction))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HasTransaction", reflect.TypeOf((*MockEchoReqContext)(nil).HasTransaction))
 }
 
 // Identifier mocks base method.
-func (m *MockEchoContext) Identifier() uint64 {
+func (m *MockEchoReqContext) Identifier() uint64 {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Identifier")
 	ret0, _ := ret[0].(uint64)
@@ -542,245 +544,245 @@ func (m *MockEchoContext) Identifier() uint64 {
 }
 
 // Identifier indicates an expected call of Identifier.
-func (mr *MockEchoContextMockRecorder) Identifier() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Identifier() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Identifier", reflect.TypeOf((*MockEchoContext)(nil).Identifier))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Identifier", reflect.TypeOf((*MockEchoReqContext)(nil).Identifier))
 }
 
 // NewTransaction mocks base method.
-func (m *MockEchoContext) NewTransaction() {
+func (m *MockEchoReqContext) NewTransaction() {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "NewTransaction")
 }
 
 // NewTransaction indicates an expected call of NewTransaction.
-func (mr *MockEchoContextMockRecorder) NewTransaction() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) NewTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTransaction", reflect.TypeOf((*MockEchoContext)(nil).NewTransaction))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTransaction", reflect.TypeOf((*MockEchoReqContext)(nil).NewTransaction))
 }
 
 // OnCommitDo mocks base method.
-func (m *MockEchoContext) OnCommitDo(f func()) {
+func (m *MockEchoReqContext) OnCommitDo(f func()) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "OnCommitDo", f)
 }
 
 // OnCommitDo indicates an expected call of OnCommitDo.
-func (mr *MockEchoContextMockRecorder) OnCommitDo(f interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) OnCommitDo(f interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnCommitDo", reflect.TypeOf((*MockEchoContext)(nil).OnCommitDo), f)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnCommitDo", reflect.TypeOf((*MockEchoReqContext)(nil).OnCommitDo), f)
 }
 
 // OnRollbackDo mocks base method.
-func (m *MockEchoContext) OnRollbackDo(f func()) {
+func (m *MockEchoReqContext) OnRollbackDo(f func()) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "OnRollbackDo", f)
 }
 
 // OnRollbackDo indicates an expected call of OnRollbackDo.
-func (mr *MockEchoContextMockRecorder) OnRollbackDo(f interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) OnRollbackDo(f interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnRollbackDo", reflect.TypeOf((*MockEchoContext)(nil).OnRollbackDo), f)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OnRollbackDo", reflect.TypeOf((*MockEchoReqContext)(nil).OnRollbackDo), f)
 }
 
 // Param mocks base method.
-func (m *MockEchoContext) Param(param string) request.EchoContext {
+func (m *MockEchoReqContext) Param(param string) request.EchoReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Param", param)
-	ret0, _ := ret[0].(request.EchoContext)
+	ret0, _ := ret[0].(request.EchoReqContext)
 	return ret0
 }
 
 // Param indicates an expected call of Param.
-func (mr *MockEchoContextMockRecorder) Param(param interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Param(param interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Param", reflect.TypeOf((*MockEchoContext)(nil).Param), param)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Param", reflect.TypeOf((*MockEchoReqContext)(nil).Param), param)
 }
 
 // Param36 mocks base method.
-func (m *MockEchoContext) Param36(param string) request.EchoContext {
+func (m *MockEchoReqContext) Param36(param string) request.EchoReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Param36", param)
-	ret0, _ := ret[0].(request.EchoContext)
+	ret0, _ := ret[0].(request.EchoReqContext)
 	return ret0
 }
 
 // Param36 indicates an expected call of Param36.
-func (mr *MockEchoContextMockRecorder) Param36(param interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Param36(param interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Param36", reflect.TypeOf((*MockEchoContext)(nil).Param36), param)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Param36", reflect.TypeOf((*MockEchoReqContext)(nil).Param36), param)
 }
 
 // Param36UUID mocks base method.
-func (m *MockEchoContext) Param36UUID(param string) request.EchoContext {
+func (m *MockEchoReqContext) Param36UUID(param string) request.EchoReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Param36UUID", param)
-	ret0, _ := ret[0].(request.EchoContext)
+	ret0, _ := ret[0].(request.EchoReqContext)
 	return ret0
 }
 
 // Param36UUID indicates an expected call of Param36UUID.
-func (mr *MockEchoContextMockRecorder) Param36UUID(param interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Param36UUID(param interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Param36UUID", reflect.TypeOf((*MockEchoContext)(nil).Param36UUID), param)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Param36UUID", reflect.TypeOf((*MockEchoReqContext)(nil).Param36UUID), param)
 }
 
 // ParamUUID mocks base method.
-func (m *MockEchoContext) ParamUUID(param string) request.EchoContext {
+func (m *MockEchoReqContext) ParamUUID(param string) request.EchoReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParamUUID", param)
-	ret0, _ := ret[0].(request.EchoContext)
+	ret0, _ := ret[0].(request.EchoReqContext)
 	return ret0
 }
 
 // ParamUUID indicates an expected call of ParamUUID.
-func (mr *MockEchoContextMockRecorder) ParamUUID(param interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) ParamUUID(param interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParamUUID", reflect.TypeOf((*MockEchoContext)(nil).ParamUUID), param)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParamUUID", reflect.TypeOf((*MockEchoReqContext)(nil).ParamUUID), param)
 }
 
 // ParamUUID36 mocks base method.
-func (m *MockEchoContext) ParamUUID36(param string) request.EchoContext {
+func (m *MockEchoReqContext) ParamUUID36(param string) request.EchoReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParamUUID36", param)
-	ret0, _ := ret[0].(request.EchoContext)
+	ret0, _ := ret[0].(request.EchoReqContext)
 	return ret0
 }
 
 // ParamUUID36 indicates an expected call of ParamUUID36.
-func (mr *MockEchoContextMockRecorder) ParamUUID36(param interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) ParamUUID36(param interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParamUUID36", reflect.TypeOf((*MockEchoContext)(nil).ParamUUID36), param)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParamUUID36", reflect.TypeOf((*MockEchoReqContext)(nil).ParamUUID36), param)
 }
 
 // Parse36 mocks base method.
-func (m *MockEchoContext) Parse36(key, value string) request.Context {
+func (m *MockEchoReqContext) Parse36(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Parse36", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // Parse36 indicates an expected call of Parse36.
-func (mr *MockEchoContextMockRecorder) Parse36(key, value interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Parse36(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse36", reflect.TypeOf((*MockEchoContext)(nil).Parse36), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse36", reflect.TypeOf((*MockEchoReqContext)(nil).Parse36), key, value)
 }
 
 // Parse36UUID mocks base method.
-func (m *MockEchoContext) Parse36UUID(key, value string) request.Context {
+func (m *MockEchoReqContext) Parse36UUID(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Parse36UUID", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // Parse36UUID indicates an expected call of Parse36UUID.
-func (mr *MockEchoContextMockRecorder) Parse36UUID(key, value interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Parse36UUID(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse36UUID", reflect.TypeOf((*MockEchoContext)(nil).Parse36UUID), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse36UUID", reflect.TypeOf((*MockEchoReqContext)(nil).Parse36UUID), key, value)
 }
 
 // ParseBoolean mocks base method.
-func (m *MockEchoContext) ParseBoolean(key, value string, def bool) request.Context {
+func (m *MockEchoReqContext) ParseBoolean(key, value string, def bool) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseBoolean", key, value, def)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseBoolean indicates an expected call of ParseBoolean.
-func (mr *MockEchoContextMockRecorder) ParseBoolean(key, value, def interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) ParseBoolean(key, value, def interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseBoolean", reflect.TypeOf((*MockEchoContext)(nil).ParseBoolean), key, value, def)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseBoolean", reflect.TypeOf((*MockEchoReqContext)(nil).ParseBoolean), key, value, def)
 }
 
 // ParseString mocks base method.
-func (m *MockEchoContext) ParseString(key, value string) request.Context {
+func (m *MockEchoReqContext) ParseString(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseString", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseString indicates an expected call of ParseString.
-func (mr *MockEchoContextMockRecorder) ParseString(key, value interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) ParseString(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseString", reflect.TypeOf((*MockEchoContext)(nil).ParseString), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseString", reflect.TypeOf((*MockEchoReqContext)(nil).ParseString), key, value)
 }
 
 // ParseStringOrDefault mocks base method.
-func (m *MockEchoContext) ParseStringOrDefault(key, value, def string) request.Context {
+func (m *MockEchoReqContext) ParseStringOrDefault(key, value, def string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseStringOrDefault", key, value, def)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseStringOrDefault indicates an expected call of ParseStringOrDefault.
-func (mr *MockEchoContextMockRecorder) ParseStringOrDefault(key, value, def interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) ParseStringOrDefault(key, value, def interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseStringOrDefault", reflect.TypeOf((*MockEchoContext)(nil).ParseStringOrDefault), key, value, def)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseStringOrDefault", reflect.TypeOf((*MockEchoReqContext)(nil).ParseStringOrDefault), key, value, def)
 }
 
 // ParseUUID mocks base method.
-func (m *MockEchoContext) ParseUUID(key, value string) request.Context {
+func (m *MockEchoReqContext) ParseUUID(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseUUID", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseUUID indicates an expected call of ParseUUID.
-func (mr *MockEchoContextMockRecorder) ParseUUID(key, value interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) ParseUUID(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseUUID", reflect.TypeOf((*MockEchoContext)(nil).ParseUUID), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseUUID", reflect.TypeOf((*MockEchoReqContext)(nil).ParseUUID), key, value)
 }
 
 // ParseUUID36 mocks base method.
-func (m *MockEchoContext) ParseUUID36(key, value string) request.Context {
+func (m *MockEchoReqContext) ParseUUID36(key, value string) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ParseUUID36", key, value)
-	ret0, _ := ret[0].(request.Context)
+	ret0, _ := ret[0].(request.ReqContext)
 	return ret0
 }
 
 // ParseUUID36 indicates an expected call of ParseUUID36.
-func (mr *MockEchoContextMockRecorder) ParseUUID36(key, value interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) ParseUUID36(key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseUUID36", reflect.TypeOf((*MockEchoContext)(nil).ParseUUID36), key, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseUUID36", reflect.TypeOf((*MockEchoReqContext)(nil).ParseUUID36), key, value)
 }
 
 // Query mocks base method.
-func (m *MockEchoContext) Query(query, def string) request.EchoContext {
+func (m *MockEchoReqContext) Query(query, def string) request.EchoReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Query", query, def)
-	ret0, _ := ret[0].(request.EchoContext)
+	ret0, _ := ret[0].(request.EchoReqContext)
 	return ret0
 }
 
 // Query indicates an expected call of Query.
-func (mr *MockEchoContextMockRecorder) Query(query, def interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Query(query, def interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Query", reflect.TypeOf((*MockEchoContext)(nil).Query), query, def)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Query", reflect.TypeOf((*MockEchoReqContext)(nil).Query), query, def)
 }
 
 // QueryBoolean mocks base method.
-func (m *MockEchoContext) QueryBoolean(query string, def bool) request.EchoContext {
+func (m *MockEchoReqContext) QueryBoolean(query string, def bool) request.EchoReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QueryBoolean", query, def)
-	ret0, _ := ret[0].(request.EchoContext)
+	ret0, _ := ret[0].(request.EchoReqContext)
 	return ret0
 }
 
 // QueryBoolean indicates an expected call of QueryBoolean.
-func (mr *MockEchoContextMockRecorder) QueryBoolean(query, def interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) QueryBoolean(query, def interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryBoolean", reflect.TypeOf((*MockEchoContext)(nil).QueryBoolean), query, def)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryBoolean", reflect.TypeOf((*MockEchoReqContext)(nil).QueryBoolean), query, def)
 }
 
 // ResponseCode mocks base method.
-func (m *MockEchoContext) ResponseCode() int {
+func (m *MockEchoReqContext) ResponseCode() int {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ResponseCode")
 	ret0, _ := ret[0].(int)
@@ -788,63 +790,37 @@ func (m *MockEchoContext) ResponseCode() int {
 }
 
 // ResponseCode indicates an expected call of ResponseCode.
-func (mr *MockEchoContextMockRecorder) ResponseCode() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) ResponseCode() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResponseCode", reflect.TypeOf((*MockEchoContext)(nil).ResponseCode))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ResponseCode", reflect.TypeOf((*MockEchoReqContext)(nil).ResponseCode))
 }
 
 // RollbackTransaction mocks base method.
-func (m *MockEchoContext) RollbackTransaction() {
+func (m *MockEchoReqContext) RollbackTransaction() {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "RollbackTransaction")
 }
 
 // RollbackTransaction indicates an expected call of RollbackTransaction.
-func (mr *MockEchoContextMockRecorder) RollbackTransaction() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) RollbackTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RollbackTransaction", reflect.TypeOf((*MockEchoContext)(nil).RollbackTransaction))
-}
-
-// SetContext mocks base method.
-func (m *MockEchoContext) SetContext(ctx context.Context) request.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetContext", ctx)
-	ret0, _ := ret[0].(request.Context)
-	return ret0
-}
-
-// SetContext indicates an expected call of SetContext.
-func (mr *MockEchoContextMockRecorder) SetContext(ctx interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetContext", reflect.TypeOf((*MockEchoContext)(nil).SetContext), ctx)
-}
-
-// SetIdentifier mocks base method.
-func (m *MockEchoContext) SetIdentifier(id uint64) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetIdentifier", id)
-}
-
-// SetIdentifier indicates an expected call of SetIdentifier.
-func (mr *MockEchoContextMockRecorder) SetIdentifier(id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetIdentifier", reflect.TypeOf((*MockEchoContext)(nil).SetIdentifier), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RollbackTransaction", reflect.TypeOf((*MockEchoReqContext)(nil).RollbackTransaction))
 }
 
 // SetResponseCode mocks base method.
-func (m *MockEchoContext) SetResponseCode(code int) {
+func (m *MockEchoReqContext) SetResponseCode(code int) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "SetResponseCode", code)
 }
 
 // SetResponseCode indicates an expected call of SetResponseCode.
-func (mr *MockEchoContextMockRecorder) SetResponseCode(code interface{}) *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) SetResponseCode(code interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetResponseCode", reflect.TypeOf((*MockEchoContext)(nil).SetResponseCode), code)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetResponseCode", reflect.TypeOf((*MockEchoReqContext)(nil).SetResponseCode), code)
 }
 
 // Transaction mocks base method.
-func (m *MockEchoContext) Transaction() sql.API {
+func (m *MockEchoReqContext) Transaction() sql.API {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Transaction")
 	ret0, _ := ret[0].(sql.API)
@@ -852,7 +828,49 @@ func (m *MockEchoContext) Transaction() sql.API {
 }
 
 // Transaction indicates an expected call of Transaction.
-func (mr *MockEchoContextMockRecorder) Transaction() *gomock.Call {
+func (mr *MockEchoReqContextMockRecorder) Transaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Transaction", reflect.TypeOf((*MockEchoContext)(nil).Transaction))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Transaction", reflect.TypeOf((*MockEchoReqContext)(nil).Transaction))
+}
+
+// Transform mocks base method.
+func (m *MockEchoReqContext) Transform() request.ReqContext {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Transform")
+	ret0, _ := ret[0].(request.ReqContext)
+	return ret0
+}
+
+// Transform indicates an expected call of Transform.
+func (mr *MockEchoReqContextMockRecorder) Transform() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Transform", reflect.TypeOf((*MockEchoReqContext)(nil).Transform))
+}
+
+// WithContext mocks base method.
+func (m *MockEchoReqContext) WithContext(ctx context.Context) request.ReqContext {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WithContext", ctx)
+	ret0, _ := ret[0].(request.ReqContext)
+	return ret0
+}
+
+// WithContext indicates an expected call of WithContext.
+func (mr *MockEchoReqContextMockRecorder) WithContext(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithContext", reflect.TypeOf((*MockEchoReqContext)(nil).WithContext), ctx)
+}
+
+// WithIdentifier mocks base method.
+func (m *MockEchoReqContext) WithIdentifier(id uint64) request.ReqContext {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WithIdentifier", id)
+	ret0, _ := ret[0].(request.ReqContext)
+	return ret0
+}
+
+// WithIdentifier indicates an expected call of WithIdentifier.
+func (mr *MockEchoReqContextMockRecorder) WithIdentifier(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithIdentifier", reflect.TypeOf((*MockEchoReqContext)(nil).WithIdentifier), id)
 }

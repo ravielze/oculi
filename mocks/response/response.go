@@ -36,7 +36,7 @@ func (m *MockResponder) EXPECT() *MockResponderMockRecorder {
 }
 
 // NewJSONResponse mocks base method.
-func (m *MockResponder) NewJSONResponse(ctx *context.Context, req request.Context, data interface{}) error {
+func (m *MockResponder) NewJSONResponse(ctx *context.Context, req request.ReqContext, data interface{}) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NewJSONResponse", ctx, req, data)
 	ret0, _ := ret[0].(error)
