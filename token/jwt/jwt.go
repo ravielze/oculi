@@ -15,9 +15,10 @@ type (
 )
 
 var (
-	runningServerId string = ""
+	runningIdentifier string = ""
 )
 
+// Deprecated: use static identifier instead.
 func GenerateIdentifier(state, restartIntegrityMinute int, name string) string {
 	if restartIntegrityMinute <= 0 || restartIntegrityMinute > 60 {
 		panic("restartIntegrityMinute is only allowed between 1 and 60")
@@ -28,10 +29,10 @@ func GenerateIdentifier(state, restartIntegrityMinute int, name string) string {
 	return identifier
 }
 
-func New(key string, alg string, serverId string) token.Tokenizer {
-	encoder := NewEncoder(key, alg, serverId)
+func New(key string, alg string, identifier string) token.Tokenizer {
+	encoder := NewEncoder(key, alg, identifier)
 	decoder := NewDecoder(key)
-	runningServerId = serverId
+	runningIdentifier = identifier
 
 	return &jwtImpl{
 		Encoder: encoder,

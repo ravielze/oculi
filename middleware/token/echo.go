@@ -13,11 +13,15 @@ import (
 	"github.com/ravielze/oculi/token"
 )
 
+type (
+	ClaimFunction func(req *http.Request) (token.Claims, error)
+)
+
 var (
 	tokenMiddlewareActivated = false
 )
 
-func EchoMiddleware(token token.Tokenizer) echo.MiddlewareFunc {
+func EchoMiddleware(cf ClaimFunction) echo.MiddlewareFunc {
 	tokenMiddlewareActivated = true
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -25,7 +29,7 @@ func EchoMiddleware(token token.Tokenizer) echo.MiddlewareFunc {
 			if !ok {
 				ctx = context.New(c)
 			}
-			claims, err := token.DecodeHttpRequest(ctx.Request())
+			claims, err := cf(ctx.Request())
 			if err != nil {
 				ctx.Set(consts.KeyCredentials, user.CredentialsDTO{
 					ID:       0,

@@ -6,6 +6,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	consts "github.com/ravielze/oculi/constant/errors"
+	key "github.com/ravielze/oculi/constant/key"
 	"github.com/ravielze/oculi/token"
 )
 
@@ -21,9 +22,9 @@ func NewDecoder(key string) token.Decoder {
 	}
 }
 
-func (d *decImpl) Decode(token string) (token.Claims, error) {
+func (d *decImpl) decode(jwtStr string, obj jwt.Claims) (*jwt.Token, error) {
 	tokenClaims, err := jwt.ParseWithClaims(
-		token, &claims{},
+		jwtStr, obj,
 		func(t *jwt.Token) (interface{}, error) {
 			return d.key, nil
 		},
@@ -35,8 +36,16 @@ func (d *decImpl) Decode(token string) (token.Claims, error) {
 	if tokenClaims == nil || tokenClaims.Claims == nil {
 		return nil, consts.ErrUnclaimedToken
 	}
+	return tokenClaims, nil
+}
 
-	c := tokenClaims.Claims.(*claims)
+func (d *decImpl) DecodeAccess(jwtStr string) (token.Claims, error) {
+	tokenClaims, err := d.decode(jwtStr, &accessClaims{})
+	if err != nil {
+		return nil, err
+	}
+
+	c := tokenClaims.Claims.(*accessClaims)
 	return c, nil
 }
 
@@ -56,9 +65,41 @@ func extractToken(req *http.Request) string {
 	return ""
 }
 
-func (d *decImpl) DecodeHttpRequest(req *http.Request) (token.Claims, error) {
+func (d *decImpl) DecodeAccessHeader(req *http.Request) (token.Claims, error) {
 	if ex := extractToken(req); ex != "" && len(ex) > 0 {
-		return d.Decode(ex)
+		return d.DecodeAccess(ex)
 	}
 	return nil, consts.ErrNoBearerToken
+}
+
+func (d *decImpl) DecodeAccessCookie(req *http.Request) (token.Claims, error) {
+	cookie, err := req.Cookie(key.KeyAccessToken)
+	if err != nil {
+		return nil, err
+	}
+	if cookie == nil || cookie.Value == "" {
+		return nil, consts.ErrCookieNotFound
+	}
+	return d.DecodeAccess(cookie.Value)
+}
+
+func (d *decImpl) DecodeRefresh(jwtStr string) (token.Claims, error) {
+	tokenClaims, err := d.decode(jwtStr, &refreshClaims{})
+	if err != nil {
+		return nil, err
+	}
+
+	c := tokenClaims.Claims.(*refreshClaims)
+	return c, nil
+}
+
+func (d *decImpl) DecodeRefreshCookie(req *http.Request) (token.Claims, error) {
+	cookie, err := req.Cookie(key.KeyRefreshToken)
+	if err != nil {
+		return nil, err
+	}
+	if cookie == nil || cookie.Value == "" {
+		return nil, consts.ErrCookieNotFound
+	}
+	return d.DecodeRefresh(cookie.Value)
 }

@@ -1,5 +1,7 @@
 package consts
 
 const (
-	KeyCredentials = "Credentials"
+	KeyCredentials  = "Credentials"
+	KeyAccessToken  = "o_access"
+	KeyRefreshToken = "o_refresh"
 )

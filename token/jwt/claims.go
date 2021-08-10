@@ -8,20 +8,40 @@ import (
 )
 
 type (
-	claims struct {
+	accessClaims struct {
 		*jwt.StandardClaims
-		Crd      user.CredentialsDTO `json:"credentials"`
-		ServerId string              `json:"server_id"`
+		Crd        user.CredentialsDTO `json:"credentials"`
+		Identifier string              `json:"identifier"`
+	}
+
+	refreshClaims struct {
+		*jwt.StandardClaims
+		UserID     uint64 `json:"user_id"`
+		Identifier string `json:"identifier"`
+		Token      string `json:"token"`
 	}
 )
 
-func (c *claims) Credentials() user.CredentialsDTO {
+func (c *refreshClaims) Credentials() user.CredentialsDTO {
+	return user.CredentialsDTO{ID: c.UserID, Metadata: c.Token}
+}
+
+func (c *refreshClaims) Valid() error {
+	jwt.TimeFunc = oculiTime.Now
+	if c.Identifier != runningIdentifier {
+		return consts.ErrExpiredToken
+	}
+
+	return c.StandardClaims.Valid()
+}
+
+func (c *accessClaims) Credentials() user.CredentialsDTO {
 	return c.Crd
 }
 
-func (c *claims) Valid() error {
+func (c *accessClaims) Valid() error {
 	jwt.TimeFunc = oculiTime.Now
-	if c.ServerId != runningServerId {
+	if c.Identifier != runningIdentifier {
 		return consts.ErrExpiredToken
 	}
 
