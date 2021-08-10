@@ -48,12 +48,13 @@ func (r *reqCtx) Transform() request.ReqContext {
 	// Second Elem() transform *echo.context to echo.context
 	// FieldByName("store") is where echo context store located
 	store := reflect.ValueOf(r.ec).Elem().FieldByName("ec").Elem().Elem().FieldByName("store")
+	data := *r.Data()
 	if !store.IsNil() {
 		echoStore := getUnexportedField(store).(echo.Map)
-		data := *r.Data()
 		for k, v := range echoStore {
 			data[consts.EchoPrefix(k)] = v
 		}
 	}
+	data[consts.EchoContext] = r.ec
 	return result
 }

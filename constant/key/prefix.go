@@ -11,3 +11,7 @@ func QueryPrefix(key string) string {
 func EchoPrefix(key string) string {
 	return "echo." + key
 }
+
+const (
+	EchoContext = "EchoContext"
+)
