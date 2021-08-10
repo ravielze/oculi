@@ -18,7 +18,7 @@ func (s *service) Login(req request.ReqContext, item userDto.LoginRequest) (dao.
 		return dao.User{}, "", constants.ErrWrongPassword
 	}
 	token, err := s.resource.Tokenizer.
-		CreateAndEncode(
+		CreateAccessAndEncode(
 			commonUserDto.CredentialsDTO{
 				ID:       user.ID,
 				Metadata: user,

@@ -21,7 +21,7 @@ func Run() {
 			}
 			s.BeforeRun(func(res server.Resource) error {
 				r := res.(resources.Resource)
-				res.Echo().Use(mw.EchoMiddleware(r.Tokenizer))
+				res.Echo().Use(mw.EchoMiddleware(r.Tokenizer.DecodeAccessHeader))
 				return nil
 			})
 			return s.Run()
