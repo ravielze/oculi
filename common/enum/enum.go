@@ -99,12 +99,12 @@ func Value(enum IEnum) (driver.Value, error) {
 	return string(enum.Code()), nil
 }
 
-func findIndex(code string, key string, selector func(e IEnum) string) int {
+func findIndex(x string, key string, selector func(e IEnum) string) int {
 	if enumArrayMap[key] == nil {
 		return 0
 	}
 	for i, v := range enumArrayMap[key] {
-		if selector(v) == code {
+		if selector(v) == x {
 			return i + 1
 		}
 	}
