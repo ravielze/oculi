@@ -1,12 +1,13 @@
-package redistype
+package redis
 
 import (
-	"context"
+	ctx "context"
 	"sync"
 	"time"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/pkg/errors"
+	"github.com/ravielze/oculi/context"
 )
 
 type (
@@ -54,10 +55,10 @@ type (
 		IdleCheckFrequency time.Duration
 	}
 
-	Client struct {
-		rds     *redis.Client
-		lock    sync.Mutex
-		pubsubs map[string]PubSub
+	Redis struct {
+		rds      *redis.Client
+		Lock     sync.Mutex
+		Channels map[string]PubSub
 	}
 
 	PubSub interface {
@@ -71,9 +72,9 @@ type (
 		// Check if key is exists
 		Exists(ctx context.Context, key string) (bool, error)
 		// Set an expired time for key within a duration
-		Expire(ctx context.Context, key string, ttl time.Duration) (bool, error)
+		Expire(ctx context.Context, key string, ttl time.Duration) error
 		// Set an expired time for key to a specific time
-		ExpireAt(ctx context.Context, key string, tm time.Time) (bool, error)
+		ExpireAt(ctx context.Context, key string, tm time.Time) error
 		// Rename a key
 		Rename(ctx context.Context, key, newkey string) error
 
@@ -84,18 +85,21 @@ type (
 		SetWithExpiration(ctx context.Context, key string, value interface{}, ttl time.Duration) error
 		Del(ctx context.Context, keys ...string) error
 
-		HMSetWithExpiration(ctx context.Context, key string, value map[string]interface{}, ttl time.Duration) error
-		HMSet(ctx context.Context, key string, value map[string]interface{}) error
+		HSet(ctx context.Context, key string, field string, value interface{}) error
+		HSetWithExpiration(ctx context.Context, key string, field string, value interface{}, ttl time.Duration) error
+		HMSet(ctx context.Context, key string, fieldValue map[string]interface{}) error
+		HMSetWithExpiration(ctx context.Context, key string, fieldValue map[string]interface{}, ttl time.Duration) error
+
 		HMGet(ctx context.Context, key string, fields ...string) ([]interface{}, error)
+		HGet(ctx context.Context, key string, field string, obj interface{}) error
 		HDel(ctx context.Context, key string, fields ...string) error
-		HGetAll(ctx context.Context, key string) (map[string]string, error)
 
 		FlushDatabase(ctx context.Context) error
 		Close() error
 	}
 )
 
-func New(connInfo ConnectionInfo) (*Client, error) {
+func New(connInfo ConnectionInfo) (*Redis, error) {
 	result := redis.NewClient(&redis.Options{
 		Addr:               connInfo.Address,
 		DB:                 connInfo.Database,
@@ -110,11 +114,15 @@ func New(connInfo ConnectionInfo) (*Client, error) {
 		IdleCheckFrequency: connInfo.IdleCheckFrequency,
 	})
 
-	if _, err := result.Ping(context.Background()).Result(); err != nil {
+	if _, err := result.Ping(ctx.Background()).Result(); err != nil {
 		return nil, errors.Wrap(err, "Failed to connect redis!")
 	}
 
-	return &Client{
+	return &Redis{
 		rds: result,
 	}, nil
+}
+
+func (c *Redis) Client() *redis.Client {
+	return c.rds
 }
