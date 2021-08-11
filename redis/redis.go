@@ -61,6 +61,7 @@ type (
 		Channels map[string]PubSub
 	}
 
+	// NOTE untested
 	PubSub interface {
 		Publish(msg interface{}) error
 		Subscribe(channelName string) error
@@ -68,6 +69,7 @@ type (
 		Close() error
 	}
 
+	// NOTE untested
 	Cache interface {
 		// Check if key is exists
 		Exists(ctx context.Context, key string) (bool, error)
