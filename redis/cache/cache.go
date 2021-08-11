@@ -29,7 +29,7 @@ func New(client *redis.Redis) (redis.Cache, error) {
 }
 
 func (i *impl) Exists(ctx context.Context, key string) (bool, error) {
-	r, err := i.cl.Client().Exists(ctx.Context(), key).Result()
+	r, err := i.cl.Exists(ctx.Context(), key).Result()
 	if err != nil {
 		return false, err
 	}
@@ -41,7 +41,7 @@ func (i *impl) Expire(ctx context.Context, key string, ttl time.Duration) error 
 		return nil
 	}
 
-	ok, err := i.cl.Client().Expire(ctx.Context(), key, ttl).Result()
+	ok, err := i.cl.Expire(ctx.Context(), key, ttl).Result()
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (i *impl) Expire(ctx context.Context, key string, ttl time.Duration) error 
 }
 
 func (i *impl) ExpireAt(ctx context.Context, key string, tm time.Time) error {
-	ok, err := i.cl.Client().ExpireAt(ctx.Context(), key, tm).Result()
+	ok, err := i.cl.ExpireAt(ctx.Context(), key, tm).Result()
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func (i *impl) ExpireAt(ctx context.Context, key string, tm time.Time) error {
 }
 
 func (i *impl) Rename(ctx context.Context, key, newkey string) error {
-	_, err := i.cl.Client().Rename(ctx.Context(), key, newkey).Result()
+	_, err := i.cl.Rename(ctx.Context(), key, newkey).Result()
 	if err != nil {
 		return err
 	}
@@ -71,7 +71,7 @@ func (i *impl) Rename(ctx context.Context, key, newkey string) error {
 }
 
 func (i *impl) MGet(ctx context.Context, keys ...string) ([]interface{}, error) {
-	return i.cl.Client().MGet(ctx.Context(), keys...).Result()
+	return i.cl.MGet(ctx.Context(), keys...).Result()
 }
 
 func (i *impl) Get(ctx context.Context, key string, obj interface{}) error {
@@ -80,7 +80,7 @@ func (i *impl) Get(ctx context.Context, key string, obj interface{}) error {
 		return consts.ErrInvalidValue
 	}
 
-	data, err := i.cl.Client().Get(ctx.Context(), key).Result()
+	data, err := i.cl.Get(ctx.Context(), key).Result()
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func (i *impl) SetWithExpiration(ctx context.Context, key string, value interfac
 		return err
 	}
 
-	_, err = i.cl.Client().Set(ctx.Context(), key, data, ttl).Result()
+	_, err = i.cl.Set(ctx.Context(), key, data, ttl).Result()
 	if err != nil {
 		return err
 	}
@@ -110,7 +110,7 @@ func (i *impl) SetWithExpiration(ctx context.Context, key string, value interfac
 }
 
 func (i *impl) Del(ctx context.Context, keys ...string) error {
-	_, err := i.cl.Client().Del(ctx.Context(), keys...).Result()
+	_, err := i.cl.Del(ctx.Context(), keys...).Result()
 	if err != nil {
 		return err
 	}
@@ -126,7 +126,7 @@ func (i *impl) HSetWithExpiration(ctx context.Context, key string, field string,
 	if err != nil {
 		return err
 	}
-	_, err = i.cl.Client().HSet(ctx.Context(), key, []string{field, string(data)}).Result()
+	_, err = i.cl.HSet(ctx.Context(), key, []string{field, string(data)}).Result()
 	if err != nil {
 		return err
 	}
@@ -151,7 +151,7 @@ func (i *impl) HMSetWithExpiration(ctx context.Context, key string, fieldValue m
 		translatedMap[field] = data
 	}
 
-	_, err := i.cl.Client().HSet(ctx.Context(), key, translatedMap).Result()
+	_, err := i.cl.HSet(ctx.Context(), key, translatedMap).Result()
 	if err != nil {
 		return err
 	}
@@ -163,7 +163,7 @@ func (i *impl) HMSetWithExpiration(ctx context.Context, key string, fieldValue m
 }
 
 func (i *impl) HMGet(ctx context.Context, key string, fields ...string) ([]interface{}, error) {
-	return i.cl.Client().HMGet(ctx.Context(), key, fields...).Result()
+	return i.cl.HMGet(ctx.Context(), key, fields...).Result()
 }
 
 func (i *impl) HGet(ctx context.Context, key string, field string, obj interface{}) error {
@@ -172,7 +172,7 @@ func (i *impl) HGet(ctx context.Context, key string, field string, obj interface
 		return consts.ErrInvalidValue
 	}
 
-	data, err := i.cl.Client().HGet(ctx.Context(), key, field).Result()
+	data, err := i.cl.HGet(ctx.Context(), key, field).Result()
 	if err != nil {
 		return err
 	}
@@ -185,7 +185,7 @@ func (i *impl) HGet(ctx context.Context, key string, field string, obj interface
 }
 
 func (i *impl) HDel(ctx context.Context, key string, fields ...string) error {
-	_, err := i.cl.Client().HDel(ctx.Context(), key, fields...).Result()
+	_, err := i.cl.HDel(ctx.Context(), key, fields...).Result()
 	if err != nil {
 		return err
 	}
@@ -193,7 +193,7 @@ func (i *impl) HDel(ctx context.Context, key string, fields ...string) error {
 }
 
 func (i *impl) FlushDatabase(ctx context.Context) error {
-	result, err := i.cl.Client().FlushDB(ctx.Context()).Result()
+	result, err := i.cl.FlushDB(ctx.Context()).Result()
 	if err != nil {
 		return err
 	}
@@ -217,7 +217,7 @@ func (i *impl) Close() error {
 		return errOculi.NewDetailedErrors(consts.ErrFailedToCloseRedisPubsub, errDetails...)
 	}
 
-	if err := i.cl.Client().Close(); err != nil {
+	if err := i.cl.Close(); err != nil {
 		return errOculi.NewDetailedErrors(consts.ErrFailedToCloseRedis, err.Error())
 	}
 	return nil

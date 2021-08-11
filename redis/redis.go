@@ -56,7 +56,7 @@ type (
 	}
 
 	Redis struct {
-		rds      *redis.Client
+		*redis.Client
 		Lock     sync.Mutex
 		Channels map[string]PubSub
 	}
@@ -121,10 +121,6 @@ func New(connInfo ConnectionInfo) (*Redis, error) {
 	}
 
 	return &Redis{
-		rds: result,
+		Client: result,
 	}, nil
-}
-
-func (c *Redis) Client() *redis.Client {
-	return c.rds
 }
