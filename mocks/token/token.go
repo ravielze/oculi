@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 	time "time"
 
+	uuid "github.com/gofrs/uuid"
 	gomock "github.com/golang/mock/gomock"
 	user "github.com/ravielze/oculi/common/model/dto/user"
 	token "github.com/ravielze/oculi/token"
@@ -37,33 +38,64 @@ func (m *MockEncoder) EXPECT() *MockEncoderMockRecorder {
 	return m.recorder
 }
 
-// CreateAndEncode mocks base method.
-func (m *MockEncoder) CreateAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
+// CreateAccessAndEncode mocks base method.
+func (m *MockEncoder) CreateAccessAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateAndEncode", credentials, exp)
+	ret := m.ctrl.Call(m, "CreateAccessAndEncode", credentials, exp)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CreateAndEncode indicates an expected call of CreateAndEncode.
-func (mr *MockEncoderMockRecorder) CreateAndEncode(credentials, exp interface{}) *gomock.Call {
+// CreateAccessAndEncode indicates an expected call of CreateAccessAndEncode.
+func (mr *MockEncoderMockRecorder) CreateAccessAndEncode(credentials, exp interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAndEncode", reflect.TypeOf((*MockEncoder)(nil).CreateAndEncode), credentials, exp)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessAndEncode", reflect.TypeOf((*MockEncoder)(nil).CreateAccessAndEncode), credentials, exp)
 }
 
-// CreateClaims mocks base method.
-func (m *MockEncoder) CreateClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
+// CreateAccessClaims mocks base method.
+func (m *MockEncoder) CreateAccessClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateClaims", credentials, exp)
+	ret := m.ctrl.Call(m, "CreateAccessClaims", credentials, exp)
 	ret0, _ := ret[0].(token.Claims)
 	return ret0
 }
 
-// CreateClaims indicates an expected call of CreateClaims.
-func (mr *MockEncoderMockRecorder) CreateClaims(credentials, exp interface{}) *gomock.Call {
+// CreateAccessClaims indicates an expected call of CreateAccessClaims.
+func (mr *MockEncoderMockRecorder) CreateAccessClaims(credentials, exp interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateClaims", reflect.TypeOf((*MockEncoder)(nil).CreateClaims), credentials, exp)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessClaims", reflect.TypeOf((*MockEncoder)(nil).CreateAccessClaims), credentials, exp)
+}
+
+// CreateRefreshAndEncode mocks base method.
+func (m *MockEncoder) CreateRefreshAndEncode(userId uint64, exp time.Duration) (string, uuid.UUID, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRefreshAndEncode", userId, exp)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(uuid.UUID)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// CreateRefreshAndEncode indicates an expected call of CreateRefreshAndEncode.
+func (mr *MockEncoderMockRecorder) CreateRefreshAndEncode(userId, exp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRefreshAndEncode", reflect.TypeOf((*MockEncoder)(nil).CreateRefreshAndEncode), userId, exp)
+}
+
+// CreateRefreshClaims mocks base method.
+func (m *MockEncoder) CreateRefreshClaims(userId uint64, exp time.Duration) (token.Claims, uuid.UUID) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRefreshClaims", userId, exp)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(uuid.UUID)
+	return ret0, ret1
+}
+
+// CreateRefreshClaims indicates an expected call of CreateRefreshClaims.
+func (mr *MockEncoderMockRecorder) CreateRefreshClaims(userId, exp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRefreshClaims", reflect.TypeOf((*MockEncoder)(nil).CreateRefreshClaims), userId, exp)
 }
 
 // Encode mocks base method.
@@ -104,34 +136,306 @@ func (m *MockDecoder) EXPECT() *MockDecoderMockRecorder {
 	return m.recorder
 }
 
-// Decode mocks base method.
-func (m *MockDecoder) Decode(tkn string) (token.Claims, error) {
+// DecodeAccess mocks base method.
+func (m *MockDecoder) DecodeAccess(tokenString string) (token.Claims, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Decode", tkn)
+	ret := m.ctrl.Call(m, "DecodeAccess", tokenString)
 	ret0, _ := ret[0].(token.Claims)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Decode indicates an expected call of Decode.
-func (mr *MockDecoderMockRecorder) Decode(tkn interface{}) *gomock.Call {
+// DecodeAccess indicates an expected call of DecodeAccess.
+func (mr *MockDecoderMockRecorder) DecodeAccess(tokenString interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Decode", reflect.TypeOf((*MockDecoder)(nil).Decode), tkn)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccess", reflect.TypeOf((*MockDecoder)(nil).DecodeAccess), tokenString)
 }
 
-// DecodeHttpRequest mocks base method.
-func (m *MockDecoder) DecodeHttpRequest(req *http.Request) (token.Claims, error) {
+// DecodeAccessCookie mocks base method.
+func (m *MockDecoder) DecodeAccessCookie(req *http.Request) (token.Claims, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DecodeHttpRequest", req)
+	ret := m.ctrl.Call(m, "DecodeAccessCookie", req)
 	ret0, _ := ret[0].(token.Claims)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// DecodeHttpRequest indicates an expected call of DecodeHttpRequest.
-func (mr *MockDecoderMockRecorder) DecodeHttpRequest(req interface{}) *gomock.Call {
+// DecodeAccessCookie indicates an expected call of DecodeAccessCookie.
+func (mr *MockDecoderMockRecorder) DecodeAccessCookie(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeHttpRequest", reflect.TypeOf((*MockDecoder)(nil).DecodeHttpRequest), req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccessCookie", reflect.TypeOf((*MockDecoder)(nil).DecodeAccessCookie), req)
+}
+
+// DecodeAccessHeader mocks base method.
+func (m *MockDecoder) DecodeAccessHeader(req *http.Request) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeAccessHeader", req)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeAccessHeader indicates an expected call of DecodeAccessHeader.
+func (mr *MockDecoderMockRecorder) DecodeAccessHeader(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccessHeader", reflect.TypeOf((*MockDecoder)(nil).DecodeAccessHeader), req)
+}
+
+// DecodeRefresh mocks base method.
+func (m *MockDecoder) DecodeRefresh(tokenString string) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeRefresh", tokenString)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeRefresh indicates an expected call of DecodeRefresh.
+func (mr *MockDecoderMockRecorder) DecodeRefresh(tokenString interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeRefresh", reflect.TypeOf((*MockDecoder)(nil).DecodeRefresh), tokenString)
+}
+
+// DecodeRefreshCookie mocks base method.
+func (m *MockDecoder) DecodeRefreshCookie(req *http.Request) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeRefreshCookie", req)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeRefreshCookie indicates an expected call of DecodeRefreshCookie.
+func (mr *MockDecoderMockRecorder) DecodeRefreshCookie(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeRefreshCookie", reflect.TypeOf((*MockDecoder)(nil).DecodeRefreshCookie), req)
+}
+
+// MockAccessEncoder is a mock of AccessEncoder interface.
+type MockAccessEncoder struct {
+	ctrl     *gomock.Controller
+	recorder *MockAccessEncoderMockRecorder
+}
+
+// MockAccessEncoderMockRecorder is the mock recorder for MockAccessEncoder.
+type MockAccessEncoderMockRecorder struct {
+	mock *MockAccessEncoder
+}
+
+// NewMockAccessEncoder creates a new mock instance.
+func NewMockAccessEncoder(ctrl *gomock.Controller) *MockAccessEncoder {
+	mock := &MockAccessEncoder{ctrl: ctrl}
+	mock.recorder = &MockAccessEncoderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockAccessEncoder) EXPECT() *MockAccessEncoderMockRecorder {
+	return m.recorder
+}
+
+// CreateAccessAndEncode mocks base method.
+func (m *MockAccessEncoder) CreateAccessAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateAccessAndEncode", credentials, exp)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateAccessAndEncode indicates an expected call of CreateAccessAndEncode.
+func (mr *MockAccessEncoderMockRecorder) CreateAccessAndEncode(credentials, exp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessAndEncode", reflect.TypeOf((*MockAccessEncoder)(nil).CreateAccessAndEncode), credentials, exp)
+}
+
+// CreateAccessClaims mocks base method.
+func (m *MockAccessEncoder) CreateAccessClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateAccessClaims", credentials, exp)
+	ret0, _ := ret[0].(token.Claims)
+	return ret0
+}
+
+// CreateAccessClaims indicates an expected call of CreateAccessClaims.
+func (mr *MockAccessEncoderMockRecorder) CreateAccessClaims(credentials, exp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessClaims", reflect.TypeOf((*MockAccessEncoder)(nil).CreateAccessClaims), credentials, exp)
+}
+
+// MockRefreshEncoder is a mock of RefreshEncoder interface.
+type MockRefreshEncoder struct {
+	ctrl     *gomock.Controller
+	recorder *MockRefreshEncoderMockRecorder
+}
+
+// MockRefreshEncoderMockRecorder is the mock recorder for MockRefreshEncoder.
+type MockRefreshEncoderMockRecorder struct {
+	mock *MockRefreshEncoder
+}
+
+// NewMockRefreshEncoder creates a new mock instance.
+func NewMockRefreshEncoder(ctrl *gomock.Controller) *MockRefreshEncoder {
+	mock := &MockRefreshEncoder{ctrl: ctrl}
+	mock.recorder = &MockRefreshEncoderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRefreshEncoder) EXPECT() *MockRefreshEncoderMockRecorder {
+	return m.recorder
+}
+
+// CreateRefreshAndEncode mocks base method.
+func (m *MockRefreshEncoder) CreateRefreshAndEncode(userId uint64, exp time.Duration) (string, uuid.UUID, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRefreshAndEncode", userId, exp)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(uuid.UUID)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// CreateRefreshAndEncode indicates an expected call of CreateRefreshAndEncode.
+func (mr *MockRefreshEncoderMockRecorder) CreateRefreshAndEncode(userId, exp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRefreshAndEncode", reflect.TypeOf((*MockRefreshEncoder)(nil).CreateRefreshAndEncode), userId, exp)
+}
+
+// CreateRefreshClaims mocks base method.
+func (m *MockRefreshEncoder) CreateRefreshClaims(userId uint64, exp time.Duration) (token.Claims, uuid.UUID) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRefreshClaims", userId, exp)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(uuid.UUID)
+	return ret0, ret1
+}
+
+// CreateRefreshClaims indicates an expected call of CreateRefreshClaims.
+func (mr *MockRefreshEncoderMockRecorder) CreateRefreshClaims(userId, exp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRefreshClaims", reflect.TypeOf((*MockRefreshEncoder)(nil).CreateRefreshClaims), userId, exp)
+}
+
+// MockAccessDecoder is a mock of AccessDecoder interface.
+type MockAccessDecoder struct {
+	ctrl     *gomock.Controller
+	recorder *MockAccessDecoderMockRecorder
+}
+
+// MockAccessDecoderMockRecorder is the mock recorder for MockAccessDecoder.
+type MockAccessDecoderMockRecorder struct {
+	mock *MockAccessDecoder
+}
+
+// NewMockAccessDecoder creates a new mock instance.
+func NewMockAccessDecoder(ctrl *gomock.Controller) *MockAccessDecoder {
+	mock := &MockAccessDecoder{ctrl: ctrl}
+	mock.recorder = &MockAccessDecoderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockAccessDecoder) EXPECT() *MockAccessDecoderMockRecorder {
+	return m.recorder
+}
+
+// DecodeAccess mocks base method.
+func (m *MockAccessDecoder) DecodeAccess(tokenString string) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeAccess", tokenString)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeAccess indicates an expected call of DecodeAccess.
+func (mr *MockAccessDecoderMockRecorder) DecodeAccess(tokenString interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccess", reflect.TypeOf((*MockAccessDecoder)(nil).DecodeAccess), tokenString)
+}
+
+// DecodeAccessCookie mocks base method.
+func (m *MockAccessDecoder) DecodeAccessCookie(req *http.Request) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeAccessCookie", req)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeAccessCookie indicates an expected call of DecodeAccessCookie.
+func (mr *MockAccessDecoderMockRecorder) DecodeAccessCookie(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccessCookie", reflect.TypeOf((*MockAccessDecoder)(nil).DecodeAccessCookie), req)
+}
+
+// DecodeAccessHeader mocks base method.
+func (m *MockAccessDecoder) DecodeAccessHeader(req *http.Request) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeAccessHeader", req)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeAccessHeader indicates an expected call of DecodeAccessHeader.
+func (mr *MockAccessDecoderMockRecorder) DecodeAccessHeader(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccessHeader", reflect.TypeOf((*MockAccessDecoder)(nil).DecodeAccessHeader), req)
+}
+
+// MockRefreshDecoder is a mock of RefreshDecoder interface.
+type MockRefreshDecoder struct {
+	ctrl     *gomock.Controller
+	recorder *MockRefreshDecoderMockRecorder
+}
+
+// MockRefreshDecoderMockRecorder is the mock recorder for MockRefreshDecoder.
+type MockRefreshDecoderMockRecorder struct {
+	mock *MockRefreshDecoder
+}
+
+// NewMockRefreshDecoder creates a new mock instance.
+func NewMockRefreshDecoder(ctrl *gomock.Controller) *MockRefreshDecoder {
+	mock := &MockRefreshDecoder{ctrl: ctrl}
+	mock.recorder = &MockRefreshDecoderMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockRefreshDecoder) EXPECT() *MockRefreshDecoderMockRecorder {
+	return m.recorder
+}
+
+// DecodeRefresh mocks base method.
+func (m *MockRefreshDecoder) DecodeRefresh(tokenString string) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeRefresh", tokenString)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeRefresh indicates an expected call of DecodeRefresh.
+func (mr *MockRefreshDecoderMockRecorder) DecodeRefresh(tokenString interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeRefresh", reflect.TypeOf((*MockRefreshDecoder)(nil).DecodeRefresh), tokenString)
+}
+
+// DecodeRefreshCookie mocks base method.
+func (m *MockRefreshDecoder) DecodeRefreshCookie(req *http.Request) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeRefreshCookie", req)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeRefreshCookie indicates an expected call of DecodeRefreshCookie.
+func (mr *MockRefreshDecoderMockRecorder) DecodeRefreshCookie(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeRefreshCookie", reflect.TypeOf((*MockRefreshDecoder)(nil).DecodeRefreshCookie), req)
 }
 
 // MockClaims is a mock of Claims interface.
@@ -208,63 +512,139 @@ func (m *MockTokenizer) EXPECT() *MockTokenizerMockRecorder {
 	return m.recorder
 }
 
-// CreateAndEncode mocks base method.
-func (m *MockTokenizer) CreateAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
+// CreateAccessAndEncode mocks base method.
+func (m *MockTokenizer) CreateAccessAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateAndEncode", credentials, exp)
+	ret := m.ctrl.Call(m, "CreateAccessAndEncode", credentials, exp)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CreateAndEncode indicates an expected call of CreateAndEncode.
-func (mr *MockTokenizerMockRecorder) CreateAndEncode(credentials, exp interface{}) *gomock.Call {
+// CreateAccessAndEncode indicates an expected call of CreateAccessAndEncode.
+func (mr *MockTokenizerMockRecorder) CreateAccessAndEncode(credentials, exp interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAndEncode", reflect.TypeOf((*MockTokenizer)(nil).CreateAndEncode), credentials, exp)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessAndEncode", reflect.TypeOf((*MockTokenizer)(nil).CreateAccessAndEncode), credentials, exp)
 }
 
-// CreateClaims mocks base method.
-func (m *MockTokenizer) CreateClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
+// CreateAccessClaims mocks base method.
+func (m *MockTokenizer) CreateAccessClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateClaims", credentials, exp)
+	ret := m.ctrl.Call(m, "CreateAccessClaims", credentials, exp)
 	ret0, _ := ret[0].(token.Claims)
 	return ret0
 }
 
-// CreateClaims indicates an expected call of CreateClaims.
-func (mr *MockTokenizerMockRecorder) CreateClaims(credentials, exp interface{}) *gomock.Call {
+// CreateAccessClaims indicates an expected call of CreateAccessClaims.
+func (mr *MockTokenizerMockRecorder) CreateAccessClaims(credentials, exp interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateClaims", reflect.TypeOf((*MockTokenizer)(nil).CreateClaims), credentials, exp)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccessClaims", reflect.TypeOf((*MockTokenizer)(nil).CreateAccessClaims), credentials, exp)
 }
 
-// Decode mocks base method.
-func (m *MockTokenizer) Decode(tkn string) (token.Claims, error) {
+// CreateRefreshAndEncode mocks base method.
+func (m *MockTokenizer) CreateRefreshAndEncode(userId uint64, exp time.Duration) (string, uuid.UUID, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Decode", tkn)
+	ret := m.ctrl.Call(m, "CreateRefreshAndEncode", userId, exp)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(uuid.UUID)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// CreateRefreshAndEncode indicates an expected call of CreateRefreshAndEncode.
+func (mr *MockTokenizerMockRecorder) CreateRefreshAndEncode(userId, exp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRefreshAndEncode", reflect.TypeOf((*MockTokenizer)(nil).CreateRefreshAndEncode), userId, exp)
+}
+
+// CreateRefreshClaims mocks base method.
+func (m *MockTokenizer) CreateRefreshClaims(userId uint64, exp time.Duration) (token.Claims, uuid.UUID) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRefreshClaims", userId, exp)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(uuid.UUID)
+	return ret0, ret1
+}
+
+// CreateRefreshClaims indicates an expected call of CreateRefreshClaims.
+func (mr *MockTokenizerMockRecorder) CreateRefreshClaims(userId, exp interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRefreshClaims", reflect.TypeOf((*MockTokenizer)(nil).CreateRefreshClaims), userId, exp)
+}
+
+// DecodeAccess mocks base method.
+func (m *MockTokenizer) DecodeAccess(tokenString string) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeAccess", tokenString)
 	ret0, _ := ret[0].(token.Claims)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Decode indicates an expected call of Decode.
-func (mr *MockTokenizerMockRecorder) Decode(tkn interface{}) *gomock.Call {
+// DecodeAccess indicates an expected call of DecodeAccess.
+func (mr *MockTokenizerMockRecorder) DecodeAccess(tokenString interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Decode", reflect.TypeOf((*MockTokenizer)(nil).Decode), tkn)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccess", reflect.TypeOf((*MockTokenizer)(nil).DecodeAccess), tokenString)
 }
 
-// DecodeHttpRequest mocks base method.
-func (m *MockTokenizer) DecodeHttpRequest(req *http.Request) (token.Claims, error) {
+// DecodeAccessCookie mocks base method.
+func (m *MockTokenizer) DecodeAccessCookie(req *http.Request) (token.Claims, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DecodeHttpRequest", req)
+	ret := m.ctrl.Call(m, "DecodeAccessCookie", req)
 	ret0, _ := ret[0].(token.Claims)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// DecodeHttpRequest indicates an expected call of DecodeHttpRequest.
-func (mr *MockTokenizerMockRecorder) DecodeHttpRequest(req interface{}) *gomock.Call {
+// DecodeAccessCookie indicates an expected call of DecodeAccessCookie.
+func (mr *MockTokenizerMockRecorder) DecodeAccessCookie(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeHttpRequest", reflect.TypeOf((*MockTokenizer)(nil).DecodeHttpRequest), req)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccessCookie", reflect.TypeOf((*MockTokenizer)(nil).DecodeAccessCookie), req)
+}
+
+// DecodeAccessHeader mocks base method.
+func (m *MockTokenizer) DecodeAccessHeader(req *http.Request) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeAccessHeader", req)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeAccessHeader indicates an expected call of DecodeAccessHeader.
+func (mr *MockTokenizerMockRecorder) DecodeAccessHeader(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeAccessHeader", reflect.TypeOf((*MockTokenizer)(nil).DecodeAccessHeader), req)
+}
+
+// DecodeRefresh mocks base method.
+func (m *MockTokenizer) DecodeRefresh(tokenString string) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeRefresh", tokenString)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeRefresh indicates an expected call of DecodeRefresh.
+func (mr *MockTokenizerMockRecorder) DecodeRefresh(tokenString interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeRefresh", reflect.TypeOf((*MockTokenizer)(nil).DecodeRefresh), tokenString)
+}
+
+// DecodeRefreshCookie mocks base method.
+func (m *MockTokenizer) DecodeRefreshCookie(req *http.Request) (token.Claims, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecodeRefreshCookie", req)
+	ret0, _ := ret[0].(token.Claims)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecodeRefreshCookie indicates an expected call of DecodeRefreshCookie.
+func (mr *MockTokenizerMockRecorder) DecodeRefreshCookie(req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecodeRefreshCookie", reflect.TypeOf((*MockTokenizer)(nil).DecodeRefreshCookie), req)
 }
 
 // Encode mocks base method.
