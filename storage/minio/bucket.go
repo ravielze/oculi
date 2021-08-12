@@ -6,23 +6,38 @@ import (
 
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/minio/minio-go/v7"
+	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/ravielze/oculi/context"
 	errorUtil "github.com/ravielze/oculi/errors"
 	"github.com/ravielze/oculi/storage"
 )
 
-func (b *bucket) Delete(ctx context.Context) error {
+func (b *bucket) Delete(ctx *context.Context) error {
+	b.mu.Lock()
+	defer b.mu.Unlock()
 	b.parent.mu.Lock()
 	defer b.parent.mu.Unlock()
+
+	if b.isDeleted {
+		return consts.ErrBucketDeleted
+	}
 	err := b.cl.RemoveBucket(ctx.Context(), b.name)
 	if err != nil {
 		return err
 	}
+	b.isDeleted = true
 	b.parent.buckets[b.name] = nil
 	return nil
 }
 
-func (b *bucket) FPutObject(ctx context.Context, objectName, filePath string) error {
+func (b *bucket) FPutObject(ctx *context.Context, objectName, filePath string) error {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return consts.ErrBucketDeleted
+	}
+
 	mtype, err := mimetype.DetectFile(filePath)
 	if err != nil {
 		return err
@@ -42,16 +57,34 @@ func (b *bucket) FPutObject(ctx context.Context, objectName, filePath string) er
 	return nil
 }
 
-func (b *bucket) PutObject(ctx context.Context, objectName string, content io.Reader) error {
+func (b *bucket) PutObject(ctx *context.Context, objectName string, content io.ReadSeeker) error {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return consts.ErrBucketDeleted
+	}
+
 	mtype, err := mimetype.DetectReader(content)
 	if err != nil {
 		return err
 	}
+
+	_, err = content.Seek(0, io.SeekStart)
+	if err != nil {
+		return err
+	}
+	buf := bytes.Buffer{}
+	nRead, err := io.Copy(&buf, content)
+	if err != nil {
+		return err
+	}
+
 	_, err = b.cl.PutObject(ctx.Context(),
 		b.name,
 		objectName,
-		content,
-		-1,
+		&buf,
+		nRead,
 		minio.PutObjectOptions{
 			ContentType: mtype.String(),
 		},
@@ -63,19 +96,34 @@ func (b *bucket) PutObject(ctx context.Context, objectName string, content io.Re
 	return nil
 }
 
-func (b *bucket) GetObject(ctx context.Context, objectName string) (*bytes.Buffer, error) {
+func (b *bucket) GetObject(ctx *context.Context, objectName string) (*bytes.Buffer, error) {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return nil, consts.ErrBucketDeleted
+	}
+
 	o, err := b.cl.GetObject(ctx.Context(), b.name, objectName, minio.GetObjectOptions{})
 	if err != nil {
 		return nil, err
 	}
-	result := &bytes.Buffer{}
-	_, err = io.Copy(result, o)
+	var result bytes.Buffer
+	_, err = io.Copy(&result, o)
 	if err != nil {
 		return nil, err
 	}
-	return result, nil
+	return &result, nil
 }
-func (b *bucket) FGetObject(ctx context.Context, objectName, filePath string) error {
+
+func (b *bucket) FGetObject(ctx *context.Context, objectName, filePath string) error {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return consts.ErrBucketDeleted
+	}
+
 	return b.cl.FGetObject(
 		ctx.Context(), b.name,
 		objectName, filePath,
@@ -83,11 +131,29 @@ func (b *bucket) FGetObject(ctx context.Context, objectName, filePath string) er
 	)
 }
 
-func (b *bucket) RemoveObject(ctx context.Context, objectName string) error {
+func (b *bucket) RemoveObject(ctx *context.Context, objectName string) error {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return consts.ErrBucketDeleted
+	}
+
 	return b.cl.RemoveObject(ctx.Context(), b.name, objectName, minio.RemoveObjectOptions{})
 }
 
-func (b *bucket) RemoveFilteredObjects(ctx context.Context, filter func(o minio.ObjectInfo) bool, limit int) (int, error) {
+func (b *bucket) RemoveFilteredObjects(ctx *context.Context, filter func(o minio.ObjectInfo) bool, limit int) (int, error) {
+	if limit <= 0 {
+		return 0, nil
+	}
+
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return 0, consts.ErrBucketDeleted
+	}
+
 	objectInfo, err := b.listObjects(ctx, "", filter)
 	if err != nil {
 		return 0, err
@@ -98,6 +164,9 @@ func (b *bucket) RemoveFilteredObjects(ctx context.Context, filter func(o minio.
 	go func() {
 		defer close(ch)
 		for _, obj := range objectInfo {
+			if count >= limit {
+				break
+			}
 			ch <- obj
 			count++
 		}
@@ -115,7 +184,14 @@ func (b *bucket) RemoveFilteredObjects(ctx context.Context, filter func(o minio.
 	return count, nil
 }
 
-func (b *bucket) listObjects(ctx context.Context, prefix string, filter func(o minio.ObjectInfo) bool) ([]minio.ObjectInfo, error) {
+func (b *bucket) listObjects(ctx *context.Context, prefix string, filter func(o minio.ObjectInfo) bool) ([]minio.ObjectInfo, error) {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return nil, consts.ErrBucketDeleted
+	}
+
 	ch := b.cl.ListObjects(
 		ctx.Context(), b.name,
 		minio.ListObjectsOptions{
@@ -134,7 +210,14 @@ func (b *bucket) listObjects(ctx context.Context, prefix string, filter func(o m
 	return result, nil
 }
 
-func (b *bucket) ListObjects(ctx context.Context, prefix string) ([]storage.ObjectInfo, error) {
+func (b *bucket) ListObjects(ctx *context.Context, prefix string) ([]storage.ObjectInfo, error) {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return nil, consts.ErrBucketDeleted
+	}
+
 	objectInfo, err := b.listObjects(ctx, prefix, nil)
 	if err != nil {
 		return nil, err
@@ -153,7 +236,14 @@ func (b *bucket) ListObjects(ctx context.Context, prefix string) ([]storage.Obje
 	return result, nil
 }
 
-func (b *bucket) FilteredListObjects(ctx context.Context, filter func(o minio.ObjectInfo) bool) ([]storage.ObjectInfo, error) {
+func (b *bucket) FilteredListObjects(ctx *context.Context, filter func(o minio.ObjectInfo) bool) ([]storage.ObjectInfo, error) {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return nil, consts.ErrBucketDeleted
+	}
+
 	objectInfo, err := b.listObjects(ctx, "", filter)
 	if err != nil {
 		return nil, err
@@ -172,7 +262,14 @@ func (b *bucket) FilteredListObjects(ctx context.Context, filter func(o minio.Ob
 	return result, nil
 }
 
-func (b *bucket) StatObject(ctx context.Context, objectName string) (storage.ObjectInfo, error) {
+func (b *bucket) StatObject(ctx *context.Context, objectName string) (storage.ObjectInfo, error) {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
+
+	if b.isDeleted {
+		return storage.ObjectInfo{}, consts.ErrBucketDeleted
+	}
+
 	info, err := b.cl.StatObject(ctx.Context(), b.name, objectName, minio.StatObjectOptions{})
 	if err != nil {
 		return storage.ObjectInfo{}, err

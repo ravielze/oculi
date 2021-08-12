@@ -10,13 +10,15 @@ import (
 type (
 	impl struct {
 		cl      *minio.Client
-		mu      sync.Mutex
+		mu      sync.RWMutex
 		buckets map[string]storage.Bucket
 	}
 
 	bucket struct {
-		cl     *minio.Client
-		name   string
-		parent *impl
+		cl        *minio.Client
+		name      string
+		parent    *impl
+		isDeleted bool
+		mu        sync.RWMutex
 	}
 )
