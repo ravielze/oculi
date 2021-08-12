@@ -13,6 +13,7 @@
 *.out
 
 test
+test_*
 *.txt
 !**/template/**/**/*.txt
 !**/template/**/*.txt
