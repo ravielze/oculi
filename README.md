@@ -12,7 +12,8 @@ Backend utilities
 7. Bcrypt
 8. Mockgen
 9. JWT
-10. etc.
+10. Minio for S3 File Storage
+11. etc.
 
 
 # Mocks Command
@@ -30,6 +31,9 @@ A simple backend using this tools: [LINK](https://github.com/ravielze/oculi/tree
 
 # Todo
 
-1. Add redis, rabbitmq, kafka support
+1. Test redis cache, implement redis pubsub
 2. Add websocket tools
 3. Add more custom validator
+4. Research rabbitmq, kafka, elastic search, mongodb
+5. Add encoding json library
+6. Add webclient library
