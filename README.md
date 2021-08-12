@@ -3,6 +3,7 @@
 ![](https://img.shields.io/github/issues/ravielze/oculi)
 ![](https://img.shields.io/github/forks/ravielze/oculi)
 ![](https://img.shields.io/github/stars/ravielze/oculi)
+
 Backend utilities
 
 # Tech Stacks
@@ -20,14 +21,18 @@ Backend utilities
 11. etc.
 
 
-# Mocks Command
+# Useful Command & Tips
+## Mocking
 
-## Prerequisite
-
-- Install mockgen
-
-- Run command
+1. Install mockgen
+2. Run command
 `mockgen --source=input.go -package=packageName --destination=mocks/output.go`
+
+
+## Regenerate Swagger JSON from API Blueprint
+
+1. Install api2bswagger using `npm install -g apib2swagger`
+2. Run `apib2swagger -i ./api/blueprint.apib -o ./resources/external/docs.json`
 
 # Example Project
 
