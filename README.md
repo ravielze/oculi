@@ -1,4 +1,8 @@
 # Oculi
+![](https://shields.io/badge/go-v1.16-blue?logo=go)
+![](https://img.shields.io/github/issues/ravielze/oculi)
+![](https://img.shields.io/github/forks/ravielze/oculi)
+![](https://img.shields.io/github/stars/ravielze/oculi)
 Backend utilities
 
 # Tech Stacks
@@ -37,3 +41,9 @@ A simple backend using this tools: [LINK](https://github.com/ravielze/oculi/tree
 4. Research rabbitmq, kafka, elastic search, mongodb
 5. Add encoding json library
 6. Add webclient library
+
+# Contributors
+
+<a href="https://github.com/ravielze/oculi/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ravielze/oculi" />
+</a>
