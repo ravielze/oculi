@@ -2,12 +2,12 @@ package docs
 
 import (
 	_ "embed"
-	"encoding/json"
 	"net/http"
 	"strings"
 	"sync"
 
 	"github.com/labstack/echo/v4"
+	"github.com/ravielze/oculi/encoding/jsoniter"
 )
 
 //go:embed template.html
@@ -18,6 +18,8 @@ var Data string
 var ProcessedData map[string]interface{} = nil
 
 var l sync.Mutex
+
+var json = jsoniter.New()
 
 func SetData(data string) {
 	l.Lock()

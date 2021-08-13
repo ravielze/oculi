@@ -28,10 +28,11 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rs/xid v1.3.0 // indirect
 	github.com/stretchr/testify v1.7.0
+	github.com/xuri/excelize/v2 v2.4.1 // indirect
 	go.uber.org/dig v1.11.0
 	go.uber.org/zap v1.18.1
-	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
-	golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d // indirect
+	golang.org/x/crypto v0.0.0-20210812204632-0ba0e8f03122
+	golang.org/x/net v0.0.0-20210813154108-3a7c47852f19 // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20210611083556-38a9dc6acbc6 // indirect

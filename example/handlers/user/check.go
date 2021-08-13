@@ -1,8 +1,6 @@
 package user
 
 import (
-	"encoding/json"
-
 	"github.com/ravielze/oculi/example/constants"
 	"github.com/ravielze/oculi/example/model/dao"
 	"github.com/ravielze/oculi/example/model/dto/user"
@@ -14,8 +12,8 @@ func (h *handler) Check(req request.ReqContext) (user.UserResponse, error) {
 	if credentialsData.ID == 0 {
 		return user.UserResponse{}, constants.ErrNotLoggedIn
 	}
-	userDataBuff, _ := json.Marshal(credentialsData.Metadata)
+	userDataBuff, _ := h.resource.Json.Marshal(credentialsData.Metadata)
 	var userData dao.User
-	json.Unmarshal(userDataBuff, &userData)
+	h.resource.Json.Unmarshal(userDataBuff, &userData)
 	return user.NewUserResponse(userData), nil
 }

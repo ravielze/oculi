@@ -2,10 +2,10 @@ package enum
 
 import (
 	"database/sql/driver"
-	"encoding/json"
 	"reflect"
 
 	consts "github.com/ravielze/oculi/constant/errors"
+	"github.com/ravielze/oculi/encoding/jsoniter"
 )
 
 type (
@@ -27,6 +27,7 @@ type (
 )
 
 var enumArrayMap = map[string][]IEnum{}
+var json = jsoniter.New()
 
 func Register(key string, slice interface{}, objStructPtr interface{}) error {
 	if enumArrayMap[key] != nil {

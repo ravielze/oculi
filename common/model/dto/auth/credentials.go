@@ -1,16 +1,18 @@
 package auth
 
 import (
-	"encoding/json"
 	"reflect"
 
 	"github.com/danhper/structomap"
+	"github.com/ravielze/oculi/encoding/jsoniter"
 )
 
 type StandardCredentials struct {
 	ID       uint64      `json:"id"`
 	Metadata interface{} `json:"metadata"`
 }
+
+var json = jsoniter.New()
 
 // If metadata is a struct, return snakecased key and its value.
 // The key needs to be exported.

@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -10,6 +9,7 @@ import (
 
 	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/ravielze/oculi/context"
+	"github.com/ravielze/oculi/encoding/jsoniter"
 	errOculi "github.com/ravielze/oculi/errors"
 	"github.com/ravielze/oculi/redis"
 )
@@ -19,6 +19,8 @@ type (
 		cl *redis.Redis
 	}
 )
+
+var json = jsoniter.New()
 
 // NOTE untested
 func New(client *redis.Redis) (redis.Cache, error) {
