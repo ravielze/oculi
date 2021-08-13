@@ -2,7 +2,7 @@ package custom
 
 import (
 	v10 "github.com/go-playground/validator/v10"
-	"github.com/ravielze/oculi/common/encoding/radix36"
+	"github.com/ravielze/oculi/common/baseX/radix36"
 	"github.com/ravielze/oculi/validator"
 )
 
