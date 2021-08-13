@@ -10,6 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	echo "github.com/labstack/echo/v4"
+	auth "github.com/ravielze/oculi/common/model/dto/auth"
 	sql "github.com/ravielze/oculi/persistent/sql"
 	request "github.com/ravielze/oculi/request"
 )
@@ -81,10 +82,10 @@ func (mr *MockReqContextMockRecorder) Context() *gomock.Call {
 }
 
 // Data mocks base method.
-func (m *MockReqContext) Data() *map[string]interface{} {
+func (m *MockReqContext) Data() map[string]interface{} {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Data")
-	ret0, _ := ret[0].(*map[string]interface{})
+	ret0, _ := ret[0].(map[string]interface{})
 	return ret0
 }
 
@@ -137,10 +138,10 @@ func (mr *MockReqContextMockRecorder) HasTransaction() *gomock.Call {
 }
 
 // Identifier mocks base method.
-func (m *MockReqContext) Identifier() uint64 {
+func (m *MockReqContext) Identifier() auth.StandardCredentials {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Identifier")
-	ret0, _ := ret[0].(uint64)
+	ret0, _ := ret[0].(auth.StandardCredentials)
 	return ret0
 }
 
@@ -351,7 +352,7 @@ func (mr *MockReqContextMockRecorder) WithContext(ctx interface{}) *gomock.Call 
 }
 
 // WithIdentifier mocks base method.
-func (m *MockReqContext) WithIdentifier(id uint64) request.ReqContext {
+func (m *MockReqContext) WithIdentifier(id auth.StandardCredentials) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "WithIdentifier", id)
 	ret0, _ := ret[0].(request.ReqContext)
@@ -466,10 +467,10 @@ func (mr *MockEchoReqContextMockRecorder) Context() *gomock.Call {
 }
 
 // Data mocks base method.
-func (m *MockEchoReqContext) Data() *map[string]interface{} {
+func (m *MockEchoReqContext) Data() map[string]interface{} {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Data")
-	ret0, _ := ret[0].(*map[string]interface{})
+	ret0, _ := ret[0].(map[string]interface{})
 	return ret0
 }
 
@@ -536,10 +537,10 @@ func (mr *MockEchoReqContextMockRecorder) HasTransaction() *gomock.Call {
 }
 
 // Identifier mocks base method.
-func (m *MockEchoReqContext) Identifier() uint64 {
+func (m *MockEchoReqContext) Identifier() auth.StandardCredentials {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Identifier")
-	ret0, _ := ret[0].(uint64)
+	ret0, _ := ret[0].(auth.StandardCredentials)
 	return ret0
 }
 
@@ -862,7 +863,7 @@ func (mr *MockEchoReqContextMockRecorder) WithContext(ctx interface{}) *gomock.C
 }
 
 // WithIdentifier mocks base method.
-func (m *MockEchoReqContext) WithIdentifier(id uint64) request.ReqContext {
+func (m *MockEchoReqContext) WithIdentifier(id auth.StandardCredentials) request.ReqContext {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "WithIdentifier", id)
 	ret0, _ := ret[0].(request.ReqContext)

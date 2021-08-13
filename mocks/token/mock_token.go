@@ -11,7 +11,7 @@ import (
 
 	uuid "github.com/gofrs/uuid"
 	gomock "github.com/golang/mock/gomock"
-	user "github.com/ravielze/oculi/common/model/dto/user"
+	auth "github.com/ravielze/oculi/common/model/dto/auth"
 	token "github.com/ravielze/oculi/token"
 )
 
@@ -39,7 +39,7 @@ func (m *MockEncoder) EXPECT() *MockEncoderMockRecorder {
 }
 
 // CreateAccessAndEncode mocks base method.
-func (m *MockEncoder) CreateAccessAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
+func (m *MockEncoder) CreateAccessAndEncode(credentials auth.StandardCredentials, exp time.Duration) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAccessAndEncode", credentials, exp)
 	ret0, _ := ret[0].(string)
@@ -54,7 +54,7 @@ func (mr *MockEncoderMockRecorder) CreateAccessAndEncode(credentials, exp interf
 }
 
 // CreateAccessClaims mocks base method.
-func (m *MockEncoder) CreateAccessClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
+func (m *MockEncoder) CreateAccessClaims(credentials auth.StandardCredentials, exp time.Duration) token.Claims {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAccessClaims", credentials, exp)
 	ret0, _ := ret[0].(token.Claims)
@@ -235,7 +235,7 @@ func (m *MockAccessEncoder) EXPECT() *MockAccessEncoderMockRecorder {
 }
 
 // CreateAccessAndEncode mocks base method.
-func (m *MockAccessEncoder) CreateAccessAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
+func (m *MockAccessEncoder) CreateAccessAndEncode(credentials auth.StandardCredentials, exp time.Duration) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAccessAndEncode", credentials, exp)
 	ret0, _ := ret[0].(string)
@@ -250,7 +250,7 @@ func (mr *MockAccessEncoderMockRecorder) CreateAccessAndEncode(credentials, exp 
 }
 
 // CreateAccessClaims mocks base method.
-func (m *MockAccessEncoder) CreateAccessClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
+func (m *MockAccessEncoder) CreateAccessClaims(credentials auth.StandardCredentials, exp time.Duration) token.Claims {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAccessClaims", credentials, exp)
 	ret0, _ := ret[0].(token.Claims)
@@ -462,10 +462,10 @@ func (m *MockClaims) EXPECT() *MockClaimsMockRecorder {
 }
 
 // Credentials mocks base method.
-func (m *MockClaims) Credentials() user.CredentialsDTO {
+func (m *MockClaims) Credentials() auth.StandardCredentials {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Credentials")
-	ret0, _ := ret[0].(user.CredentialsDTO)
+	ret0, _ := ret[0].(auth.StandardCredentials)
 	return ret0
 }
 
@@ -513,7 +513,7 @@ func (m *MockTokenizer) EXPECT() *MockTokenizerMockRecorder {
 }
 
 // CreateAccessAndEncode mocks base method.
-func (m *MockTokenizer) CreateAccessAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
+func (m *MockTokenizer) CreateAccessAndEncode(credentials auth.StandardCredentials, exp time.Duration) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAccessAndEncode", credentials, exp)
 	ret0, _ := ret[0].(string)
@@ -528,7 +528,7 @@ func (mr *MockTokenizerMockRecorder) CreateAccessAndEncode(credentials, exp inte
 }
 
 // CreateAccessClaims mocks base method.
-func (m *MockTokenizer) CreateAccessClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
+func (m *MockTokenizer) CreateAccessClaims(credentials auth.StandardCredentials, exp time.Duration) token.Claims {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAccessClaims", credentials, exp)
 	ret0, _ := ret[0].(token.Claims)
