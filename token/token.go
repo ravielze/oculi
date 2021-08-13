@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
-	"github.com/ravielze/oculi/common/model/dto/user"
+	"github.com/ravielze/oculi/common/model/dto/auth"
 )
 
 type (
@@ -21,8 +21,8 @@ type (
 	}
 
 	AccessEncoder interface {
-		CreateAccessClaims(credentials user.CredentialsDTO, exp time.Duration) (claim Claims)
-		CreateAccessAndEncode(credentials user.CredentialsDTO, exp time.Duration) (tokenString string, err error)
+		CreateAccessClaims(credentials auth.StandardCredentials, exp time.Duration) (claim Claims)
+		CreateAccessAndEncode(credentials auth.StandardCredentials, exp time.Duration) (tokenString string, err error)
 	}
 
 	RefreshEncoder interface {
@@ -42,7 +42,7 @@ type (
 	}
 
 	Claims interface {
-		Credentials() user.CredentialsDTO
+		Credentials() auth.StandardCredentials
 		Valid() error
 	}
 

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/ravielze/oculi/common/model/dto/user"
+	"github.com/ravielze/oculi/common/model/dto/auth"
 	errConsts "github.com/ravielze/oculi/constant/errors"
 	consts "github.com/ravielze/oculi/constant/key"
 	"github.com/ravielze/oculi/context"
@@ -29,7 +29,7 @@ func fetchAuthentication(cf ClaimFunction, next echo.HandlerFunc) echo.HandlerFu
 		}
 		claims, err := cf(ctx.Request())
 		if err != nil {
-			ctx.Set(consts.KeyCredentials, user.CredentialsDTO{
+			ctx.Set(consts.KeyCredentials, auth.StandardCredentials{
 				ID:       0,
 				Metadata: errorUtil.InjectDetails(errConsts.ErrUnauthorized, err.Error()),
 			})
@@ -67,7 +67,7 @@ func sendErrorIfNeeded(next echo.HandlerFunc, r response.Responder) echo.Handler
 			)
 			return r.NewJSONResponse(ctx, nil, nil)
 		} else {
-			cdto := credentials.(user.CredentialsDTO)
+			cdto := credentials.(auth.StandardCredentials)
 			if cdto.ID == 0 {
 				ctx.AddError(http.StatusUnauthorized, cdto.Metadata.(error))
 				return r.NewJSONResponse(ctx, nil, nil)

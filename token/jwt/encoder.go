@@ -5,7 +5,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofrs/uuid"
-	"github.com/ravielze/oculi/common/model/dto/user"
+	"github.com/ravielze/oculi/common/model/dto/auth"
 	"github.com/ravielze/oculi/token"
 )
 
@@ -33,7 +33,7 @@ func (e *encImpl) Encode(claims token.Claims) (string, error) {
 	return signedToken, nil
 }
 
-func (e *encImpl) CreateAccessClaims(credentials user.CredentialsDTO, exp time.Duration) token.Claims {
+func (e *encImpl) CreateAccessClaims(credentials auth.StandardCredentials, exp time.Duration) token.Claims {
 	return &accessClaims{
 		StandardClaims: &jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(exp).Unix(),
@@ -43,7 +43,7 @@ func (e *encImpl) CreateAccessClaims(credentials user.CredentialsDTO, exp time.D
 	}
 }
 
-func (e *encImpl) CreateAccessAndEncode(credentials user.CredentialsDTO, exp time.Duration) (string, error) {
+func (e *encImpl) CreateAccessAndEncode(credentials auth.StandardCredentials, exp time.Duration) (string, error) {
 	tokenClaims := e.CreateAccessClaims(credentials, exp)
 	return e.Encode(tokenClaims)
 }

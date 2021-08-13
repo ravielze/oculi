@@ -2,7 +2,7 @@ package jwt
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/ravielze/oculi/common/model/dto/user"
+	"github.com/ravielze/oculi/common/model/dto/auth"
 	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/ravielze/oculi/constant/oculiTime"
 )
@@ -10,8 +10,8 @@ import (
 type (
 	accessClaims struct {
 		*jwt.StandardClaims
-		Crd        user.CredentialsDTO `json:"credentials"`
-		Identifier string              `json:"identifier"`
+		Crd        auth.StandardCredentials `json:"credentials"`
+		Identifier string                   `json:"identifier"`
 	}
 
 	refreshClaims struct {
@@ -22,8 +22,8 @@ type (
 	}
 )
 
-func (c *refreshClaims) Credentials() user.CredentialsDTO {
-	return user.CredentialsDTO{ID: c.UserID, Metadata: c.Token}
+func (c *refreshClaims) Credentials() auth.StandardCredentials {
+	return auth.StandardCredentials{ID: c.UserID, Metadata: c.Token}
 }
 
 func (c *refreshClaims) Valid() error {
@@ -35,7 +35,7 @@ func (c *refreshClaims) Valid() error {
 	return c.StandardClaims.Valid()
 }
 
-func (c *accessClaims) Credentials() user.CredentialsDTO {
+func (c *accessClaims) Credentials() auth.StandardCredentials {
 	return c.Crd
 }
 
