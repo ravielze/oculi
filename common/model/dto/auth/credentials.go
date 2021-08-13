@@ -1,6 +1,6 @@
-package user
+package auth
 
-type CredentialsDTO struct {
+type StandardCredentials struct {
 	ID       uint64      `json:"id"`
 	Metadata interface{} `json:"metadata"`
 }
