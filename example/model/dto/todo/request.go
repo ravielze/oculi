@@ -22,7 +22,7 @@ type (
 
 func (i CreateTodoRequest) ToDAO(req request.ReqContext) dao.Todo {
 	return dao.Todo{
-		OwnerID:     req.Identifier(),
+		OwnerID:     req.Identifier().ID,
 		Title:       i.Title,
 		Description: typeutils.StringOrNil(&i.Description),
 		IsDone:      false,

@@ -9,7 +9,7 @@ import (
 func (r *repository) GetAllByOwner(req request.ReqContext) ([]dao.Todo, error) {
 	var todo []dao.Todo
 	if err := req.Transaction().
-		Where("owner_id = ?", req.Identifier()).
+		Where("owner_id = ?", req.Identifier().ID).
 		Find(&todo).Error(); err != nil {
 		r.resource.Log.StandardError(logs.NewInfo(
 			"Todo.Repository.GetAllByOwner",

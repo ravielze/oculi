@@ -7,7 +7,7 @@ import (
 )
 
 func (h *handler) Reset(ctx request.ReqContext) error {
-	data := *ctx.Data()
+	data := ctx.Data()
 	if data[consts.QueryPrefix("key")] != h.resource.Config.DatabaseResetKey {
 		return constants.ErrResetUnauthorized
 	}

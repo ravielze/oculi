@@ -9,7 +9,7 @@ import (
 func (r *repository) GetByID(req request.ReqContext, todoId uint64) (dao.Todo, error) {
 	todo := dao.Todo{ID: todoId}
 	if err := req.Transaction().
-		Where("owner_id = ?", req.Identifier()).
+		Where("owner_id = ?", req.Identifier().ID).
 		Take(&todo).Error(); err != nil {
 		r.resource.Log.StandardError(logs.NewInfo(
 			"Todo.Repository.GetByID",

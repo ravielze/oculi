@@ -1,7 +1,7 @@
 package service
 
 import (
-	commonUserDto "github.com/ravielze/oculi/common/model/dto/user"
+	"github.com/ravielze/oculi/common/model/dto/auth"
 	"github.com/ravielze/oculi/example/constants"
 	"github.com/ravielze/oculi/example/model/dao"
 	userDto "github.com/ravielze/oculi/example/model/dto/user"
@@ -19,7 +19,7 @@ func (s *service) Login(req request.ReqContext, item userDto.LoginRequest) (dao.
 	}
 	token, err := s.resource.Tokenizer.
 		CreateAccessAndEncode(
-			commonUserDto.CredentialsDTO{
+			auth.StandardCredentials{
 				ID:       user.ID,
 				Metadata: user,
 			},

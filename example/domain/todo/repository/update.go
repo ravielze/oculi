@@ -9,7 +9,7 @@ import (
 
 func (r *repository) Update(req request.ReqContext, todoId uint64, request dto.Map) error {
 	if err := req.Transaction().Model(dao.Todo{}).
-		Where("owner_id = ?", req.Identifier()).
+		Where("owner_id = ?", req.Identifier().ID).
 		Where("id = ?", todoId).
 		Updates(request.ToMap()).Error(); err != nil {
 		r.resource.Log.StandardError(logs.NewInfo(
