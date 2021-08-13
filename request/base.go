@@ -8,7 +8,8 @@ import (
 	"strings"
 
 	"github.com/gofrs/uuid"
-	"github.com/ravielze/oculi/common/encoding/radix36"
+	"github.com/ravielze/oculi/common/baseX/radix36"
+	"github.com/ravielze/oculi/common/model/dto/auth"
 	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/ravielze/oculi/persistent/sql"
 )
@@ -21,18 +22,18 @@ type (
 		errors            []error
 		responseCode      int
 		data              map[string]interface{}
-		requestIdentifier uint64
+		requestIdentifier auth.StandardCredentials
 		onRollback        func()
 		onCommit          func()
 	}
 )
 
-func (r *base) WithIdentifier(id uint64) ReqContext {
+func (r *base) WithIdentifier(id auth.StandardCredentials) ReqContext {
 	r.requestIdentifier = id
 	return r
 }
 
-func (r *base) Identifier() uint64 {
+func (r *base) Identifier() auth.StandardCredentials {
 	return r.requestIdentifier
 }
 
@@ -118,7 +119,7 @@ func NewBase(db sql.API) ReqContext {
 		errors:            make([]error, 0),
 		responseCode:      200,
 		data:              make(map[string]interface{}, 5),
-		requestIdentifier: 0,
+		requestIdentifier: auth.StandardCredentials{Metadata: "unauthorized"},
 		onRollback:        nil,
 		onCommit:          nil,
 	}
@@ -234,9 +235,9 @@ func (r *base) ParseBoolean(key, value string, def bool) ReqContext {
 	return r
 }
 
-func (r *base) Data() *map[string]interface{} {
+func (r *base) Data() map[string]interface{} {
 	if r.HasError() {
 		return nil
 	}
-	return &r.data
+	return r.data
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/labstack/echo/v4"
+	"github.com/ravielze/oculi/common/model/dto/auth"
 	"github.com/ravielze/oculi/persistent/sql"
 )
 
@@ -33,10 +34,10 @@ type (
 		ParseUUID36(key, value string) ReqContext
 		Parse36UUID(key, value string) ReqContext
 		ParseBoolean(key, value string, def bool) ReqContext
-		Data() *map[string]interface{}
+		Data() map[string]interface{}
 
-		Identifier() uint64
-		WithIdentifier(id uint64) ReqContext
+		Identifier() auth.StandardCredentials
+		WithIdentifier(id auth.StandardCredentials) ReqContext
 	}
 
 	//TODO NotImplemented
