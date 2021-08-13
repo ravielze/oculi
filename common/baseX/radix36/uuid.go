@@ -2,7 +2,7 @@ package radix36
 
 import (
 	"github.com/gofrs/uuid"
-	"github.com/ravielze/oculi/common/encoding"
+	"github.com/ravielze/oculi/common/baseX"
 )
 
 func (r *radix36) FromUUID(value uuid.UUID) {
@@ -31,7 +31,7 @@ func (r *radix36) ToUUID() uuid.UUID {
 	}
 }
 
-func (r *radix36) Randomize() encoding.UUIDEncodeDecode {
+func (r *radix36) Randomize() baseX.UUIDTransformer {
 	r.data = uuid.Must(uuid.NewV4()).Bytes()
 	r.lastType = t_uuid
 	return r

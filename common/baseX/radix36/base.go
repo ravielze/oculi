@@ -5,7 +5,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/martinlindhe/base36"
-	"github.com/ravielze/oculi/common/encoding"
+	"github.com/ravielze/oculi/common/baseX"
 )
 
 // Int is int64
@@ -33,7 +33,7 @@ func (r *radix36) Bytes() []byte {
 	return r.data
 }
 
-func NewRadix36(r36 string) (encoding.BasicEncoding, error) {
+func NewRadix36(r36 string) (baseX.BasicTransforming, error) {
 	if !Validate(r36) {
 		return nil, fmt.Errorf("%s is not a radix36", r36)
 	}
@@ -43,7 +43,7 @@ func NewRadix36(r36 string) (encoding.BasicEncoding, error) {
 	}, nil
 }
 
-func Radix36(r36 string) encoding.BasicEncoding {
+func Radix36(r36 string) baseX.BasicTransforming {
 	if !Validate(r36) {
 		panic(r36 + " is not a radix36")
 	}
@@ -53,32 +53,32 @@ func Radix36(r36 string) encoding.BasicEncoding {
 	}
 }
 
-func New() encoding.BasicEncoding {
+func New() baseX.BasicTransforming {
 	return &radix36{
 		data:     nil,
 		lastType: none,
 	}
 }
 
-func NewFromInt(val int64) encoding.BasicEncoding {
+func NewFromInt(val int64) baseX.BasicTransforming {
 	x := New()
 	x.FromInt(val)
 	return x
 }
 
-func NewFromUUID(val uuid.UUID) encoding.BasicEncoding {
+func NewFromUUID(val uuid.UUID) baseX.BasicTransforming {
 	x := New()
 	x.FromUUID(val)
 	return x
 }
 
-func NewFromBytes(val []byte) encoding.BasicEncoding {
+func NewFromBytes(val []byte) baseX.BasicTransforming {
 	x := New()
 	x.FromBytes(val)
 	return x
 }
 
-func NewFromUUIDString(val string) (encoding.BasicEncoding, error) {
+func NewFromUUIDString(val string) (baseX.BasicTransforming, error) {
 	x := New()
 	if err := x.FromUUIDString(val); err != nil {
 		return x, err
@@ -86,8 +86,8 @@ func NewFromUUIDString(val string) (encoding.BasicEncoding, error) {
 	return x, nil
 }
 
-func NewRandomize() encoding.BasicEncoding {
-	return New().Randomize().(encoding.BasicEncoding)
+func NewRandomize() baseX.BasicTransforming {
+	return New().Randomize().(baseX.BasicTransforming)
 }
 
 func (r *radix36) String() string {
