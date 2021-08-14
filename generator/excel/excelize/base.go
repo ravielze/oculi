@@ -73,3 +73,7 @@ func New() *File {
 func (f *File) Generate() (*bytes.Buffer, error) {
 	return f.File.WriteToBuffer()
 }
+
+func (f *File) FGenerate(fileName string) error {
+	return f.File.SaveAs(fileName)
+}

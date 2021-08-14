@@ -3,6 +3,7 @@ module github.com/ravielze/oculi
 go 1.16
 
 require (
+	github.com/boombuler/barcode v1.0.1 // indirect
 	github.com/danhper/structomap v0.6.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/structs v1.1.0 // indirect
