@@ -18,7 +18,9 @@ Backend utilities
 8. Mockgen
 9. JWT
 10. Minio for S3 File Storage
-11. etc.
+11. Excelize
+12. QRCode
+13. etc.
 
 
 # Useful Command & Tips
