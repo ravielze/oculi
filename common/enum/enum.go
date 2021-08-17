@@ -71,11 +71,15 @@ func register(key string, data interface{}) {
 }
 
 func Scan(val interface{}, key string) (int, error) {
-	rawValue, ok := val.([]byte)
-	if !ok {
+	var dbValue string
+	switch v := val.(type) {
+	case string:
+		dbValue = v
+	case []byte:
+		dbValue = string(v)
+	default:
 		return 0, consts.ErrEnumParsing
 	}
-	dbValue := string(rawValue)
 	idx := findIndex(dbValue, key, func(e IEnum) string { return e.Code() })
 	if idx == 0 {
 		return 0, consts.ErrEnumNotFound
