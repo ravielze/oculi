@@ -74,10 +74,7 @@ func (d *decImpl) DecodeAccessHeader(req *http.Request) (token.Claims, error) {
 
 func (d *decImpl) DecodeAccessCookie(req *http.Request) (token.Claims, error) {
 	cookie, err := req.Cookie(key.KeyAccessToken)
-	if err != nil {
-		return nil, err
-	}
-	if cookie == nil || cookie.Value == "" {
+	if err != nil || cookie == nil || cookie.Value == "" {
 		return nil, consts.ErrCookieNotFound
 	}
 	return d.DecodeAccess(cookie.Value)
@@ -88,17 +85,13 @@ func (d *decImpl) DecodeRefresh(jwtStr string) (token.Claims, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	c := tokenClaims.Claims.(*refreshClaims)
 	return c, nil
 }
 
 func (d *decImpl) DecodeRefreshCookie(req *http.Request) (token.Claims, error) {
 	cookie, err := req.Cookie(key.KeyRefreshToken)
-	if err != nil {
-		return nil, err
-	}
-	if cookie == nil || cookie.Value == "" {
+	if err != nil || cookie == nil || cookie.Value == "" {
 		return nil, consts.ErrCookieNotFound
 	}
 	return d.DecodeRefresh(cookie.Value)
