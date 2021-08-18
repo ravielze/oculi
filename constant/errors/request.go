@@ -1,4 +1,4 @@
-package consts
+package errors
 
 var (
 	ErrRequestMissingValue   = "required value is missing on key "

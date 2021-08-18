@@ -1,4 +1,4 @@
-package consts
+package key
 
 func ParameterPrefix(key string) string {
 	return "parameter." + key

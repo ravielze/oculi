@@ -1,4 +1,4 @@
-package consts
+package key
 
 const (
 	KeyCredentials  = "Credentials"

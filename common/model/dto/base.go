@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/ravielze/oculi/common/model/dao"
-	time "github.com/ravielze/oculi/constant/time"
+	time "github.com/ravielze/oculi/constant/timeformat"
 )
 
 type (

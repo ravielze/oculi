@@ -1,4 +1,4 @@
-package consts
+package timeformat
 
 const (
 	DATE_LAYOUT        = "02-01-2006"
