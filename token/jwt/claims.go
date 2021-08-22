@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/ravielze/oculi/common/model/dto/auth"
 	consts "github.com/ravielze/oculi/constant/errors"
 	"github.com/ravielze/oculi/constant/oculiTime"

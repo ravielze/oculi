@@ -3,8 +3,8 @@ package jwt
 import (
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gofrs/uuid"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/ravielze/oculi/common/model/dto/auth"
 	"github.com/ravielze/oculi/token"
 )

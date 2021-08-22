@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 	consts "github.com/ravielze/oculi/constant/errors"
 	key "github.com/ravielze/oculi/constant/key"
 	"github.com/ravielze/oculi/token"
