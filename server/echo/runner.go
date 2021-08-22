@@ -73,11 +73,16 @@ func (w *WebServer) start() error {
 	w.resource.Echo().Logger = w.resource.Logger()
 	w.resource.Echo().Logger.SetLevel(log.INFO)
 
-	w.resource.Echo().Use(middleware.Gzip())
-	w.resource.Echo().Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAcceptEncoding},
-	}))
+	if w.useDefaultGZip {
+		w.resource.Echo().Use(middleware.Gzip())
+	}
+
+	if w.useDefaultCors {
+		w.resource.Echo().Use(middleware.CORSWithConfig(middleware.CORSConfig{
+			AllowOrigins: []string{"*"},
+			AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAcceptEncoding},
+		}))
+	}
 	w.resource.Echo().Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			ctx, ok := c.(*oculiContext.Context)
