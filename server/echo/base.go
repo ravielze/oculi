@@ -43,8 +43,8 @@ func (o useDefaultGZip) Apply(w *WebServer) {
 
 func New(infrastructure server.Infrastructure, resource server.Resource, options ...Option) server.Server {
 	ws := &WebServer{
-		useDefaultCors: false,
-		useDefaultGZip: false,
+		useDefaultCors: true,
+		useDefaultGZip: true,
 		infrastructure: infrastructure,
 		resource:       resource,
 		afterRun:       make([]server.HookFunction, 0),
