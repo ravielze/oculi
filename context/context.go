@@ -28,6 +28,15 @@ func New(ec echo.Context) *Context {
 	}
 }
 
+func NewWithoutEcho() *Context {
+	return &Context{
+		ctx:      context.Background(),
+		ec:       nil,
+		errors:   make([]error, 0),
+		httpCode: http.StatusOK,
+	}
+}
+
 func (ctx *Context) Context() context.Context {
 	return ctx.ctx
 }
