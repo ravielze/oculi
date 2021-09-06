@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/pkg/errors"
-	"github.com/ravielze/oculi/context"
+	"github.com/ravielze/oculi/request"
 )
 
 type (
@@ -72,31 +72,31 @@ type (
 	// NOTE untested
 	Cache interface {
 		// Check if key is exists
-		Exists(ctx context.Context, key string) (bool, error)
+		Exists(req request.ReqContext, key string) (bool, error)
 		// Set an expired time for key within a duration
-		Expire(ctx context.Context, key string, ttl time.Duration) error
+		Expire(req request.ReqContext, key string, ttl time.Duration) error
 		// Set an expired time for key to a specific time
-		ExpireAt(ctx context.Context, key string, tm time.Time) error
+		ExpireAt(req request.ReqContext, key string, tm time.Time) error
 		// Rename a key
-		Rename(ctx context.Context, key, newkey string) error
+		Rename(req request.ReqContext, key, newkey string) error
 
 		// Multi Get
-		MGet(ctx context.Context, keys ...string) ([]interface{}, error)
-		Get(ctx context.Context, key string, obj interface{}) error
-		Set(ctx context.Context, key string, value interface{}) error
-		SetWithExpiration(ctx context.Context, key string, value interface{}, ttl time.Duration) error
-		Del(ctx context.Context, keys ...string) error
+		MGet(req request.ReqContext, keys ...string) ([]interface{}, error)
+		Get(req request.ReqContext, key string, obj interface{}) error
+		Set(req request.ReqContext, key string, value interface{}) error
+		SetWithExpiration(req request.ReqContext, key string, value interface{}, ttl time.Duration) error
+		Del(req request.ReqContext, keys ...string) error
 
-		HSet(ctx context.Context, key string, field string, value interface{}) error
-		HSetWithExpiration(ctx context.Context, key string, field string, value interface{}, ttl time.Duration) error
-		HMSet(ctx context.Context, key string, fieldValue map[string]interface{}) error
-		HMSetWithExpiration(ctx context.Context, key string, fieldValue map[string]interface{}, ttl time.Duration) error
+		HSet(req request.ReqContext, key string, field string, value interface{}) error
+		HSetWithExpiration(req request.ReqContext, key string, field string, value interface{}, ttl time.Duration) error
+		HMSet(req request.ReqContext, key string, fieldValue map[string]interface{}) error
+		HMSetWithExpiration(req request.ReqContext, key string, fieldValue map[string]interface{}, ttl time.Duration) error
 
-		HMGet(ctx context.Context, key string, fields ...string) ([]interface{}, error)
-		HGet(ctx context.Context, key string, field string, obj interface{}) error
-		HDel(ctx context.Context, key string, fields ...string) error
+		HMGet(req request.ReqContext, key string, fields ...string) ([]interface{}, error)
+		HGet(req request.ReqContext, key string, field string, obj interface{}) error
+		HDel(req request.ReqContext, key string, fields ...string) error
 
-		FlushDatabase(ctx context.Context) error
+		FlushDatabase(req request.ReqContext) error
 		Close() error
 	}
 )

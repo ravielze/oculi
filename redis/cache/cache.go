@@ -8,10 +8,10 @@ import (
 	"time"
 
 	consts "github.com/ravielze/oculi/constant/errors"
-	"github.com/ravielze/oculi/context"
 	"github.com/ravielze/oculi/encoding/jsoniter"
 	errOculi "github.com/ravielze/oculi/errors"
 	"github.com/ravielze/oculi/redis"
+	"github.com/ravielze/oculi/request"
 )
 
 type (
@@ -30,7 +30,7 @@ func New(client *redis.Redis) (redis.Cache, error) {
 	return &impl{client}, nil
 }
 
-func (i *impl) Exists(ctx context.Context, key string) (bool, error) {
+func (i *impl) Exists(ctx request.ReqContext, key string) (bool, error) {
 	r, err := i.cl.Exists(ctx.Context(), key).Result()
 	if err != nil {
 		return false, err
@@ -38,7 +38,7 @@ func (i *impl) Exists(ctx context.Context, key string) (bool, error) {
 	return (r > 0), err
 }
 
-func (i *impl) Expire(ctx context.Context, key string, ttl time.Duration) error {
+func (i *impl) Expire(ctx request.ReqContext, key string, ttl time.Duration) error {
 	if ttl == -1 {
 		return nil
 	}
@@ -53,7 +53,7 @@ func (i *impl) Expire(ctx context.Context, key string, ttl time.Duration) error 
 	return nil
 }
 
-func (i *impl) ExpireAt(ctx context.Context, key string, tm time.Time) error {
+func (i *impl) ExpireAt(ctx request.ReqContext, key string, tm time.Time) error {
 	ok, err := i.cl.ExpireAt(ctx.Context(), key, tm).Result()
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ func (i *impl) ExpireAt(ctx context.Context, key string, tm time.Time) error {
 	return nil
 }
 
-func (i *impl) Rename(ctx context.Context, key, newkey string) error {
+func (i *impl) Rename(ctx request.ReqContext, key, newkey string) error {
 	_, err := i.cl.Rename(ctx.Context(), key, newkey).Result()
 	if err != nil {
 		return err
@@ -72,11 +72,11 @@ func (i *impl) Rename(ctx context.Context, key, newkey string) error {
 	return nil
 }
 
-func (i *impl) MGet(ctx context.Context, keys ...string) ([]interface{}, error) {
+func (i *impl) MGet(ctx request.ReqContext, keys ...string) ([]interface{}, error) {
 	return i.cl.MGet(ctx.Context(), keys...).Result()
 }
 
-func (i *impl) Get(ctx context.Context, key string, obj interface{}) error {
+func (i *impl) Get(ctx request.ReqContext, key string, obj interface{}) error {
 	k := reflect.ValueOf(obj).Kind()
 	if k != reflect.Ptr && k != reflect.Slice {
 		return consts.ErrInvalidValue
@@ -93,11 +93,11 @@ func (i *impl) Get(ctx context.Context, key string, obj interface{}) error {
 	return json.Unmarshal([]byte(data), obj)
 }
 
-func (i *impl) Set(ctx context.Context, key string, value interface{}) error {
+func (i *impl) Set(ctx request.ReqContext, key string, value interface{}) error {
 	return i.SetWithExpiration(ctx, key, value, 0)
 }
 
-func (i *impl) SetWithExpiration(ctx context.Context, key string, value interface{}, ttl time.Duration) error {
+func (i *impl) SetWithExpiration(ctx request.ReqContext, key string, value interface{}, ttl time.Duration) error {
 	data, err := json.Marshal(value)
 	if err != nil {
 		return err
@@ -111,7 +111,7 @@ func (i *impl) SetWithExpiration(ctx context.Context, key string, value interfac
 	return nil
 }
 
-func (i *impl) Del(ctx context.Context, keys ...string) error {
+func (i *impl) Del(ctx request.ReqContext, keys ...string) error {
 	_, err := i.cl.Del(ctx.Context(), keys...).Result()
 	if err != nil {
 		return err
@@ -119,11 +119,11 @@ func (i *impl) Del(ctx context.Context, keys ...string) error {
 	return err
 }
 
-func (i *impl) HSet(ctx context.Context, key string, field string, value interface{}) error {
+func (i *impl) HSet(ctx request.ReqContext, key string, field string, value interface{}) error {
 	return i.HSetWithExpiration(ctx, key, field, value, -1)
 }
 
-func (i *impl) HSetWithExpiration(ctx context.Context, key string, field string, value interface{}, ttl time.Duration) error {
+func (i *impl) HSetWithExpiration(ctx request.ReqContext, key string, field string, value interface{}, ttl time.Duration) error {
 	data, err := json.Marshal(value)
 	if err != nil {
 		return err
@@ -139,11 +139,11 @@ func (i *impl) HSetWithExpiration(ctx context.Context, key string, field string,
 	return nil
 }
 
-func (i *impl) HMSet(ctx context.Context, key string, fieldValue map[string]interface{}) error {
+func (i *impl) HMSet(ctx request.ReqContext, key string, fieldValue map[string]interface{}) error {
 	return i.HMSetWithExpiration(ctx, key, fieldValue, -1)
 }
 
-func (i *impl) HMSetWithExpiration(ctx context.Context, key string, fieldValue map[string]interface{}, ttl time.Duration) error {
+func (i *impl) HMSetWithExpiration(ctx request.ReqContext, key string, fieldValue map[string]interface{}, ttl time.Duration) error {
 	translatedMap := make(map[string]interface{})
 	for field, value := range fieldValue {
 		data, err := json.Marshal(value)
@@ -164,11 +164,11 @@ func (i *impl) HMSetWithExpiration(ctx context.Context, key string, fieldValue m
 	return nil
 }
 
-func (i *impl) HMGet(ctx context.Context, key string, fields ...string) ([]interface{}, error) {
+func (i *impl) HMGet(ctx request.ReqContext, key string, fields ...string) ([]interface{}, error) {
 	return i.cl.HMGet(ctx.Context(), key, fields...).Result()
 }
 
-func (i *impl) HGet(ctx context.Context, key string, field string, obj interface{}) error {
+func (i *impl) HGet(ctx request.ReqContext, key string, field string, obj interface{}) error {
 	k := reflect.ValueOf(obj).Kind()
 	if k != reflect.Ptr && k != reflect.Slice {
 		return consts.ErrInvalidValue
@@ -186,7 +186,7 @@ func (i *impl) HGet(ctx context.Context, key string, field string, obj interface
 	return json.Unmarshal([]byte(data), obj)
 }
 
-func (i *impl) HDel(ctx context.Context, key string, fields ...string) error {
+func (i *impl) HDel(ctx request.ReqContext, key string, fields ...string) error {
 	_, err := i.cl.HDel(ctx.Context(), key, fields...).Result()
 	if err != nil {
 		return err
@@ -194,7 +194,7 @@ func (i *impl) HDel(ctx context.Context, key string, fields ...string) error {
 	return nil
 }
 
-func (i *impl) FlushDatabase(ctx context.Context) error {
+func (i *impl) FlushDatabase(ctx request.ReqContext) error {
 	result, err := i.cl.FlushDB(ctx.Context()).Result()
 	if err != nil {
 		return err
