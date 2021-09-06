@@ -11,6 +11,7 @@ import (
 	"github.com/ravielze/oculi/common/baseX/radix36"
 	"github.com/ravielze/oculi/common/model/dto/auth"
 	consts "github.com/ravielze/oculi/constant/errors"
+	keyConsts "github.com/ravielze/oculi/constant/key"
 	"github.com/ravielze/oculi/persistent/sql"
 )
 
@@ -112,7 +113,7 @@ func (r *base) OnRollbackDo(f func()) {
 }
 
 func NewBase(db sql.API) ReqContext {
-	return &base{
+	result := &base{
 		ctx:               context.Background(),
 		db:                db,
 		tx:                nil,
@@ -123,6 +124,8 @@ func NewBase(db sql.API) ReqContext {
 		onRollback:        nil,
 		onCommit:          nil,
 	}
+	result.Set("isTransformed", false)
+	return result
 }
 
 func (r *base) WithContext(ctx context.Context) ReqContext {
@@ -235,7 +238,7 @@ func (r *base) ParseBoolean(key, value string, def bool) ReqContext {
 	return r
 }
 
-//Deprecated: not safe, use Get or Set instead.
+//Not safe, for safety, use Get or Set instead.
 func (r *base) Data() map[string]interface{} {
 	if r.HasError() {
 		return nil
@@ -244,10 +247,16 @@ func (r *base) Data() map[string]interface{} {
 }
 
 func (r *base) Get(key string) (interface{}, error) {
+	isTransformed := r.data["isTransformed"].(bool)
+	if strings.HasPrefix(key, keyConsts.EchoPrefixConstant) && !isTransformed {
+		return nil, consts.ErrNeedDataTransformation
+	}
+
 	result, ok := r.data[key]
 	if !ok {
 		return nil, consts.ErrKeyNotFound
 	}
+
 	return result, nil
 }
 

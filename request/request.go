@@ -35,7 +35,7 @@ type (
 		Parse36UUID(key, value string) ReqContext
 		ParseBoolean(key, value string, def bool) ReqContext
 
-		//Deprecated: not safe, use Get or Set instead.
+		//Not safe, for safety, use Get or Set instead.
 		Data() map[string]interface{}
 
 		Get(key string) (interface{}, error)
