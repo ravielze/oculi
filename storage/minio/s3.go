@@ -3,7 +3,7 @@ package storage
 import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	"github.com/ravielze/oculi/context"
+	"github.com/ravielze/oculi/request"
 	"github.com/ravielze/oculi/storage"
 )
 
@@ -21,7 +21,7 @@ func New(endpoint, username, password string, useSSL bool) (storage.S3, error) {
 	}, nil
 }
 
-func (i *impl) ListBuckets(ctx *context.Context) ([]storage.BucketInfo, error) {
+func (i *impl) ListBuckets(ctx request.ReqContext) ([]storage.BucketInfo, error) {
 	var result []storage.BucketInfo
 	buckets, err := i.cl.ListBuckets(ctx.Context())
 	if err != nil {
@@ -38,7 +38,7 @@ func (i *impl) ListBuckets(ctx *context.Context) ([]storage.BucketInfo, error) {
 	return result, nil
 }
 
-func (i *impl) BucketExists(ctx *context.Context, bucketName string) (bool, error) {
+func (i *impl) BucketExists(ctx request.ReqContext, bucketName string) (bool, error) {
 	found, err := i.cl.BucketExists(ctx.Context(), bucketName)
 	if err != nil {
 		return false, err
@@ -46,13 +46,13 @@ func (i *impl) BucketExists(ctx *context.Context, bucketName string) (bool, erro
 	return found, nil
 }
 
-func (i *impl) GetBucket(ctx *context.Context, bucketName string) storage.Bucket {
+func (i *impl) GetBucket(ctx request.ReqContext, bucketName string) storage.Bucket {
 	i.mu.RLock()
 	defer i.mu.RUnlock()
 	return i.buckets[bucketName]
 }
 
-func (i *impl) InitBucket(ctx *context.Context, bucketName string) (storage.Bucket, error) {
+func (i *impl) InitBucket(ctx request.ReqContext, bucketName string) (storage.Bucket, error) {
 	i.mu.Lock()
 	defer i.mu.Unlock()
 	if i.buckets[bucketName] != nil {

@@ -7,12 +7,12 @@ import (
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/minio/minio-go/v7"
 	consts "github.com/ravielze/oculi/constant/errors"
-	"github.com/ravielze/oculi/context"
 	errorUtil "github.com/ravielze/oculi/errors"
+	"github.com/ravielze/oculi/request"
 	"github.com/ravielze/oculi/storage"
 )
 
-func (b *bucket) Delete(ctx *context.Context) error {
+func (b *bucket) Delete(ctx request.ReqContext) error {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 	b.parent.mu.Lock()
@@ -30,7 +30,7 @@ func (b *bucket) Delete(ctx *context.Context) error {
 	return nil
 }
 
-func (b *bucket) FPutObject(ctx *context.Context, objectName, filePath string) error {
+func (b *bucket) FPutObject(ctx request.ReqContext, objectName, filePath string) error {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
@@ -57,7 +57,7 @@ func (b *bucket) FPutObject(ctx *context.Context, objectName, filePath string) e
 	return nil
 }
 
-func (b *bucket) PutObject(ctx *context.Context, objectName string, content io.ReadSeeker) error {
+func (b *bucket) PutObject(ctx request.ReqContext, objectName string, content io.ReadSeeker) error {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
@@ -96,7 +96,7 @@ func (b *bucket) PutObject(ctx *context.Context, objectName string, content io.R
 	return nil
 }
 
-func (b *bucket) GetObject(ctx *context.Context, objectName string) (*bytes.Buffer, error) {
+func (b *bucket) GetObject(ctx request.ReqContext, objectName string) (*bytes.Buffer, error) {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
@@ -116,7 +116,7 @@ func (b *bucket) GetObject(ctx *context.Context, objectName string) (*bytes.Buff
 	return &result, nil
 }
 
-func (b *bucket) FGetObject(ctx *context.Context, objectName, filePath string) error {
+func (b *bucket) FGetObject(ctx request.ReqContext, objectName, filePath string) error {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
@@ -131,7 +131,7 @@ func (b *bucket) FGetObject(ctx *context.Context, objectName, filePath string) e
 	)
 }
 
-func (b *bucket) RemoveObject(ctx *context.Context, objectName string) error {
+func (b *bucket) RemoveObject(ctx request.ReqContext, objectName string) error {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
@@ -142,7 +142,7 @@ func (b *bucket) RemoveObject(ctx *context.Context, objectName string) error {
 	return b.cl.RemoveObject(ctx.Context(), b.name, objectName, minio.RemoveObjectOptions{})
 }
 
-func (b *bucket) RemoveFilteredObjects(ctx *context.Context, filter func(o minio.ObjectInfo) bool, limit int) (int, error) {
+func (b *bucket) RemoveFilteredObjects(ctx request.ReqContext, filter func(o minio.ObjectInfo) bool, limit int) (int, error) {
 	if limit <= 0 {
 		return 0, nil
 	}
@@ -184,7 +184,7 @@ func (b *bucket) RemoveFilteredObjects(ctx *context.Context, filter func(o minio
 	return count, nil
 }
 
-func (b *bucket) listObjects(ctx *context.Context, prefix string, filter func(o minio.ObjectInfo) bool) ([]minio.ObjectInfo, error) {
+func (b *bucket) listObjects(ctx request.ReqContext, prefix string, filter func(o minio.ObjectInfo) bool) ([]minio.ObjectInfo, error) {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
@@ -210,7 +210,7 @@ func (b *bucket) listObjects(ctx *context.Context, prefix string, filter func(o 
 	return result, nil
 }
 
-func (b *bucket) ListObjects(ctx *context.Context, prefix string) ([]storage.ObjectInfo, error) {
+func (b *bucket) ListObjects(ctx request.ReqContext, prefix string) ([]storage.ObjectInfo, error) {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
@@ -236,7 +236,7 @@ func (b *bucket) ListObjects(ctx *context.Context, prefix string) ([]storage.Obj
 	return result, nil
 }
 
-func (b *bucket) FilteredListObjects(ctx *context.Context, filter func(o minio.ObjectInfo) bool) ([]storage.ObjectInfo, error) {
+func (b *bucket) FilteredListObjects(ctx request.ReqContext, filter func(o minio.ObjectInfo) bool) ([]storage.ObjectInfo, error) {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
@@ -262,7 +262,7 @@ func (b *bucket) FilteredListObjects(ctx *context.Context, filter func(o minio.O
 	return result, nil
 }
 
-func (b *bucket) StatObject(ctx *context.Context, objectName string) (storage.ObjectInfo, error) {
+func (b *bucket) StatObject(ctx request.ReqContext, objectName string) (storage.ObjectInfo, error) {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 

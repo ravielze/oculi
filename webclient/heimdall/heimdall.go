@@ -8,8 +8,6 @@ import (
 
 	"github.com/gojek/heimdall/httpclient"
 	errConsts "github.com/ravielze/oculi/constant/errors"
-	"github.com/ravielze/oculi/context"
-	"github.com/ravielze/oculi/encoding/jsoniter"
 	errUtils "github.com/ravielze/oculi/errors"
 )
 
@@ -24,9 +22,7 @@ type (
 	}
 )
 
-var json = jsoniter.New()
-
-func (c *client) Get(ctx *context.Context, url string, headers http.Header, queryString map[string]string) (*http.Response, error) {
+func (c *client) Get(url string, headers http.Header, queryString map[string]string) (*http.Response, error) {
 
 	if len(queryString) > 0 {
 		format := "?%s=%s"
@@ -39,29 +35,30 @@ func (c *client) Get(ctx *context.Context, url string, headers http.Header, quer
 	response, err := c.Heimdall.Get(url, headers)
 	return c.checkClientError(response, err)
 }
-func (c *client) Post(ctx *context.Context, url string, body io.Reader, headers http.Header) (*http.Response, error) {
+
+func (c *client) Post(url string, body io.Reader, headers http.Header) (*http.Response, error) {
 
 	response, err := c.Heimdall.Post(url, body, headers)
 	return c.checkClientError(response, err)
 }
 
-func (c *client) Put(ctx *context.Context, url string, body io.Reader, headers http.Header) (*http.Response, error) {
+func (c *client) Put(url string, body io.Reader, headers http.Header) (*http.Response, error) {
 	response, err := c.Heimdall.Put(url, body, headers)
 	return c.checkClientError(response, err)
 }
 
-func (c *client) Patch(ctx *context.Context, url string, body io.Reader, headers http.Header) (*http.Response, error) {
+func (c *client) Patch(url string, body io.Reader, headers http.Header) (*http.Response, error) {
 	response, err := c.Heimdall.Patch(url, body, headers)
 	return c.checkClientError(response, err)
 }
 
-func (c *client) Delete(ctx *context.Context, url string, headers http.Header) (*http.Response, error) {
+func (c *client) Delete(url string, headers http.Header) (*http.Response, error) {
 	response, err := c.Heimdall.Delete(url, headers)
 	return c.checkClientError(response, err)
 }
 
-func (c *client) Do(ctx *context.Context, req *http.Request) (*http.Response, error) {
-	response, err := c.Heimdall.Do(req)
+func (c *client) Do(r *http.Request) (*http.Response, error) {
+	response, err := c.Heimdall.Do(r)
 	return c.checkClientError(response, err)
 }
 
