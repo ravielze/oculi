@@ -34,7 +34,12 @@ type (
 		ParseUUID36(key, value string) ReqContext
 		Parse36UUID(key, value string) ReqContext
 		ParseBoolean(key, value string, def bool) ReqContext
+
+		//Deprecated: not safe, use Get or Set instead.
 		Data() map[string]interface{}
+
+		Get(key string) (interface{}, error)
+		Set(key string, val interface{})
 
 		Identifier() auth.StandardCredentials
 		WithIdentifier(id auth.StandardCredentials) ReqContext

@@ -235,9 +235,22 @@ func (r *base) ParseBoolean(key, value string, def bool) ReqContext {
 	return r
 }
 
+//Deprecated: not safe, use Get or Set instead.
 func (r *base) Data() map[string]interface{} {
 	if r.HasError() {
 		return nil
 	}
 	return r.data
+}
+
+func (r *base) Get(key string) (interface{}, error) {
+	result, ok := r.data[key]
+	if !ok {
+		return nil, consts.ErrKeyNotFound
+	}
+	return result, nil
+}
+
+func (r *base) Set(key string, val interface{}) {
+	r.data[key] = val
 }
