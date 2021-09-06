@@ -109,6 +109,21 @@ func (mr *MockReqContextMockRecorder) Error() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockReqContext)(nil).Error))
 }
 
+// Get mocks base method.
+func (m *MockReqContext) Get(key string) (interface{}, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", key)
+	ret0, _ := ret[0].(interface{})
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Get indicates an expected call of Get.
+func (mr *MockReqContextMockRecorder) Get(key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockReqContext)(nil).Get), key)
+}
+
 // HasError mocks base method.
 func (m *MockReqContext) HasError() bool {
 	m.ctrl.T.Helper()
@@ -311,6 +326,18 @@ func (mr *MockReqContextMockRecorder) RollbackTransaction() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RollbackTransaction", reflect.TypeOf((*MockReqContext)(nil).RollbackTransaction))
 }
 
+// Set mocks base method.
+func (m *MockReqContext) Set(key string, val interface{}) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Set", key, val)
+}
+
+// Set indicates an expected call of Set.
+func (mr *MockReqContextMockRecorder) Set(key, val interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockReqContext)(nil).Set), key, val)
+}
+
 // SetResponseCode mocks base method.
 func (m *MockReqContext) SetResponseCode(code int) {
 	m.ctrl.T.Helper()
@@ -506,6 +533,21 @@ func (m *MockEchoReqContext) Error() error {
 func (mr *MockEchoReqContextMockRecorder) Error() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockEchoReqContext)(nil).Error))
+}
+
+// Get mocks base method.
+func (m *MockEchoReqContext) Get(key string) (interface{}, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", key)
+	ret0, _ := ret[0].(interface{})
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Get indicates an expected call of Get.
+func (mr *MockEchoReqContextMockRecorder) Get(key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockEchoReqContext)(nil).Get), key)
 }
 
 // HasError mocks base method.
@@ -806,6 +848,18 @@ func (m *MockEchoReqContext) RollbackTransaction() {
 func (mr *MockEchoReqContextMockRecorder) RollbackTransaction() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RollbackTransaction", reflect.TypeOf((*MockEchoReqContext)(nil).RollbackTransaction))
+}
+
+// Set mocks base method.
+func (m *MockEchoReqContext) Set(key string, val interface{}) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Set", key, val)
+}
+
+// Set indicates an expected call of Set.
+func (mr *MockEchoReqContextMockRecorder) Set(key, val interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockEchoReqContext)(nil).Set), key, val)
 }
 
 // SetResponseCode mocks base method.
