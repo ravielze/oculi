@@ -3,6 +3,7 @@ package webserver
 import (
 	"fmt"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -21,14 +22,40 @@ const (
 
 func InfoRoutes(ec *echo.Echo) func() {
 	return func() {
+		routes := make(map[string][]string)
+		for _, route := range ec.Routes() {
+			routes[route.Method] = append(routes[route.Method], route.Path)
+		}
+
+		methodList := []string{http.MethodGet, http.MethodPost, http.MethodPatch,
+			http.MethodPut, http.MethodDelete, http.MethodConnect, http.MethodHead,
+			http.MethodOptions, http.MethodTrace}
+
+		for method := range routes {
+			sort.Strings(routes[method])
+		}
+
 		fmt.Printf("[%s Oculi %s] %v | Showing registered routes:\n",
 			magenta, reset, time.Now().Format("15:04:05 02 Jan 2006"))
-		for _, r := range ec.Routes() {
-			fmt.Printf("[%s Oculi %s] %v | %s %-7s %s %#v\n",
-				magenta, reset, time.Now().Format("15:04:05 02 Jan 2006"),
-				methodColor(r.Method), r.Method, reset,
-				r.Path,
-			)
+
+		lastRouteMethod := ""
+		for _, method := range methodList {
+			for _, route := range routes[method] {
+				if lastRouteMethod != method {
+					fmt.Printf("[%s Oculi %s] %-20v | %s %-7s %s %#v\n",
+						magenta, reset, time.Now().Format("15:04:05 02 Jan 2006"),
+						methodColor(method), method, reset,
+						route,
+					)
+				} else {
+					fmt.Printf("[%s Oculi %s] %-20v | %s %-7s %s %#v\n",
+						magenta, reset, "",
+						methodColor(method), "", reset,
+						route,
+					)
+				}
+				lastRouteMethod = method
+			}
 		}
 	}
 }
