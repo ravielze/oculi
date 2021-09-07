@@ -63,7 +63,12 @@ func (c *client) Do(r *http.Request) (*http.Response, error) {
 }
 
 func (c *client) checkClientError(response *http.Response, err error) (*http.Response, error) {
-	if err == nil && response.StatusCode >= http.StatusBadRequest {
+	if err != nil {
+		return response,
+			errUtils.NewDetailedErrors(
+				errConsts.WebClientError, err.Error(),
+			)
+	} else if response.StatusCode >= http.StatusBadRequest {
 		err = errUtils.NewDetailedErrors(
 			errConsts.WebClientError,
 			WebClientErrorDetails{
@@ -71,9 +76,8 @@ func (c *client) checkClientError(response *http.Response, err error) (*http.Res
 				ResponseStatusCode: response.StatusCode,
 			},
 		)
+		return response, err
 	}
-	return response,
-		errUtils.NewDetailedErrors(
-			errConsts.WebClientError, err.Error(),
-		)
+
+	return response, nil
 }
