@@ -23,8 +23,8 @@ type (
 		Transaction() sql.API
 		NewTransaction()
 		CommitTransaction() error
-		RollbackTransaction() error
-		BeforeRollbackDo(f func() error)
+		RollbackTransaction()
+		BeforeRollbackDo(f func())
 		BeforeCommitDo(f func() error)
 		AfterRollbackDo(f func())
 		AfterCommitDo(f func())

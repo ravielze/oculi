@@ -24,7 +24,7 @@ type (
 		responseCode      int
 		data              map[string]interface{}
 		requestIdentifier auth.StandardCredentials
-		beforeRollback    []func() error
+		beforeRollback    []func()
 		beforeCommit      []func() error
 		afterRollback     []func()
 		afterCommit       []func()
@@ -92,14 +92,13 @@ func (r *base) CommitTransaction() error {
 	if r.beforeCommit != nil {
 		for _, f := range r.beforeCommit {
 			if err := f(); err != nil {
+				r.RollbackTransaction()
 				return err
 			}
 		}
 	}
-	err := r.tx.Commit().Error()
-	if err != nil {
-		return err
-	}
+	r.tx.Commit()
+	r.tx = nil
 	if r.afterCommit != nil {
 		for _, f := range r.afterCommit {
 			f()
@@ -108,31 +107,26 @@ func (r *base) CommitTransaction() error {
 	return nil
 }
 
-func (r *base) RollbackTransaction() error {
+func (r *base) RollbackTransaction() {
 	if r.tx == nil {
-		return nil
+		return
 	}
 
 	if r.beforeRollback != nil {
 		for _, f := range r.beforeRollback {
-			if err := f(); err != nil {
-				return err
-			}
+			f()
 		}
 	}
-	err := r.tx.Rollback().Error()
-	if err != nil {
-		return err
-	}
+	r.tx.Rollback()
+	r.tx = nil
 	if r.afterRollback != nil {
 		for _, f := range r.afterRollback {
 			f()
 		}
 	}
-	return nil
 }
 
-func (r *base) BeforeRollbackDo(f func() error) {
+func (r *base) BeforeRollbackDo(f func()) {
 	r.beforeRollback = append(r.beforeRollback, f)
 }
 

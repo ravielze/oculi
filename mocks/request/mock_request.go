@@ -92,7 +92,7 @@ func (mr *MockReqContextMockRecorder) BeforeCommitDo(f interface{}) *gomock.Call
 }
 
 // BeforeRollbackDo mocks base method.
-func (m *MockReqContext) BeforeRollbackDo(f func() error) {
+func (m *MockReqContext) BeforeRollbackDo(f func()) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "BeforeRollbackDo", f)
 }
@@ -341,11 +341,9 @@ func (mr *MockReqContextMockRecorder) ResponseCode() *gomock.Call {
 }
 
 // RollbackTransaction mocks base method.
-func (m *MockReqContext) RollbackTransaction() error {
+func (m *MockReqContext) RollbackTransaction() {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RollbackTransaction")
-	ret0, _ := ret[0].(error)
-	return ret0
+	m.ctrl.Call(m, "RollbackTransaction")
 }
 
 // RollbackTransaction indicates an expected call of RollbackTransaction.
@@ -532,7 +530,7 @@ func (mr *MockEchoReqContextMockRecorder) BeforeCommitDo(f interface{}) *gomock.
 }
 
 // BeforeRollbackDo mocks base method.
-func (m *MockEchoReqContext) BeforeRollbackDo(f func() error) {
+func (m *MockEchoReqContext) BeforeRollbackDo(f func()) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "BeforeRollbackDo", f)
 }
@@ -893,11 +891,9 @@ func (mr *MockEchoReqContextMockRecorder) ResponseCode() *gomock.Call {
 }
 
 // RollbackTransaction mocks base method.
-func (m *MockEchoReqContext) RollbackTransaction() error {
+func (m *MockEchoReqContext) RollbackTransaction() {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RollbackTransaction")
-	ret0, _ := ret[0].(error)
-	return ret0
+	m.ctrl.Call(m, "RollbackTransaction")
 }
 
 // RollbackTransaction indicates an expected call of RollbackTransaction.
