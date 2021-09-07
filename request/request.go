@@ -22,10 +22,12 @@ type (
 		HasTransaction() bool
 		Transaction() sql.API
 		NewTransaction()
-		CommitTransaction()
-		RollbackTransaction()
-		OnRollbackDo(f func())
-		OnCommitDo(f func())
+		CommitTransaction() error
+		RollbackTransaction() error
+		BeforeRollbackDo(f func() error)
+		BeforeCommitDo(f func() error)
+		AfterRollbackDo(f func())
+		AfterCommitDo(f func())
 
 		ParseString(key, value string) ReqContext
 		ParseStringOrDefault(key, value, def string) ReqContext
@@ -35,10 +37,8 @@ type (
 		Parse36UUID(key, value string) ReqContext
 		ParseBoolean(key, value string, def bool) ReqContext
 
-		//Not safe, for safety, use Get or Set instead.
-		Data() map[string]interface{}
-
 		Get(key string) (interface{}, error)
+		GetOrDefault(key string, def interface{}) interface{}
 		Set(key string, val interface{})
 
 		Identifier() auth.StandardCredentials

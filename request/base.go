@@ -24,8 +24,10 @@ type (
 		responseCode      int
 		data              map[string]interface{}
 		requestIdentifier auth.StandardCredentials
-		onRollback        func()
-		onCommit          func()
+		beforeRollback    []func() error
+		beforeCommit      []func() error
+		afterRollback     []func()
+		afterCommit       []func()
 	}
 )
 
@@ -82,34 +84,68 @@ func (r *base) NewTransaction() {
 	r.tx = r.db.Begin()
 }
 
-func (r *base) CommitTransaction() {
+func (r *base) CommitTransaction() error {
 	if r.tx == nil {
-		return
+		return nil
 	}
 
-	r.tx.Commit()
-	if r.onCommit != nil {
-		r.onCommit()
+	if r.beforeCommit != nil {
+		for _, f := range r.beforeCommit {
+			if err := f(); err != nil {
+				return err
+			}
+		}
 	}
+	err := r.tx.Commit().Error()
+	if err != nil {
+		return err
+	}
+	if r.afterCommit != nil {
+		for _, f := range r.afterCommit {
+			f()
+		}
+	}
+	return nil
 }
 
-func (r *base) RollbackTransaction() {
+func (r *base) RollbackTransaction() error {
 	if r.tx == nil {
-		return
+		return nil
 	}
 
-	r.tx.Rollback()
-	if r.onRollback != nil {
-		r.onRollback()
+	if r.beforeRollback != nil {
+		for _, f := range r.beforeRollback {
+			if err := f(); err != nil {
+				return err
+			}
+		}
 	}
+	err := r.tx.Rollback().Error()
+	if err != nil {
+		return err
+	}
+	if r.afterRollback != nil {
+		for _, f := range r.afterRollback {
+			f()
+		}
+	}
+	return nil
 }
 
-func (r *base) OnCommitDo(f func()) {
-	r.onCommit = f
+func (r *base) BeforeRollbackDo(f func() error) {
+	r.beforeRollback = append(r.beforeRollback, f)
 }
 
-func (r *base) OnRollbackDo(f func()) {
-	r.onRollback = f
+func (r *base) BeforeCommitDo(f func() error) {
+	r.beforeCommit = append(r.beforeCommit, f)
+}
+
+func (r *base) AfterRollbackDo(f func()) {
+	r.afterCommit = append(r.afterCommit, f)
+}
+
+func (r *base) AfterCommitDo(f func()) {
+	r.afterRollback = append(r.afterRollback, f)
 }
 
 func NewBase(db sql.API) ReqContext {
@@ -121,8 +157,10 @@ func NewBase(db sql.API) ReqContext {
 		responseCode:      200,
 		data:              make(map[string]interface{}, 5),
 		requestIdentifier: auth.StandardCredentials{Metadata: "unauthorized"},
-		onRollback:        nil,
-		onCommit:          nil,
+		beforeRollback:    nil,
+		beforeCommit:      nil,
+		afterRollback:     nil,
+		afterCommit:       nil,
 	}
 	result.Set("isTransformed", false)
 	return result
@@ -258,6 +296,19 @@ func (r *base) Get(key string) (interface{}, error) {
 	}
 
 	return result, nil
+}
+func (r *base) GetOrDefault(key string, val interface{}) interface{} {
+	isTransformed := r.data["isTransformed"].(bool)
+	if strings.HasPrefix(key, keyConsts.EchoPrefixConstant) && !isTransformed {
+		return val
+	}
+
+	result, ok := r.data[key]
+	if !ok {
+		return val
+	}
+
+	return result
 }
 
 func (r *base) Set(key string, val interface{}) {
