@@ -23,7 +23,7 @@ func (b *bucket) Delete(ctx request.ReqContext) error {
 	}
 	err := b.cl.RemoveBucket(ctx.Context(), b.name)
 	if err != nil {
-		return err
+		return errorUtil.Convert(err)
 	}
 	b.isDeleted = true
 	b.parent.buckets[b.name] = nil
@@ -51,7 +51,7 @@ func (b *bucket) FPutObject(ctx request.ReqContext, objectName, filePath string)
 		},
 	)
 	if err != nil {
-		return err
+		return errorUtil.Convert(err)
 	}
 
 	return nil
@@ -63,6 +63,11 @@ func (b *bucket) PutObject(ctx request.ReqContext, objectName string, content io
 
 	if b.isDeleted {
 		return consts.ErrBucketDeleted
+	}
+
+	_, err := content.Seek(0, io.SeekStart)
+	if err != nil {
+		return err
 	}
 
 	mtype, err := mimetype.DetectReader(content)
@@ -90,7 +95,7 @@ func (b *bucket) PutObject(ctx request.ReqContext, objectName string, content io
 		},
 	)
 	if err != nil {
-		return err
+		return errorUtil.Convert(err)
 	}
 
 	return nil
@@ -106,7 +111,7 @@ func (b *bucket) GetObject(ctx request.ReqContext, objectName string) (*bytes.Bu
 
 	o, err := b.cl.GetObject(ctx.Context(), b.name, objectName, minio.GetObjectOptions{})
 	if err != nil {
-		return nil, err
+		return nil, errorUtil.Convert(err)
 	}
 	var result bytes.Buffer
 	_, err = io.Copy(&result, o)
@@ -124,11 +129,17 @@ func (b *bucket) FGetObject(ctx request.ReqContext, objectName, filePath string)
 		return consts.ErrBucketDeleted
 	}
 
-	return b.cl.FGetObject(
+	err := b.cl.FGetObject(
 		ctx.Context(), b.name,
 		objectName, filePath,
 		minio.GetObjectOptions{},
 	)
+
+	if err != nil {
+		return errorUtil.Convert(err)
+	}
+
+	return nil
 }
 
 func (b *bucket) RemoveObject(ctx request.ReqContext, objectName string) error {
@@ -139,7 +150,12 @@ func (b *bucket) RemoveObject(ctx request.ReqContext, objectName string) error {
 		return consts.ErrBucketDeleted
 	}
 
-	return b.cl.RemoveObject(ctx.Context(), b.name, objectName, minio.RemoveObjectOptions{})
+	err := b.cl.RemoveObject(ctx.Context(), b.name, objectName, minio.RemoveObjectOptions{})
+	if err != nil {
+		return errorUtil.Convert(err)
+	}
+
+	return nil
 }
 
 func (b *bucket) RemoveFilteredObjects(ctx request.ReqContext, filter func(o minio.ObjectInfo) bool, limit int) (int, error) {
@@ -175,7 +191,7 @@ func (b *bucket) RemoveFilteredObjects(ctx request.ReqContext, filter func(o min
 	var errors []string
 	for x := range errCh {
 		if x.Err != nil {
-			errors = append(errors, x.Err.Error())
+			errors = append(errors, errorUtil.Convert(x.Err).Error())
 		}
 	}
 	if len(errors) != 0 {
@@ -201,7 +217,7 @@ func (b *bucket) listObjects(ctx request.ReqContext, prefix string, filter func(
 	var result []minio.ObjectInfo
 	for x := range ch {
 		if x.Err != nil {
-			return nil, x.Err
+			return nil, errorUtil.Convert(x.Err)
 		}
 		if filter == nil || filter(x) {
 			result = append(result, x)
@@ -272,7 +288,7 @@ func (b *bucket) StatObject(ctx request.ReqContext, objectName string) (storage.
 
 	info, err := b.cl.StatObject(ctx.Context(), b.name, objectName, minio.StatObjectOptions{})
 	if err != nil {
-		return storage.ObjectInfo{}, err
+		return storage.ObjectInfo{}, errorUtil.Convert(err)
 	}
 	return storage.ObjectInfo{
 		Key:          info.Key,

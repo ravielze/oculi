@@ -3,11 +3,19 @@ package errors
 import (
 	"errors"
 
+	"github.com/minio/minio-go/v7"
 	consts "github.com/ravielze/oculi/constant/errors"
 	"gorm.io/gorm"
 )
 
 func Convert(err error) error {
+	if convertedErr, ok := err.(minio.ErrorResponse); ok {
+		storageErr, ok := consts.StorageCodeErrorMapping[convertedErr.Code]
+		if ok {
+			return storageErr
+		}
+	}
+
 	switch {
 	case errors.Is(err, gorm.ErrRecordNotFound):
 		return consts.ErrRecordNotFound
