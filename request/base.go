@@ -135,11 +135,11 @@ func (r *base) BeforeCommitDo(f func() error) {
 }
 
 func (r *base) AfterRollbackDo(f func()) {
-	r.afterCommit = append(r.afterCommit, f)
+	r.afterRollback = append(r.afterRollback, f)
 }
 
 func (r *base) AfterCommitDo(f func()) {
-	r.afterRollback = append(r.afterRollback, f)
+	r.afterCommit = append(r.afterCommit, f)
 }
 
 func NewBase(db sql.API) ReqContext {
