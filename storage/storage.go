@@ -12,17 +12,17 @@ import (
 type (
 	S3 interface {
 		// List buckets available
-		ListBuckets(ctx request.ReqContext) ([]BucketInfo, error)
+		ListBuckets() ([]BucketInfo, error)
 
 		// Check if bucket with specified name is exist
-		BucketExists(ctx request.ReqContext, bucketName string) (bool, error)
+		BucketExists(bucketName string) (bool, error)
 
 		// Create bucket if not exists, return the same bucket if exists.
 		// The bucket can be retrieved again from GetBucket method.
-		InitBucket(ctx request.ReqContext, bucketName string) (Bucket, error)
+		InitBucket(bucketName string) (Bucket, error)
 
 		// Get bucket, return nil if not exists, always nil if bucketName never initiated.
-		GetBucket(ctx request.ReqContext, bucketName string) Bucket
+		GetBucket(bucketName string) Bucket
 	}
 
 	Bucket interface {
